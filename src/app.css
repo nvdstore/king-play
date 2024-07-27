@@ -7,13 +7,23 @@ body {
 }
 
 .input {
-	@apply px-4 h-10 bg-neutral-800 border border-neutral-700 focus:border-neutral-600 rounded-lg outline-none text-sm;
+	@apply px-2.5 h-10 bg-neutral-700/50 border border-neutral-700 focus:border-neutral-600 rounded-lg outline-none text-sm;
 }
 .input-group {
 	@apply space-y-1.5 inline-flex flex-col;
 }
 .input-label {
-	@apply text-xs;
+	@apply text-sm;
+}
+
+.btn {
+	@apply px-4 h-10 text-center flex justify-center items-center bg-neutral-700 hover:bg-neutral-600 border-neutral-700 border transition-all rounded-lg outline-none text-sm font-medium;
+}
+.btn-primary {
+	@apply bg-red-500 hover:bg-red-600 transition-all;
+}
+.btn-outline {
+	@apply bg-transparent hover:bg-neutral-600;
 }
 
 table {

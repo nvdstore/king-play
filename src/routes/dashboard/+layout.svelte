@@ -1,10 +1,10 @@
 <script>
 	import { Store } from 'lucide-svelte';
-	import Aside from './aside.svelte';
+	import Sidebar from './sidebar.svelte';
 </script>
 
 <div class="grid md:grid-cols-[250px_1fr]">
-	<Aside />
+	<Sidebar />
 
 	<main class="p-4 md:p-6 space-y-6">
 		<header class="flex items-center justify-between mb-6 text-neutral-50">

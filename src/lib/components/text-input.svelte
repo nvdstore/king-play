@@ -3,7 +3,7 @@
 	export let label = '';
 </script>
 
-<div class="input-group">
+<div class="input-group w-full">
 	{#if label}
 		<label class="input-label">{label}</label>
 	{/if}

@@ -3,6 +3,7 @@
 	import {
 		BadgePercent,
 		Clock,
+		Crown,
 		FileBarChart,
 		Home,
 		LogOut,
@@ -16,8 +17,9 @@
 <aside
 	class="hidden md:flex flex-col h-screen bg-neutral-950/20 text-neutral-200"
 >
-	<div class="flex items-center p-4 pt-6">
-		<span class="ml-2 text-lg font-bold">Nyx</span>
+	<div class="flex items-center p-4 pt-6 gap-2">
+		<Crown/> 
+		<span class="ml-2 text-lg font-bold">King Gaming</span>
 	</div>
 	<nav class="space-y-2 p-4">
 		<a

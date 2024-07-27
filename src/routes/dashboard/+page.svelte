@@ -74,18 +74,18 @@
 		@apply border shadow-lg rounded-lg cursor-pointer;
 	}
 	.card.card-default {
-		@apply bg-neutral-700 bg-opacity-50 hover:bg-opacity-60 transition-all border-neutral-700 backdrop-blur-sm;
+		@apply bg-neutral-600 bg-opacity-80 hover:bg-opacity-90 transition-all border-neutral-700 backdrop-blur-sm;
 	}
 	.card.card-yellow {
-		@apply bg-yellow-700 bg-opacity-50 hover:bg-opacity-60 transition-all border-yellow-800 backdrop-blur-sm;
+		@apply bg-yellow-600 bg-opacity-80 hover:bg-opacity-90 transition-all border-yellow-800 backdrop-blur-sm;
 	}
 	.card.card-blue {
-		@apply bg-blue-700 bg-opacity-50 hover:bg-opacity-60 transition-all border-blue-800 backdrop-blur-sm;
+		@apply bg-blue-600 bg-opacity-80 hover:bg-opacity-90 transition-all border-blue-800 backdrop-blur-sm;
 	}
 	.card.card-green {
-		@apply bg-green-700 bg-opacity-50 hover:bg-opacity-60 transition-all border-green-800 backdrop-blur-sm;
+		@apply bg-green-600 bg-opacity-80 hover:bg-opacity-90 transition-all border-green-800 backdrop-blur-sm;
 	}
 	.card.card-red {
-		@apply bg-red-700 bg-opacity-50 hover:bg-opacity-60 transition-all border-red-800 backdrop-blur-sm;
+		@apply bg-red-600 bg-opacity-80 hover:bg-opacity-90 transition-all border-red-800 backdrop-blur-sm;
 	}
 </style>
