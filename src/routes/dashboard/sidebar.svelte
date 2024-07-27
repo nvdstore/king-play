@@ -25,7 +25,7 @@
 
 	<button
 		on:click={() => goto('/dashboard/store-setting')}
-		class="hidden md:flex items-center p-4 gap-2.5 cursor-pointer w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
+		class="hidden md:flex items-center p-2 gap-3 cursor-pointer w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
 		<div class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
 			<Store />
@@ -40,7 +40,7 @@
 		</div>
 	</button>
 
-	<nav class="space-y-2 p-2 mt-2">
+	<nav class="space-y-2 p-2">
 		<a
 			href="/dashboard"
 			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"
