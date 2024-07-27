@@ -1,8 +1,12 @@
 <script>
 	import { Bell, LucideLink2, Menu, Store } from 'lucide-svelte';
 	import Sidebar from './sidebar.svelte';
-	import { goto } from '$app/navigation';
+	import { goto, onNavigate } from '$app/navigation';
 	import { openSidebar } from '$lib/stores/general';
+
+	onNavigate(() => {
+		$openSidebar = false;
+	})
 </script>
 
 <div class="grid md:grid-cols-[250px_1fr]">
