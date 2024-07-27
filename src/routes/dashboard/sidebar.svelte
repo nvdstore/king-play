@@ -7,21 +7,38 @@
 		FileBarChart,
 		Home,
 		LogOut,
-		RefreshCcw,
-		Settings
+		LucideLink2,
+		Settings,
+		Store,
 	} from 'lucide-svelte';
 
 	$: isActive = (link) => $page.url.pathname == link;
 </script>
 
-<aside
-	class="hidden md:flex flex-col h-screen bg-neutral-950/20 text-neutral-200"
->
-	<div class="flex items-center p-4 pt-6 gap-2">
-		<Crown/> 
-		<span class="ml-2 text-lg font-bold">King Gaming</span>
-	</div>
-	<nav class="space-y-2 p-4">
+<aside class="hidden md:flex flex-col h-screen bg-neutral-950/20 text-neutral-200">
+	<a href="/" class="flex items-center p-4 pt-6 gap-2 bg-neutral-800">
+		<Crown size={20} />
+		<span class="ml-2 font-medium">King Gaming</span>
+	</a>
+
+	<a
+		href="/dashboard/store-setting"
+		class="flex items-center p-2 py-4 gap-4 border-b border-neutral-800 hover:bg-neutral-800/50 transition-all"
+	>
+		<div class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
+			<Store />
+		</div>
+		<div>
+			<a href="/dashboard/store-setting" class="hover:underline"
+				><h4 class="text-lg font-medium">Store Name</h4></a
+			>
+			<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1"
+				><LucideLink2 size={14} /> Kunjungi</a
+			>
+		</div>
+	</a>
+
+	<nav class="space-y-2 p-2 mt-2">
 		<a
 			href="/dashboard"
 			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"
@@ -63,14 +80,15 @@
 			<span class="ml-3 text-sm">Pengaturan</span>
 		</a>
 	</nav>
-	<div class="mt-auto p-4">
+	<div class="mt-auto p-2">
 		<nav class="space-y-2">
-			<div
-				class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all text-red-800"
+			<a
+				href="/login"
+				class="flex items-center p-2 hover:bg-red-800/50 bg-red-900/50 bg-opacity-50 text-red-200 backdrop-blur-sm rounded-md cursor-pointer transition-all"
 			>
 				<LogOut size={20} />
 				<span class="ml-3 text-sm">Keluar</span>
-			</div>
+			</a>
 		</nav>
 	</div>
 </aside>

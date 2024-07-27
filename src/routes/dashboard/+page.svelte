@@ -6,7 +6,7 @@
 
 <section class="space-y-6">
 	<h2 class="text-xl font-bold mb-4">Transaksi Hari Ini</h2>
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+	<div class="grid grid-cols-2 gap-6">
 		<div class="card card-default">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
@@ -26,7 +26,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+	<div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
 		<div class="card card-yellow">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">

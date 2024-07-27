@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 
 	let name: string;
+	let storeName: string;
 	let email: string;
 	let phone: string;
 	let password: string;
@@ -18,15 +19,27 @@
 		<p class="text-sm">Buat akun King Gaming Anda.</p>
 	</header>
 	<section class="space-y-4">
-		<div class="input-group w-full">
-			<label for="name" class="input-label">Nama</label>
-			<input
-				bind:value={name}
-				name="name"
-				class="input"
-				type="text"
-				placeholder="Masukkan Nama Anda"
-			/>
+		<div class="grid md:grid-cols-2 gap-4">
+			<div class="input-group w-full">
+				<label for="name" class="input-label">Nama Anda</label>
+				<input
+					bind:value={name}
+					name="name"
+					class="input"
+					type="text"
+					placeholder="Masukkan Nama Anda"
+				/>
+			</div>
+			<div class="input-group w-full">
+				<label for="store-name" class="input-label">Nama Toko</label>
+				<input
+					bind:value={storeName}
+					name="store-name"
+					class="input"
+					type="text"
+					placeholder="Contoh: King Topup"
+				/>
+			</div>
 		</div>
 		<div class="input-group w-full">
 			<label for="email" class="input-label">Email</label>
@@ -74,9 +87,13 @@
 			<label class="text-xs">
 				<input type="checkbox" class="mr-1.5" />
 				Saya setuju dengan
-				<a href="/terms-condition" target="_blank" class="text-red-500 hover:underline">Syarat dan Ketentuan</a>
+				<a href="/terms-condition" target="_blank" class="text-red-500 hover:underline"
+					>Syarat dan Ketentuan</a
+				>
 				dan
-				<a href="/privacy-policy" target="_blank" class="text-red-500 hover:underline">Kebijakan Privasi</a>
+				<a href="/privacy-policy" target="_blank" class="text-red-500 hover:underline"
+					>Kebijakan Privasi</a
+				>
 			</label>
 		</div>
 		<button class="btn btn-primary w-full" type="submit">Daftar</button>
