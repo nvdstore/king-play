@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import {
 		BadgePercent,
@@ -9,26 +10,27 @@
 		LogOut,
 		LucideLink2,
 		Settings,
-		Store,
+		Store
 	} from 'lucide-svelte';
+	import {openSidebar} from '$lib/stores/general'
 
 	$: isActive = (link) => $page.url.pathname == link;
 </script>
 
-<aside class="hidden md:flex flex-col h-screen bg-neutral-950/20 text-neutral-200">
-	<a href="/" class="flex items-center p-4 pt-6 gap-2 bg-neutral-800">
+<aside class="{!$openSidebar ? 'translate-x-[-250px]' : 'w-[250px] translate-x-[0px]'} transition-transform delay-[0] fixed z-50 md:relative md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200">
+	<a href="/" class="flex items-center p-4 pt-6 gap-2">
 		<Crown size={20} />
 		<span class="ml-2 font-medium">King Gaming</span>
 	</a>
 
-	<a
-		href="/dashboard/store-setting"
-		class="flex items-center p-2 py-4 gap-4 border-b border-neutral-800 hover:bg-neutral-800/50 transition-all"
+	<button
+		on:click={() => goto('/dashboard/store-setting')}
+		class="hidden md:flex items-center p-4 gap-2.5 cursor-pointer w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
 		<div class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
 			<Store />
 		</div>
-		<div>
+		<div class="text-left">
 			<a href="/dashboard/store-setting" class="hover:underline"
 				><h4 class="text-lg font-medium">Store Name</h4></a
 			>
@@ -36,7 +38,7 @@
 				><LucideLink2 size={14} /> Kunjungi</a
 			>
 		</div>
-	</a>
+	</button>
 
 	<nav class="space-y-2 p-2 mt-2">
 		<a
