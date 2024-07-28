@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-neutral-900 text-neutral-50
+	@apply bg-neutral-900 text-neutral-50;
 }
 
 .input {
@@ -17,18 +17,18 @@ body {
 }
 select.input {
 	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAYAAAAMJL+VAAAABGdBTUEAALGPC/xhBQAAAQtJREFUOBG1lEEOgjAQRalbGj2OG9caOACn4ALGtfEuHACiazceR1PWOH/CNA3aMiTaBDpt/7zPdBKy7M/DCL9pGkvxxVp7KsvyJftL5rZt1865M+Ucq6pyyF3hNcI7Cuu+728QYn/JQA5yKaempxuZmQngOwEaYx55nu+1lQh8GIatMGi+01NwBcEmhxBqK4nAPZJ78K0KKFAJmR3oPp8+Iwgob0Oa6+TLoeCvRx+mTUYf/FVBGTPRwDkfLxnaSrRwcH0FWhNOmrkWYbE2XEicqgSa1J0LQ+aPCuQgZiLnwewbGuz5MGoAhcIkCQcjaTBjMgtXGURMVHC1wcQEy0J+Zlj8bKAnY1/UzDe2dbAVqfXn6wAAAABJRU5ErkJggg==');
-  background-size: 0.7rem;
-  background-position: right 0.7rem center;
+	background-size: 0.7rem;
+	background-position: right 0.7rem center;
 	background-repeat: no-repeat;
 	appearance: none;
 	padding-right: 2rem /* 32px */;
 }
 
 .btn {
-	@apply px-4 h-10 text-center flex justify-center items-center bg-neutral-700 hover:bg-neutral-600 border-neutral-700 border transition-all rounded-lg outline-none text-sm font-medium;
+	@apply px-4 h-10 text-center flex justify-center items-center bg-neutral-700 hover:bg-neutral-600 border-neutral-600 border transition-all rounded-lg outline-none text-sm font-medium;
 }
 .btn-primary {
-	@apply bg-red-500 hover:bg-red-600 transition-all;
+	@apply bg-red-500 hover:bg-red-600 border-red-600 transition-all;
 }
 .btn-outline {
 	@apply bg-transparent hover:bg-neutral-600;
@@ -41,15 +41,15 @@ table thead {
 	@apply border-b border-b-neutral-700 bg-neutral-800;
 }
 table tbody tr {
-	@apply hover:bg-neutral-700 transition-all
+	@apply hover:bg-neutral-700 transition-all;
 }
 table td,
 table th {
 	@apply table-cell whitespace-nowrap px-3 text-left text-xs font-medium first:table-cell first:pl-4 sm:first:pl-6 first:pr-4;
 }
 table th {
-	@apply py-3.5
+	@apply py-3.5;
 }
 table td {
-	@apply py-6
+	@apply py-6;
 }

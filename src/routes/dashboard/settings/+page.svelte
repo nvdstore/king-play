@@ -36,7 +36,9 @@
 				<input type="text" name="store-phone" class="input" placeholder="Nomor whatsapp toko" />
 			</div>
 		</div>
-		<button type="submit" class="btn"><Save class="mr-2" size={18} />Simpan Perubahan</button>
+		<button type="submit" class="btn btn-primary w-full md:w-auto">
+			<Save class="mr-2" size={18} />Simpan Perubahan
+		</button>
 	</form>
 
 	<form class="space-y-4">
@@ -63,7 +65,9 @@
 				<input type="text" name="store-line" class="input" placeholder="line.me/6280..." />
 			</div>
 		</div>
-		<button type="submit" class="btn"><Save class="mr-2" size={18} />Simpan Perubahan</button>
+		<button type="submit" class="btn btn-primary w-full md:w-auto">
+			<Save class="mr-2" size={18} />Simpan Perubahan
+		</button>
 	</form>
 
 	<header class="space-y-1" id="profile">
@@ -93,7 +97,9 @@
 				<input type="text" name="user-email" class="input" placeholder="Masukkan Email Anda" />
 			</div>
 		</div>
-		<button type="submit" class="btn"><Save class="mr-2" size={18} />Simpan Perubahan</button>
+		<button type="submit" class="btn btn-primary w-full md:w-auto">
+			<Save class="mr-2" size={18} />Simpan Perubahan
+		</button>
 	</form>
 
 	<header class="space-y-1">
@@ -122,6 +128,8 @@
 				<input type="text" name="user-email" class="input" placeholder="Konfirmasi password baru" />
 			</div>
 		</div>
-		<button type="submit" class="btn"><Save class="mr-2" size={18} />Ubah Kata Sandi</button>
+		<button type="submit" class="btn btn-primary w-full md:w-auto">
+			<Save class="mr-2" size={18} />Ubah Kata Sandi
+		</button>
 	</form>
 </section>
