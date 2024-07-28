@@ -1,5 +1,4 @@
 <script>
-	import { Inbox } from 'lucide-svelte';
 	import TransactionList from '../transaction-list.svelte';
 </script>
 

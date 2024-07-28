@@ -15,9 +15,9 @@
 
 	<Sidebar />
 
-	<header class="flex items-center md:hidden sticky top-0 bg-neutral-800 z-20 space-x-4 p-4">
-		<button class="w-10 h-10 flex items-center justify-center rounded-full" on:click={() => $openSidebar = true}>
-			<Menu />
+	<header class="flex items-center md:hidden sticky top-0 bg-neutral-800 z-20 space-x-4 py-2 px-4">
+		<button class="btn" on:click={() => $openSidebar = true}>
+			<Menu size={20} />
 		</button>
 
 		<button

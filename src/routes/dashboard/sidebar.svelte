@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import {
 		BadgePercent,
+		Bell,
 		Clock,
 		Crown,
 		FileBarChart,
@@ -12,33 +13,39 @@
 		Settings,
 		Store
 	} from 'lucide-svelte';
-	import {openSidebar} from '$lib/stores/general'
+	import { openSidebar } from '$lib/stores/general';
 
-	$: isActive = (link) => $page.url.pathname == link;
+	$: isActive = (link: string) => $page.url.pathname === link;
 </script>
 
-<aside class="{!$openSidebar ? 'translate-x-[-250px]' : 'w-[250px] translate-x-[0px]'} transition-transform delay-[0] fixed z-50 md:relative md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200">
+<aside
+	class="{!$openSidebar
+		? 'translate-x-[-250px]'
+		: 'w-[250px] translate-x-[0px]'} transition-transform delay-[0] fixed z-50 md:relative md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200"
+>
 	<a href="/" class="flex items-center p-4 pt-6 gap-2">
 		<Crown size={20} />
 		<span class="ml-2 font-medium">King Gaming</span>
 	</a>
 
-	<button
-		on:click={() => goto('/dashboard/store-setting')}
-		class="hidden md:flex items-center p-2 gap-3 cursor-pointer w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
+	<div
+		class="hidden md:flex items-center p-2 gap-3 w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
-		<div class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
+		<a href="/dashboard/store-setting" class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
 			<Store />
-		</div>
+		</a>
 		<div class="text-left">
-			<a href="/dashboard/store-setting" class="hover:underline"
-				><h4 class="text-lg font-medium">Store Name</h4></a
-			>
-			<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1"
-				><LucideLink2 size={14} /> Kunjungi</a
-			>
+			<a href="/dashboard/store-setting">
+				<h4 class="text-md font-medium">Store Name</h4>
+			</a>
+			<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1">
+				<LucideLink2 size={14} /> Kunjungi
+			</a>
 		</div>
-	</button>
+		<a href="/dashboard/notif" class="ml-auto mr-2">
+			<Bell size={18} />
+		</a>
+	</div>
 
 	<nav class="space-y-2 p-2">
 		<a
