@@ -29,7 +29,7 @@
 	</a>
 
 	<div
-		class="hidden md:flex items-center p-2 gap-3 w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
+		class="hidden md:flex items-center p-2 py-4 gap-3 w-full border-b border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
 		<a href="/dashboard/store-setting" class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center">
 			<Store />
