@@ -60,10 +60,6 @@
 					<option value="100">100 Entries</option>
 				</select>
 				<button class="btn">
-					<SortAsc size={18} class="md:mr-2" />
-					<span class="hidden md:block">Urutkan A-Z</span>
-				</button>
-				<button class="btn">
 					<DownloadCloud size={18} class="md:mr-2" />
 					<span class="hidden md:block">Ekspor ke XLSX</span>
 				</button>

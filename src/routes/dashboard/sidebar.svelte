@@ -21,7 +21,7 @@
 <aside
 	class="{!$openSidebar
 		? 'translate-x-[-250px]'
-		: 'w-[250px] translate-x-[0px]'} transition-transform delay-[0] fixed z-50 md:relative md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200"
+		: 'translate-x-[0px]'} transition-transform delay-[0] fixed w-[250px] z-50 md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200"
 >
 	<a href="/" class="flex items-center p-4 pt-6 gap-2 bg-red-500">
 		<Crown size={26} />
@@ -31,11 +31,14 @@
 	<div
 		class="hidden md:flex items-center p-2 py-4 gap-3 w-full border-b border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
-		<a href="/dashboard/store-setting" class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center">
+		<a
+			href="/dashboard/store"
+			class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center"
+		>
 			<Store />
 		</a>
 		<div class="text-left">
-			<a href="/dashboard/store-setting">
+			<a href="/dashboard/store">
 				<h4 class="text-md font-medium">Store Name</h4>
 			</a>
 			<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1">
