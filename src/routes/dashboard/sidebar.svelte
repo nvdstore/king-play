@@ -23,15 +23,15 @@
 		? 'translate-x-[-250px]'
 		: 'w-[250px] translate-x-[0px]'} transition-transform delay-[0] fixed z-50 md:relative md:translate-x-0 md:flex flex-col h-screen bg-neutral-800 text-neutral-200"
 >
-	<a href="/" class="flex items-center p-4 pt-6 gap-2">
-		<Crown size={20} />
-		<span class="ml-2 font-medium">King Gaming</span>
+	<a href="/" class="flex items-center p-4 pt-6 gap-2 bg-red-500">
+		<Crown size={26} />
+		<span class="ml-2 font-bold">KING Gaming</span>
 	</a>
 
 	<div
 		class="hidden md:flex items-center p-2 gap-3 w-full border-y border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
-		<a href="/dashboard/store-setting" class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
+		<a href="/dashboard/store-setting" class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center">
 			<Store />
 		</a>
 		<div class="text-left">

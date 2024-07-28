@@ -24,7 +24,7 @@
 			on:click={() => goto('/dashboard/store-setting')}
 			class="flex items-center gap-4 cursor-pointer w-full"
 		>
-			<div class="bg-neutral-500 rounded-lg h-10 w-10 flex items-center justify-center">
+			<div class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center">
 				<Store />
 			</div>
 			<div class="text-left">
