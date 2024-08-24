@@ -9,6 +9,9 @@ body {
 .input {
 	@apply px-2.5 h-10 bg-neutral-700/50 border border-neutral-700 focus:border-neutral-600 rounded-lg outline-none text-sm;
 }
+.input.input-error {
+	@apply border-red-500;
+}
 .input-group {
 	@apply space-y-1.5 inline-flex flex-col;
 }

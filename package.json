@@ -32,8 +32,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@auth/pg-adapter": "^1.4.2",
+		"@auth/sveltekit": "^1.4.2",
 		"@svelte-plugins/datepicker": "^1.0.9",
 		"date-fns": "^3.6.0",
-		"lucide-svelte": "^0.408.0"
+		"lucide-svelte": "^0.408.0",
+		"pg": "^8.12.0"
 	}
 }
