@@ -14,6 +14,7 @@
 		Store
 	} from 'lucide-svelte';
 	import { openSidebar } from '$lib/stores/general';
+	import { signOut } from '@auth/sveltekit/client';
 
 	$: isActive = (link: string) => $page.url.pathname === link;
 </script>
@@ -94,13 +95,13 @@
 	</nav>
 	<div class="mt-auto p-2">
 		<nav class="space-y-2">
-			<a
-				href="/login"
-				class="flex items-center p-2 hover:bg-red-800/50 bg-red-900/50 bg-opacity-50 text-red-200 backdrop-blur-sm rounded-md cursor-pointer transition-all"
+			<button
+				on:click={() => signOut()}
+				class="flex items-center p-2 hover:bg-red-800/50 bg-red-900/50 bg-opacity-50 text-red-200 backdrop-blur-sm rounded-md cursor-pointer transition-all w-full"
 			>
 				<LogOut size={20} />
 				<span class="ml-3 text-sm">Keluar</span>
-			</a>
+			</button>
 		</nav>
 	</div>
 </aside>
