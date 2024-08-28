@@ -64,11 +64,11 @@
 				{/if} -->
 			</div>
 			<div class="flex justify-end mt-2">
-				<a href="/forgot-password" class="text-xs hover:underline">Lupa kata sandi?</a>
+				<a href="/auth/forgot-password" class="text-xs hover:underline">Lupa kata sandi?</a>
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary w-full">Masuk</button>
 		<p class="text-center text-xs text-neutral-300">Belum punya akun?</p>
-		<a href="/register" class="btn btn-outline">Daftar Sekarang</a>
+		<a href="/auth/register" class="btn btn-outline">Daftar Sekarang</a>
 	</section>
 </form>

@@ -1,17 +1,21 @@
-import type { Adapter, AdapterAccount, AdapterSession, AdapterUser } from '@auth/core/adapters';
+import type { Adapter, AdapterSession } from '@auth/core/adapters';
 import type { Pool } from 'pg';
+
+import { User, type CreateUserParams } from '$lib/models/user';
 
 export function CustomAdapter(db: Pool): Adapter {
 	return {
 		createUser: async ({ id: _id, ...data }) => {
-			const res = await db.query(
-				'insert into mt_member (email, email_verified, name, image) values ($1, $2, $3, $4) returning id_member',
-				[data.email, data.emailVerified, data.name, data.image]
-			);
-			const row = res.rows[0];
+			const payload: CreateUserParams = {
+				name: data.name!,
+				email: data.email,
+				emailVerified: data.emailVerified,
+				image: data.image!
+			};
+			const { data: userData } = await User.createUser(payload);
 
 			return {
-				id: row.id_member,
+				id: userData.id_member,
 				email: data.email,
 				name: data.name,
 				image: data.image,
@@ -19,8 +23,7 @@ export function CustomAdapter(db: Pool): Adapter {
 			};
 		},
 		getUser: async (id) => {
-			const res = await db.query('select * from mt_member where id_member = $1', [id]);
-			const row = res.rows[0];
+			const row = await User.getUserById(id);
 			if (row) {
 				return {
 					id: row.id_member,
@@ -34,33 +37,28 @@ export function CustomAdapter(db: Pool): Adapter {
 			return null;
 		},
 		getUserByEmail: async (email) => {
-			const res = await db.query('select * from mt_member where email = $1', [email]);
-			const row = res.rows[0];
-			if (row) {
+			const user = await User.getUserByEmail(email);
+			if (user) {
 				return {
-					id: row.id_member,
-					name: row.name,
-					email: row.email,
-					emailVerified: row.email_verified,
-					image: row.image
+					id: user.id_member,
+					name: user.name,
+					email: user.email,
+					emailVerified: user.email_verified,
+					image: user.image
 				};
 			}
 
 			return null;
 		},
-		getUserByAccount: async (providerAccountId) => {
-			const res = await db.query(
-				'select * from accounts a left join mt_member mm on mm.id_member = a.user_id where provider_account_id = $1',
-				[providerAccountId]
-			);
-			const row = res.rows[0];
-			if (row) {
+		getUserByAccount: async ({ providerAccountId, provider }) => {
+			const user = await User.getAccountByProvider(providerAccountId, provider);
+			if (user) {
 				return {
-					id: row.id_member,
-					name: row.name,
-					email: row.email,
-					emailVerified: row.email_verified,
-					image: row.image
+					id: user.id_member,
+					name: user.name,
+					email: user.email,
+					emailVerified: user.email_verified,
+					image: user.image
 				};
 			}
 

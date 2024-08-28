@@ -39,6 +39,6 @@
 		</div>
 
 		<button class="btn btn-primary w-full" type="submit">Kirim Link</button>
-		<a href="/login" class="btn btn-outline">Masuk</a>
+		<a href="/auth/login" class="btn btn-outline">Masuk</a>
 	</section>
 </form>
