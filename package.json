@@ -16,6 +16,7 @@
 		"@sveltejs/adapter-node": "^5.2.2",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/bcrypt": "^5.0.2",
 		"@types/eslint": "^8.56.7",
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"autoprefixer": "^10.4.19",
@@ -37,6 +38,7 @@
 		"@auth/pg-adapter": "^1.4.2",
 		"@auth/sveltekit": "^1.4.2",
 		"@svelte-plugins/datepicker": "^1.0.9",
+		"bcrypt": "^5.1.1",
 		"date-fns": "^3.6.0",
 		"lucide-svelte": "^0.408.0",
 		"pg": "^8.12.0"

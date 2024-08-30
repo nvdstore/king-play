@@ -1,16 +1,20 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { slide } from 'svelte/transition';
-	import type { PageData } from './$types';
 	import { signIn } from '@auth/sveltekit/client';
 
-	export let data: PageData;
+	// export let form: ActionData;
+
+	let loading = false;
 
 	let email: string;
 	let password: string;
+
+	async function handleLogin(e: SubmitEvent) {
+		const res = await signIn('credentials', { email, password });
+		console.log(res);
+	}
 </script>
 
-<form method="post" use:enhance class="space-y-6">
+<form on:submit={handleLogin} class="space-y-6">
 	<header class="space-y-1.5 text-center md:text-left">
 		<h4 class="text-2xl font-medium">Masuk</h4>
 		<p class="text-sm">Masuk dengan akun yang telah Anda daftarkan.</p>

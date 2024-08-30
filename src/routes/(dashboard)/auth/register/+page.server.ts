@@ -1,10 +1,10 @@
 import { redirect } from '@sveltejs/kit';
+import bcrypt from 'bcrypt';
 import type { Actions } from './$types';
 
 import { User, type CreateUserParams } from '$lib/models/user';
 import { validateEmail } from '$lib/utils/email';
 import { Store, type CreateStoreParams } from '$lib/models/store';
-import { Password } from '$lib/utils/password';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -57,7 +57,7 @@ export const actions = {
 			return { errors: errorBag, values: valueBag };
 		}
 
-		const hashPassword = await Password.hashPassword(password!);
+		const hashPassword = bcrypt.hashSync(password!, 10);
 
 		const payload: CreateUserParams = {
 			name: name!,
