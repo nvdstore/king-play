@@ -110,6 +110,8 @@ export function CustomAdapter(db: Pool): Adapter {
 				[sessionToken]
 			);
 			const row = res.rows[0];
+			if (!row) return null;
+
 			return {
 				user: {
 					id: row.id_member,

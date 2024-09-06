@@ -1,20 +1,33 @@
 <script lang="ts">
 	import { signIn } from '@auth/sveltekit/client';
-
-	// export let form: ActionData;
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { toast } from '@zerodevx/svelte-toast';
 
 	let loading = false;
 
 	let email: string;
 	let password: string;
 
+	onMount(() => {
+		const error = $page.url.searchParams.get('error');
+		const code = $page.url.searchParams.get('code');
+
+		if (error == 'CredentialsSignin') {
+			if (code == 'credentials') {
+				toast.push('User tidak ditemukan atau password salah!');
+			} else if (code == 'bad-request') {
+				toast.push('Email dan password harus diisi!');
+			}
+		}
+	});
+
 	async function handleLogin(e: SubmitEvent) {
-		const res = await signIn('credentials', { email, password });
-		console.log(res);
+		await signIn('credentials', { email, password });
 	}
 </script>
 
-<form on:submit={handleLogin} class="space-y-6">
+<form on:submit|preventDefault={handleLogin} class="space-y-6">
 	<header class="space-y-1.5 text-center md:text-left">
 		<h4 class="text-2xl font-medium">Masuk</h4>
 		<p class="text-sm">Masuk dengan akun yang telah Anda daftarkan.</p>
@@ -45,11 +58,6 @@
 				type="email"
 				placeholder="Masukkan Email Anda"
 			/>
-			<!-- {#if form?.errors.email}
-				<p class="text-sm text-red-500" transition:slide={{ duration: 200 }}>
-					{form.errors.email}
-				</p>
-			{/if} -->
 		</div>
 		<div>
 			<div class="input-group w-full">
@@ -61,17 +69,12 @@
 					type="password"
 					placeholder="Masukkan Kata Sandi Anda"
 				/>
-				<!-- {#if form?.errors.password}
-					<p class="text-sm text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.password}
-					</p>
-				{/if} -->
 			</div>
 			<div class="flex justify-end mt-2">
 				<a href="/auth/forgot-password" class="text-xs hover:underline">Lupa kata sandi?</a>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary w-full">Masuk</button>
+		<button type="submit" class="btn btn-primary w-full" disabled={loading}>Masuk</button>
 		<p class="text-center text-xs text-neutral-300">Belum punya akun?</p>
 		<a href="/auth/register" class="btn btn-outline">Daftar Sekarang</a>
 	</section>
