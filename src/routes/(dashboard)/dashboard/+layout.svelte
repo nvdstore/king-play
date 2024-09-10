@@ -1,12 +1,17 @@
-<script>
+<script lang="ts">
 	import { Bell, LucideLink2, Menu, Store } from 'lucide-svelte';
-	import Sidebar from './sidebar.svelte';
 	import { goto, onNavigate } from '$app/navigation';
+
 	import { openSidebar } from '$lib/stores/general';
+	import Sidebar from './sidebar.svelte';
+
+	import type { LayoutData } from './$types';
 
 	onNavigate(() => {
 		$openSidebar = false;
 	});
+
+	export let data: LayoutData;
 </script>
 
 <div>
@@ -20,7 +25,7 @@
 		on:click={() => ($openSidebar = false)}
 	></div>
 
-	<Sidebar />
+	<Sidebar store={data.store} />
 
 	<header class="flex items-center md:hidden sticky top-0 bg-neutral-800 z-20 space-x-4 py-2 px-4">
 		<button class="btn" on:click={() => ($openSidebar = true)}>
@@ -35,12 +40,16 @@
 				<Store />
 			</div>
 			<div class="text-left">
-				<a href="/dashboard/store-setting" class="hover:underline"
-					><h4 class="text-lg font-medium">Store Name</h4></a
+				<a href="/dashboard/store-setting" class="hover:underline">
+					<h4 class="text-lg font-medium">{data.store.name}</h4>
+				</a>
+				<a
+					href="https://{data.store.domain}"
+					target="_blank"
+					class="text-xs inline-flex items-center hover:underline gap-1"
 				>
-				<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1"
-					><LucideLink2 size={14} /> Kunjungi</a
-				>
+					<LucideLink2 size={14} /> Kunjungi
+				</a>
 			</div>
 		</button>
 	</header>

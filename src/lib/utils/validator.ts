@@ -9,3 +9,15 @@ export function validateEmail(email: string) {
 
 	return false;
 }
+
+export function checkDomain(domain: string) {
+	if (
+		/^(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{2,63}(?<!-)$/.test(
+			domain
+		)
+	) {
+		return true;
+	}
+
+	return false;
+}

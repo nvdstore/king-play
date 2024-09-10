@@ -128,11 +128,8 @@ export function CustomAdapter(db: Pool): Adapter {
 			};
 		},
 		createSession: async (data) => {
-			await db.query('insert into sessions (user_id, expires, session_token) values ($1, $2, $3)', [
-				data.userId,
-				data.expires,
-				data.sessionToken
-			]);
+			await User.createSession(data);
+
 			return {
 				userId: data.userId,
 				expires: data.expires,

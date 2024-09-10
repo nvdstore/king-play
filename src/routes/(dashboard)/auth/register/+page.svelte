@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { signIn } from '@auth/sveltekit/client';
 	import { slide } from 'svelte/transition';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { applyAction, enhance } from '$app/forms';
 
 	import type { ActionData } from './$types';
-	import { goto } from '$app/navigation';
 
 	export let form: ActionData;
 
@@ -17,12 +17,15 @@
 		loading = true;
 
 		return async ({ result }) => {
-			if (result.type === 'redirect') {
-				toast.push('Berhasil melakukan pendaftaran, silakan login');
-				goto(result.location);
-			} else {
+			const errors = result.data.errors;
+			const values = result.data.values;
+
+			if (errors.length > 0) {
 				loading = false;
 				await applyAction(result);
+			} else {
+				toast.push('Berhasil melakukan pendaftaran');
+				await signIn('credentials', { email: values.email, password: values.password });
 			}
 		};
 	}}
@@ -45,37 +48,20 @@
 	{/if}
 
 	<section class="space-y-4">
-		<div class="grid md:grid-cols-2 gap-4">
-			<div class="input-group w-full">
-				<label for="name" class="input-label">Nama Anda</label>
-				<input
-					name="name"
-					value={form?.values.name ?? ''}
-					class="input {form?.errors.name ? 'input-error' : ''}"
-					type="text"
-					placeholder="Masukkan Nama Anda"
-				/>
-				{#if form?.errors.name}
-					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.name}
-					</p>
-				{/if}
-			</div>
-			<div class="input-group w-full">
-				<label for="store-name" class="input-label">Nama Toko</label>
-				<input
-					name="store-name"
-					value={form?.values.storeName ?? ''}
-					class="input {form?.errors.storeName ? 'input-error' : ''}"
-					type="text"
-					placeholder="Contoh: King Topup"
-				/>
-				{#if form?.errors.storeName}
-					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.storeName}
-					</p>
-				{/if}
-			</div>
+		<div class="input-group w-full">
+			<label for="name" class="input-label">Nama Anda</label>
+			<input
+				name="name"
+				value={form?.values.name ?? ''}
+				class="input {form?.errors.name ? 'input-error' : ''}"
+				type="text"
+				placeholder="Masukkan Nama Anda"
+			/>
+			{#if form?.errors.name}
+				<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
+					{form.errors.name}
+				</p>
+			{/if}
 		</div>
 		<div class="input-group w-full">
 			<label for="email" class="input-label">Email</label>
@@ -89,21 +75,6 @@
 			{#if form?.errors.email}
 				<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
 					{form.errors.email}
-				</p>
-			{/if}
-		</div>
-		<div class="input-group w-full">
-			<label for="phone" class="input-label">Nomor WhatsApp</label>
-			<input
-				name="phone"
-				value={form?.values.phone ?? ''}
-				class="input {form?.errors.phone ? 'input-error' : ''}"
-				type="text"
-				placeholder="Masukkan No. WA Anda"
-			/>
-			{#if form?.errors.phone}
-				<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-					{form.errors.phone}
 				</p>
 			{/if}
 		</div>

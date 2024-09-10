@@ -9,6 +9,12 @@ export type CreateUserParams = {
 	image?: string;
 };
 
+export type CreateSessionParams = {
+	userId: string;
+	expires: Date;
+	sessionToken: string;
+};
+
 export const User = {
 	getUserById: async (id: string) => {
 		const res = await db.query('select * from mt_member where id_member = $1', [id]);
@@ -43,6 +49,13 @@ export const User = {
 				data: null
 			};
 		}
+	},
+	createSession: async ({ userId, expires, sessionToken }: CreateSessionParams) => {
+		await db.query('insert into sessions (user_id, expires, session_token) values ($1, $2, $3)', [
+			userId,
+			expires,
+			sessionToken
+		]);
 	},
 	getAccountByProvider: async (providerAccountId: string, provider: string) => {
 		const res = await db.query(

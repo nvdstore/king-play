@@ -11,11 +11,12 @@ export const load: LayoutServerLoad = async (events) => {
 			return redirect(307, '/auth/login');
 		}
 
-		if (!pathname.startsWith('/onboarding')) {
-			const store = await Store.getStoreByMember(session.user.id!);
-			if (!store) {
-				return redirect(307, '/onboarding');
-			}
+		const store = await Store.getStoreByMember(session.user.id!);
+
+		if (!pathname.startsWith('/onboarding') && !store) {
+			return redirect(307, '/onboarding');
+		} else if (pathname.startsWith('/onboarding') && store) {
+			return redirect(307, '/dashboard');
 		}
 	}
 

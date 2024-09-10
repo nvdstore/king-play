@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { goto } from '$app/navigation';
 
 	let loading = false;
 
@@ -19,6 +20,10 @@
 			} else if (code == 'bad-request') {
 				toast.push('Email dan password harus diisi!');
 			}
+			goto('/auth/login');
+		} else if (error == 'Configuration') {
+			toast.push('Terjadi kesalahan!');
+			goto('/auth/login');
 		}
 	});
 

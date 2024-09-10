@@ -16,6 +16,8 @@
 	import { openSidebar } from '$lib/stores/general';
 	import { signOut } from '@auth/sveltekit/client';
 
+	export let store;
+
 	$: isActive = (link: string) => $page.url.pathname === link;
 </script>
 
@@ -26,7 +28,7 @@
 >
 	<a href="/" class="flex items-center p-4 pt-6 gap-2 bg-red-500">
 		<Crown size={26} />
-		<span class="ml-2 font-bold">KING Gaming</span>
+		<span class="ml-2 font-bold">King Play</span>
 	</a>
 
 	<div
@@ -40,9 +42,13 @@
 		</a>
 		<div class="text-left">
 			<a href="/dashboard/store">
-				<h4 class="text-md font-medium">Store Name</h4>
+				<h4 class="text-md font-medium">{store.name}</h4>
 			</a>
-			<a href="/" target="_blank" class="text-xs inline-flex items-center hover:underline gap-1">
+			<a
+				href="https://{store.domain}"
+				target="_blank"
+				class="text-xs inline-flex items-center hover:underline gap-1"
+			>
 				<LucideLink2 size={14} /> Kunjungi
 			</a>
 		</div>
