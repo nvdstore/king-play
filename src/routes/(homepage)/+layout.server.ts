@@ -3,9 +3,11 @@ import type { LayoutServerLoad } from './$types';
 import { themes } from './themes';
 import type { Game } from './type';
 
-export const load: LayoutServerLoad = async () => {
+export const load: LayoutServerLoad = async ({ url }) => {
+	const getTheme = url.searchParams.get('theme');
+
 	type ThemeType = typeof themes;
-	let dataTheme: keyof ThemeType = 'light';
+	let dataTheme: keyof ThemeType = (getTheme as 'dark') ?? 'dark';
 	let dataColor = 'yellow';
 
 	const color = dataColor ?? '';
