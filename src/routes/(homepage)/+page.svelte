@@ -83,8 +83,4 @@
 	.card-text {
 		@apply line-clamp-1 text-center font-medium  transition-colors md:text-sm;
 	}
-
-	swiper-container .swiper-button-prev {
-		@apply bg-slate-900;
-	}
 </style>

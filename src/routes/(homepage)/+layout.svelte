@@ -17,6 +17,10 @@
 			: data.popularGames;
 </script>
 
+<svelte:head>
+	<title>KingPlay - Topup Game</title>
+</svelte:head>
+
 <div class="min-h-screen {data.theme.main}">
 	<div class="{data.theme.nav} sticky top-0 z-20">
 		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[800px]">
