@@ -57,7 +57,7 @@ export const actions = {
 			phone: phone!,
 			domain: subdomain
 		};
-		const { error } = await Store.createStore(storeData);
+		const { error } = await Store.create(storeData);
 		if (error) {
 			errorBag.message = error ?? 'Terjadi kesalahan';
 			return { errors: errorBag, values: valueBag };

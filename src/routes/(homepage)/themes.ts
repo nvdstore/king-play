@@ -1,0 +1,21 @@
+export const themes = {
+	dark: {
+		main: 'bg-gradient-to-b from-slate-800 to-slate-900 text-neutral-50',
+		nav: 'bg-gradient-to-b from-slate-700/75 to-slate-800/75 border-b border-slate-700 backdrop-blur-md',
+		footer: 'border-t border-slate-700',
+		bgColor: 'bg-slate-700',
+		bgColorSecondary: 'bg-slate-800',
+		color: 'text-neutral-50',
+		border: 'border-slate-600 ',
+		button: 'btn btn-slate'
+	},
+	light: {
+		main: 'bg-neutral-50 text-slate-800',
+		nav: 'bg-neutral-50/75 backdrop-blur-md',
+		bgColor: 'bg-neutral-100',
+		bgColorSecondary: 'bg-neutral-200',
+		color: 'text-slate-800',
+		border: 'border-neutral-300',
+		button: 'btn btn-slate text-neutral-50'
+	}
+};

@@ -16,7 +16,7 @@
 		</a>
 	</div>
 
-	<form class="space-y-4">
+	<form method="POST" action="?/store" class="space-y-4">
 		<h4 class="font-semibold text-red-500">Informasi Toko</h4>
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
@@ -41,7 +41,7 @@
 		</button>
 	</form>
 
-	<form class="space-y-4">
+	<form method="POST" action="?/social" class="space-y-4">
 		<h4 class="font-semibold text-red-500">Sosial Media</h4>
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
@@ -77,7 +77,7 @@
 		</p>
 	</header>
 
-	<form class="space-y-4">
+	<form method="POST" action="?/user" class="space-y-4">
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
 				<label for="user-name" class="input-label">Nama</label>
@@ -107,7 +107,7 @@
 		<p class="text-sm">Pastikan Anda mengingat kata sandi baru Anda sebelum mengubahnya.</p>
 	</header>
 
-	<form class="space-y-4">
+	<form method="POST" action="?/password" class="space-y-4">
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
 				<label for="user-name" class="input-label">Password Anda</label>

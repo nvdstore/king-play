@@ -7,4 +7,5 @@
 </script>
 
 <SvelteToast options={toastOpts} />
+
 <slot />
