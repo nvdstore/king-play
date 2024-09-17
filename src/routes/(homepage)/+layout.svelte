@@ -23,7 +23,7 @@
 
 <div class="min-h-screen {data.theme.main}">
 	<div class="{data.theme.nav} sticky top-0 z-20">
-		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[800px]">
+		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[1024px]">
 			<a href="/" class="flex items-center space-x-2 flex-1">
 				<Crown size={30} />
 				<span class="font-semibold text-lg">
@@ -108,12 +108,12 @@
 		</nav>
 	</div>
 
-	<main class="mx-auto space-y-4 md:space-y-8 md:max-w-[800px] p-4 my-10">
+	<main class="mx-auto md:max-w-[1024px] p-4 my-10">
 		<slot />
 	</main>
 
 	<footer class={data.theme.footer}>
-		<div class="mx-auto space-y-4 md:space-y-8 md:max-w-[800px] p-4 py-10">
+		<div class="mx-auto space-y-4 md:space-y-8 md:max-w-[1024px] p-4 py-10">
 			<section class="flex md:grid md:grid-cols-4 gap-4 text-sm">
 				<div class="space-y-4 flex-1">
 					<a href="/" class="flex space-x-2">
