@@ -18,6 +18,7 @@ export type PaymentChannel = {
 	code: string;
 	image: string;
 	price: number;
+	helper: string;
 };
 
 export type PaymentChannelGroup = {

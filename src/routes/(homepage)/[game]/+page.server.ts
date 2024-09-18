@@ -45,14 +45,16 @@ export const load: PageServerLoad = async () => {
 					code: 'SHOPEE',
 					image: 'https://storage.googleapis.com/tokogame-img/payment-provider/logo-shopeepay.png',
 					name: 'Shopee',
-					price: 2000
+					price: 2000,
+					helper: '<ul><li>Step 1</li><li>Step 2</li></ul>'
 				},
 				{
 					id: 2,
 					code: 'GOPAY',
 					image: 'https://storage.googleapis.com/tokogame-img/payment-provider/logo-gopay.png',
 					name: 'Gopay',
-					price: 2500
+					price: 2500,
+					helper: '<ul><li>Step 1</li><li>Step 2</li></ul>'
 				}
 			],
 			images: [
@@ -70,7 +72,8 @@ export const load: PageServerLoad = async () => {
 					code: 'BCA',
 					image: 'https://storage.googleapis.com/tokogame-img/payment-provider/logo-bca.png',
 					name: 'BCA',
-					price: 4200
+					price: 4200,
+					helper: '<ul><li>Step 1</li><li>Step 2</li></ul>'
 				}
 			],
 			images: ['https://storage.googleapis.com/tokogame-img/payment-provider/logo-bca.png']

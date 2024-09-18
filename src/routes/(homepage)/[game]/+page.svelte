@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { ChevronDown, ChevronUp, Search, Wallet, X, Landmark } from 'lucide-svelte';
+	import { ChevronDown, ChevronUp, Search, Wallet, X, Landmark, CircleHelp } from 'lucide-svelte';
 
 	import type { PageData } from './$types';
 	import type { PaymentChannel, PaymentChannelGroup, Product } from '../type';
 	import { slide } from 'svelte/transition';
 	import { currency } from '$lib/utils/formatter';
-
 	export let data: PageData;
 
 	let selectedProduct: Product;
@@ -27,7 +26,7 @@
 			: data.products;
 </script>
 
-<div class="flex items-start gap-6">
+<div class="md:flex items-start gap-6">
 	<main class="{data.theme.card} w-full">
 		<div
 			class="flex items-start p-4 gap-6 {data.theme.bgColor} border-b {data.theme
@@ -42,7 +41,7 @@
 
 		<div class="space-y-8 p-4 py-6">
 			<div class="w-full flex items-start gap-6">
-				<h1 class="font-bold text-4xl opacity-50 w-[40px] text-right">1.</h1>
+				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">1.</h1>
 				<div class="space-y-4 w-full">
 					<div>
 						<h4 class="font-medium">Masukkan Game ID Mobile Legends Anda</h4>
@@ -59,7 +58,7 @@
 
 			<div class="w-full flex items-center space-x-8 flex-1 -ml-13">
 				<div class="w-full flex items-start gap-6">
-					<h1 class="font-bold text-4xl opacity-50 w-[40px] text-right">2.</h1>
+					<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">2.</h1>
 					<div class="space-y-4 w-full">
 						<div>
 							<h4 class="font-medium">Pilih jumlah diamond yang ingin anda beli</h4>
@@ -114,7 +113,7 @@
 			</div>
 
 			<div class="w-full flex items-start gap-6">
-				<h1 class="font-bold text-4xl opacity-50 w-[40px] text-right">3.</h1>
+				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">3.</h1>
 				<div class="space-y-4 w-full">
 					<div>
 						<h4 class="font-medium">Pilih Metode Pembayaran</h4>
@@ -190,14 +189,14 @@
 		</div>
 	</main>
 
-	<aside class="{data.theme.card} p-4 w-[600px] sticky top-24">
-		<div class="space-y-4">
+	<aside class="w-[600px] sticky top-24 space-y-6">
+		<div class="{data.theme.card} p-4 space-y-4">
 			<div>
-				<div class="border-b {data.theme.border} py-2">
+				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Game:</span>
 					<p class="font-medium">{data.game.name}</p>
 				</div>
-				<div class="border-b {data.theme.border} py-2">
+				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Produk:</span>
 					<p class="font-medium">{selectedProduct?.name ?? '-'}</p>
 				</div>
@@ -208,5 +207,15 @@
 			</div>
 			<button class="btn btn-red w-full">Bayar Sekarang</button>
 		</div>
+
+		{#if selectedChannel}
+			<div class="{data.theme.card} p-4 space-y-4">
+				<div class="flex items-center gap-2 font-medium">
+					<CircleHelp />
+					<span>Cara Pembayaran {selectedChannel.name}</span>
+				</div>
+				<div class="helper">{@html selectedChannel.helper}</div>
+			</div>
+		{/if}
 	</aside>
 </div>

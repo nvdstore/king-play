@@ -68,3 +68,8 @@ select.input {
 	appearance: none;
 	padding-right: 2rem /* 32px */;
 }
+
+.helper ul {
+	list-style: decimal;
+	@apply px-4;
+}
