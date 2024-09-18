@@ -1,0 +1,1 @@
+import{s as n,n as s}from"../chunks/8.D6-lxqIh.js";import{S as r,i,t as c,b as m,g as l,d as p}from"../chunks/index.qVoW8Mvc.js";function f(o){let t;return{c(){t=c("store")},l(e){t=m(e,"store")},m(e,a){l(e,t,a)},p:s,i:s,o:s,d(e){e&&p(t)}}}class x extends r{constructor(t){super(),i(this,t,null,f,n,{})}}export{x as component};
