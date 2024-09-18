@@ -16,13 +16,15 @@ export const themes = {
 	},
 	light: {
 		main: 'bg-neutral-50 text-slate-800',
-		nav: 'bg-neutral-50/75 backdrop-blur-md',
+		nav: 'bg-neutral-100/75 border-b border-neutral-200 backdrop-blur-md',
 		bgColor: 'bg-neutral-100',
 		bgColorSecondary: 'bg-neutral-200',
 		color: 'text-slate-800',
 		border: 'border-neutral-300',
 		button: 'btn btn-slate text-neutral-50',
-		card: 'bg-neutral-100 border border-neutral-200 rounded-xl',
+		input:
+			'px-2.5 h-10 bg-neutral-100/75 border border-neutral-300 focus:border-neutral-400 rounded-lg outline-none text-sm',
+		card: 'bg-neutral-100/75 border border-neutral-200 rounded-xl',
 		cardButton: 'px-2.5 border border-neutral-300 rounded-lg outline-none text-sm',
 		cardButtonActive: 'px-2.5 rounded-lg outline-none text-sm'
 	}

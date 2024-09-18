@@ -28,10 +28,10 @@
 </script>
 
 <div class="flex items-start gap-6">
-	<main class="{data.theme.card} w-full drop-shadow">
+	<main class="{data.theme.card} w-full">
 		<div
 			class="flex items-start p-4 gap-6 {data.theme.bgColor} border-b {data.theme
-				.border} rounded-t-lg sticky top-[4.5rem] z-20 bg-opacity-75 backdrop-blur-md"
+				.border} rounded-t-lg sticky top-[4.5rem] z-10 bg-opacity-75 backdrop-blur-md"
 		>
 			<img src={data.game.image} class="w-[72px] aspect-square rounded-lg" alt="" />
 			<div>
@@ -191,19 +191,22 @@
 	</main>
 
 	<aside class="{data.theme.card} p-4 w-[600px] sticky top-24">
-		<div>
-			<div class="border-b {data.theme.border} py-2">
-				<span class="text-sm bg-opacity-75">Game:</span>
-				<p class="font-medium">{data.game.name}</p>
+		<div class="space-y-4">
+			<div>
+				<div class="border-b {data.theme.border} py-2">
+					<span class="text-sm bg-opacity-50">Game:</span>
+					<p class="font-medium">{data.game.name}</p>
+				</div>
+				<div class="border-b {data.theme.border} py-2">
+					<span class="text-sm bg-opacity-50">Produk:</span>
+					<p class="font-medium">{selectedProduct?.name ?? '-'}</p>
+				</div>
+				<div class="py-2">
+					<span class="text-sm bg-opacity-50">Metode Pembayaran:</span>
+					<p class="font-medium">{selectedChannel?.name ?? '-'}</p>
+				</div>
 			</div>
-			<div class="border-b {data.theme.border} py-2">
-				<span class="text-sm bg-opacity-75">Produk:</span>
-				<p class="font-medium">{selectedProduct?.name ?? '-'}</p>
-			</div>
-			<div class="py-2">
-				<span class="text-sm bg-opacity-75">Metode Pembayaran:</span>
-				<p class="font-medium">{selectedChannel?.name ?? '-'}</p>
-			</div>
+			<button class="btn btn-red w-full">Bayar Sekarang</button>
 		</div>
 	</aside>
 </div>
