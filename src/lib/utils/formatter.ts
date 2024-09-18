@@ -9,3 +9,14 @@ export function slugify(text: string) {
 		.replace(/^-+/, '')
 		.replace(/-+$/, '');
 }
+
+export function currency(nominal: number) {
+	if (Number.isNaN(nominal)) return '';
+
+	return new Intl.NumberFormat('id-ID', {
+		style: 'currency',
+		currency: 'IDR'
+	})
+		.format(nominal)
+		.replace(',00', '');
+}

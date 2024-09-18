@@ -49,14 +49,14 @@
 
 		<div class="grid grid-cols-3 gap-6 md:grid-cols-6">
 			{#each data.games as game}
-				<div class="space-y-4 p-4 {data.theme.card}">
-					<a href={game.slug}>
+				<a href={game.slug} class="card-link">
+					<div class="space-y-4 p-4 {data.theme.card}">
 						<div class="card">
 							<img src={game.image} class="card-image" alt={game.image} />
 						</div>
-					</a>
-					<a href={game.slug} class="card-text {data.theme.color}">{game.name}</a>
-				</div>
+						<div class="card-text {data.theme.color}">{game.name}</div>
+					</div>
+				</a>
 			{/each}
 		</div>
 	</section>
@@ -76,11 +76,14 @@
 </div>
 
 <style>
+	.card-link:hover .card-image {
+		@apply scale-105 transition-transform;
+	}
 	.card {
 		@apply relative aspect-square cursor-pointer overflow-hidden rounded-xl shadow-lg;
 	}
 	.card-image {
-		@apply h-full w-full transition-transform hover:scale-105;
+		@apply h-full w-full;
 	}
 	.card-text {
 		@apply line-clamp-1 text-center font-medium  transition-colors md:text-sm;

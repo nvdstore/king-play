@@ -7,6 +7,9 @@ export default {
 		},
 		{
 			pattern: /text-(red|green|blue|yellow)-(500)/
+		},
+		{
+			pattern: /border-(red|green|blue|yellow)-(500)/
 		}
 	],
 	theme: {

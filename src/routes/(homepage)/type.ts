@@ -12,6 +12,22 @@ export type Product = {
 	icon?: string;
 };
 
+export type PaymentChannel = {
+	id: number;
+	name: string;
+	code: string;
+	image: string;
+	price: number;
+};
+
+export type PaymentChannelGroup = {
+	id: number;
+	label: string;
+	type: string;
+	channels: PaymentChannel[];
+	images: string[];
+};
+
 export type Promo = {
 	slug: string;
 	image: string;
