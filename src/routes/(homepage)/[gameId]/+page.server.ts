@@ -3,11 +3,12 @@ import { request } from '$lib/request';
 
 import type { Game, PaymentChannelGroup, Product } from '../type';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ cookies, params }) => {
 	const { data } = await request({
 		method: 'GET',
 		endpoint: '/v1.0/api/produk/list-produk',
-		params: { id_group_produk: params.gameId }
+		params: { id_group_produk: params.gameId },
+		uuid: cookies.get('uuid') ?? ''
 	});
 
 	let game: Game = {

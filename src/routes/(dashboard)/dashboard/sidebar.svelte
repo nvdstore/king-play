@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import {
 		BadgePercent,
@@ -42,10 +41,10 @@
 		</a>
 		<div class="text-left">
 			<a href="/dashboard/store">
-				<h4 class="text-md font-medium">{store.name}</h4>
+				<h4 class="text-md font-medium">{store?.name}</h4>
 			</a>
 			<a
-				href="https://{store.domain}"
+				href="https://{store?.domain}"
 				target="_blank"
 				class="text-xs inline-flex items-center hover:underline gap-1"
 			>

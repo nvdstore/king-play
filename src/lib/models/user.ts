@@ -13,6 +13,9 @@ export type CreateSessionParams = {
 	userId: string;
 	expires: Date;
 	sessionToken: string;
+	type?: string;
+	ip?: string;
+	deviceInfo?: string;
 };
 
 export const User = {
@@ -50,12 +53,31 @@ export const User = {
 			};
 		}
 	},
-	createSession: async ({ userId, expires, sessionToken }: CreateSessionParams) => {
-		await db.query('insert into sessions (user_id, expires, session_token) values ($1, $2, $3)', [
-			userId,
-			expires,
-			sessionToken
-		]);
+	createSession: async (params: CreateSessionParams) => {
+		try {
+			const res = await db.query(
+				'insert into sessions (user_id, expires, session_token, type, ip, device_info) values ($1, $2, $3, $4, $5, $6)',
+				[
+					params.userId,
+					params.expires,
+					params.sessionToken,
+					params.type,
+					params.ip,
+					params.deviceInfo
+				]
+			);
+
+			return {
+				error: null,
+				data: res.rows[0] ?? null
+			};
+		} catch (error: any) {
+			console.log(error);
+			return {
+				error: 'Terjadi kesalahan',
+				data: null
+			};
+		}
 	},
 	getAccountByProvider: async (providerAccountId: string, provider: string) => {
 		const res = await db.query(

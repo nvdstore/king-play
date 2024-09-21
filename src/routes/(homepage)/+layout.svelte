@@ -4,6 +4,7 @@
 	import { register } from 'swiper/element/bundle';
 
 	import type { LayoutData } from './$types';
+	import { userAgent } from '$lib/stores/general';
 
 	export let data: LayoutData;
 	let searchValue: string = '';
