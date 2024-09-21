@@ -1,1 +1,0 @@
-import{s as i,n as e}from"../chunks/8.D6-lxqIh.js";import{S as o,i as r,t as c,b as m,g as l,d as p}from"../chunks/index.qVoW8Mvc.js";function f(s){let t;return{c(){t=c("Kebijakan Privasi")},l(a){t=m(a,"Kebijakan Privasi")},m(a,n){l(a,t,n)},p:e,i:e,o:e,d(a){a&&p(t)}}}class x extends o{constructor(t){super(),r(this,t,null,f,i,{})}}export{x as component};
