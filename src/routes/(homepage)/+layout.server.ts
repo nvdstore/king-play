@@ -1,9 +1,11 @@
+import { error } from '@sveltejs/kit';
+import { BASE_API_URL } from '$env/static/private';
 import type { LayoutServerLoad } from './$types';
 
 import { themes } from './themes';
-import type { Game } from './type';
+import type { Game, GameResponse } from './type';
 
-export const load: LayoutServerLoad = async ({ url }) => {
+export const load: LayoutServerLoad = async ({ fetch, url }) => {
 	const getTheme = url.searchParams.get('theme');
 
 	type ThemeType = typeof themes;
@@ -13,53 +15,29 @@ export const load: LayoutServerLoad = async ({ url }) => {
 	const color = dataColor ?? '';
 	const theme = themes[dataTheme ?? 'dark'];
 
-	let games: Game[] = [
-		{
-			id: 1,
-			slug: 'honor-of-kings',
-			name: 'Honor of Kings',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/db/37/63/db376320-c37b-c8c8-05bc-578ace590ad8/AppIcon-1x_U007emarketing-0-6-0-85-220-0.png/230x0w.webp'
-		},
-		{
-			id: 2,
-			slug: 'mobile-legends',
-			name: 'Mobile Legends',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/81/1d/2b/811d2b5e-eda1-b4a2-5fd9-1736dd04c9ae/AppIcon-1x_U007emarketing-0-6-0-85-220-0.png/230x0w.webp'
-		},
-		{
-			id: 3,
-			slug: 'pokemon-go',
-			name: 'Pokemon GO',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6b/ca/c9/6bcac96a-ba65-d71c-ac59-079e28853b83/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp'
-		}
-	];
+	let games: Game[] = [];
 
-	const popularGames: Game[] = [
-		{
-			id: 1,
-			slug: 'honor-of-kings',
-			name: 'Honor of Kings',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/db/37/63/db376320-c37b-c8c8-05bc-578ace590ad8/AppIcon-1x_U007emarketing-0-6-0-85-220-0.png/230x0w.webp'
-		},
-		{
-			id: 2,
-			slug: 'mobile-legends',
-			name: 'Mobile Legends',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/81/1d/2b/811d2b5e-eda1-b4a2-5fd9-1736dd04c9ae/AppIcon-1x_U007emarketing-0-6-0-85-220-0.png/230x0w.webp'
-		},
-		{
-			id: 3,
-			slug: 'pokemon-go',
-			name: 'Pokemon GO',
-			image:
-				'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6b/ca/c9/6bcac96a-ba65-d71c-ac59-079e28853b83/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/230x0w.webp'
-		}
-	];
+	const response = await fetch(new URL('/v1.0/api/produk/list-group-produk', BASE_API_URL).href);
+	if (!response.ok) {
+		throw error(500, `HTTP Error status: ${response.status}`);
+	}
+	const data = await response.json();
+	if (data.response_code != '00') {
+		throw error(500, `Error get games: ${data.response_message}`);
+	}
+	const item = data.response_data;
+	if (item.length > 0) {
+		games = item.map(
+			(game: GameResponse) =>
+				({
+					id: game.id_group_produk,
+					name: game.nama_group_produk,
+					image: game.img
+				}) as Game
+		);
+	}
+
+	const popularGames: Game[] = games.slice(0, 3);
 
 	return {
 		color,

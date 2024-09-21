@@ -1,8 +1,15 @@
 import type { PageServerLoad } from './$types';
+import { request } from '$lib/request';
 
 import type { Game, PaymentChannelGroup, Product } from '../type';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ fetch, params }) => {
+	const { data } = await request({
+		method: 'GET',
+		endpoint: '/v1.0/api/produk/list-produk',
+		params: { id_group_produk: params.gameId }
+	});
+
 	let game: Game = {
 		id: 1,
 		slug: 'mobile-legends',

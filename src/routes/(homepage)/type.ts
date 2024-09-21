@@ -5,6 +5,15 @@ export type Game = {
 	image: string;
 };
 
+export type GameResponse = {
+	id_group_produk: number;
+	nama_group_produk: string;
+	img: string;
+	status: number;
+	tipe_group: string;
+	form_fields: [];
+};
+
 export type Product = {
 	id: number;
 	name: string;
