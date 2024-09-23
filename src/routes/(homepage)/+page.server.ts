@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import type { Promo } from './type';
+import type { Promo } from '$lib/type';
 
 export const load: PageServerLoad = async () => {
 	let listPromo: Promo[] = [

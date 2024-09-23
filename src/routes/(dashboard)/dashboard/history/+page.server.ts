@@ -11,16 +11,17 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		? new Date(url.searchParams.get('end')?.toString()!)
 		: new Date();
 	const status = url.searchParams.get('status') ?? 'all';
-	const search = url.searchParams.get('search') ?? 'all';
-	const limit = url.searchParams.get('limit') ?? '25';
-	const page = url.searchParams.get('page') ?? '0';
+	const search = url.searchParams.get('search') ?? '';
+	const limit = url.searchParams.get('limit') ? Number(url.searchParams.get('limit')) : 25;
+	const page = url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1;
 
 	const { count, data: trxs } = await Transaction.getTransactionMember({
 		idMember: session?.user?.id?.toString()!,
 		startDate,
 		endDate,
-		limit: Number(limit),
-		offset: Number(page)
+		limit: limit,
+		offset: page * limit,
+		search
 	});
 
 	const transactions: Transcation[] = trxs.map((trx) => ({

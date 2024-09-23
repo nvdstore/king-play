@@ -1,13 +1,17 @@
 <script lang="ts">
-	import { ChevronLeft, ChevronRight, DownloadCloud, Inbox, SortAsc } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
 	import EmptyTable from './empty-table.svelte';
 	import type { Transcation } from '$lib/models/transactions';
 	import { currency } from '$lib/utils/formatter';
 
+	const dispatch = createEventDispatcher();
+
 	export let data: Transcation[] = [];
 	export let limit: number;
 	export let total: number;
+	export let pageNum: number;
 </script>
 
 <div class="overflow-x-auto border border-neutral-700 rounded-lg">
@@ -33,7 +37,7 @@
 							</dl>
 						</td>
 						<td class="hidden lg:table-cell">{item.idTransaksi}</td>
-						<td class="hidden lg:table-cell">{item.produk}</td>
+						<td class="hidden lg:table-cell">{item.groupProduk}<br />{item.produk}</td>
 						<td>{currency(item.nominal)}</td>
 						<td class="hidden md:table-cell">{item.tanggal}</td>
 						<td>Sukses</td>
@@ -51,10 +55,17 @@
 		<div class="flex items-center justify-between px-6 py-2 border-t border-t-neutral-700">
 			<span class="text-xs text-neutral-400">Menampilkan data {limit} dari {total}</span>
 			<div class="flex items-center space-x-2">
-				<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+				<button
+					class="p-2 rounded-full hover:bg-neutral-700 transition-all"
+					on:click={() => dispatch('prev')}
+				>
 					<ChevronLeft size={18} />
 				</button>
-				<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+				<div class="px-2">{pageNum}</div>
+				<button
+					class="p-2 rounded-full hover:bg-neutral-700 transition-all"
+					on:click={() => dispatch('next')}
+				>
 					<ChevronRight size={18} />
 				</button>
 			</div>

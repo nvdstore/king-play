@@ -1,7 +1,8 @@
 import type { PageServerLoad } from './$types';
 import { request } from '$lib/request';
 
-import type { Game, PaymentChannelGroup, Product } from '../type';
+import type { Game, PaymentChannelGroup, Product } from '$lib/type';
+import { getGroupById } from '$lib/models/game';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const { data } = await request({
@@ -11,12 +12,12 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		uuid: cookies.get('uuid') ?? ''
 	});
 
-	let game: Game = {
-		id: 1,
-		slug: 'mobile-legends',
-		name: 'Mobile Legends',
-		image:
-			'https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/81/1d/2b/811d2b5e-eda1-b4a2-5fd9-1736dd04c9ae/AppIcon-1x_U007emarketing-0-6-0-85-220-0.png/230x0w.webp'
+	const group = await getGroupById(params.gameId);
+	const game: Game = {
+		id: group.id_group_produk,
+		slug: group?.slug ?? '',
+		name: group.nama_group_produk,
+		image: group.img
 	};
 
 	let products: Product[] = [

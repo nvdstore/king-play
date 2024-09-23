@@ -8,10 +8,16 @@
 	import { DownloadCloud } from 'lucide-svelte';
 
 	export let data: PageData;
+
 	let startDate = $page.url.searchParams.get('start') ?? format(new Date(), 'yyyy-MM-dd');
 	let endDate = $page.url.searchParams.get('end') ?? format(new Date(), 'yyyy-MM-dd');
-	let limit = $page.url.searchParams.get('limit')?.toString() ?? '25';
-	let pageOffset = $page.url.searchParams.get('page')?.toString() ?? '1';
+	let limit = $page.url.searchParams.get('limit')?.toString()
+		? Number($page.url.searchParams.get('limit')?.toString())
+		: 10;
+	let pageNum = $page.url.searchParams.get('page')?.toString()
+		? Number($page.url.searchParams.get('page')?.toString())
+		: 1;
+	let search = $page.url.searchParams.get('search') ?? '';
 
 	let form: HTMLFormElement;
 	let timeout: number;
@@ -38,7 +44,7 @@
 		</p>
 	</header>
 
-	<form data-sveltekit-keepfocus bind:this={form} class="space-y-4">
+	<form data-sveltekit-keepfocus data-sveltekit-noscroll bind:this={form} class="space-y-4">
 		<div
 			class="grid md:grid-cols-3 gap-4 md:bg-neutral-800 md:border md:border-neutral-700 md:p-4 md:rounded-lg"
 		>
@@ -47,10 +53,11 @@
 				bind:startDate
 				bind:endDate
 				isRange
-				on:complete={() => form.requestSubmit()}
+				on:complete={() => {
+					pageNum = 1;
+					form.requestSubmit();
+				}}
 			/>
-			<input type="hidden" name="start" bind:value={startDate} />
-			<input type="hidden" name="end" bind:value={endDate} />
 			<div class="input-group">
 				<label for="status" class="input-label">Status Transaksi</label>
 				<select name="status" class="input" on:change={() => form.requestSubmit()}>
@@ -67,23 +74,49 @@
 					class="input"
 					name="search"
 					placeholder="Cari data transaksi"
+					bind:value={search}
 					on:input={() => debounce(() => form.requestSubmit())}
 				/>
 			</div>
 		</div>
 		<div class="flex items-center space-x-4">
 			<select bind:value={limit} name="limit" class="input" on:change={() => form.requestSubmit()}>
-				<option value="10">10 Entries</option>
-				<option value="25">25 Entries</option>
-				<option value="50">50 Entries</option>
-				<option value="100">100 Entries</option>
+				<option value={10}>10 Entries</option>
+				<option value={25}>25 Entries</option>
+				<option value={50}>50 Entries</option>
+				<option value={100}>100 Entries</option>
 			</select>
 			<button class="btn">
 				<DownloadCloud size={18} class="md:mr-2" />
 				<span class="hidden md:block">Ekspor ke XLSX</span>
 			</button>
 		</div>
+
+		<input type="hidden" name="start" bind:value={startDate} />
+		<input type="hidden" name="end" bind:value={endDate} />
+		<input type="hidden" name="page" bind:value={pageNum} />
 	</form>
 
-	<TransactionList data={data.transactions} limit={Number(limit)} total={data.count} />
+	<TransactionList
+		data={data.transactions}
+		limit={Number(limit)}
+		total={data.count}
+		{pageNum}
+		on:prev={() => {
+			if (pageNum > 1) {
+				pageNum -= 1;
+				setTimeout(() => {
+					form.requestSubmit();
+				}, 200);
+			}
+		}}
+		on:next={() => {
+			if (pageNum < 10) {
+				pageNum += 1;
+				setTimeout(() => {
+					form.requestSubmit();
+				}, 200);
+			}
+		}}
+	/>
 </section>

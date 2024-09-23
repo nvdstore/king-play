@@ -1,5 +1,4 @@
 import { db } from '$lib/db';
-import type { DatabaseError } from 'pg';
 
 export type CreateUserParams = {
 	name: string;

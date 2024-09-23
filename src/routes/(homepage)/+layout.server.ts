@@ -3,9 +3,9 @@ import { BASE_API_URL } from '$env/static/private';
 import { addDays } from 'date-fns';
 import { User } from '$lib/models/user';
 import { getClientIp } from '$lib/request';
+import type { Game, GameResponse } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
-import type { Game, GameResponse } from './type';
 import { themes } from './themes';
 
 const ID_MASTER = '1000001';

@@ -61,7 +61,9 @@ export async function request({
 
 	return {
 		ok: response.ok,
-		data,
+		code: data.response_code ?? '',
+		data: data.response_data,
+		message: data.response_message ?? '',
 		status: response.status
 	};
 }
