@@ -2,7 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 import { checkDomain, validateEmail } from '$lib/utils/validator';
-import { Store, type CreateStoreParams } from '$lib/models/store';
+import { createStore, type CreateStoreParams } from '$lib/models/store';
 
 export const actions = {
 	default: async ({ request, locals }) => {
@@ -57,7 +57,7 @@ export const actions = {
 			phone: phone!,
 			domain: subdomain
 		};
-		const { error } = await Store.create(storeData);
+		const { error } = await createStore(storeData);
 		if (error) {
 			errorBag.message = error ?? 'Terjadi kesalahan';
 			return { errors: errorBag, values: valueBag };

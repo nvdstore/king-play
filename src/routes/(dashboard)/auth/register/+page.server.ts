@@ -1,10 +1,8 @@
-import { redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import type { Actions } from './$types';
 
 import { User, type CreateUserParams } from '$lib/models/user';
 import { validateEmail } from '$lib/utils/validator';
-import { Store, type CreateStoreParams } from '$lib/models/store';
 
 export const actions = {
 	default: async ({ request }) => {

@@ -13,7 +13,7 @@
 	let endDate = $page.url.searchParams.get('end') ?? format(new Date(), 'yyyy-MM-dd');
 	let limit = $page.url.searchParams.get('limit')?.toString()
 		? Number($page.url.searchParams.get('limit')?.toString())
-		: 10;
+		: data.defaultLimit;
 	let pageNum = $page.url.searchParams.get('page')?.toString()
 		? Number($page.url.searchParams.get('page')?.toString())
 		: 1;

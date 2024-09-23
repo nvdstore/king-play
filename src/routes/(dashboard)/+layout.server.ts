@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
-import { Store } from '$lib/models/store';
+import { getStoreByMember } from '$lib/models/store';
 
 export const load: LayoutServerLoad = async (events) => {
 	const session = await events.locals.auth();
@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async (events) => {
 			return redirect(307, '/auth/login');
 		}
 
-		const store = await Store.getStoreByMember(session.user.id!);
+		const store = await getStoreByMember(session.user.id!);
 
 		if (!pathname.startsWith('/onboarding') && !store) {
 			return redirect(307, '/onboarding');

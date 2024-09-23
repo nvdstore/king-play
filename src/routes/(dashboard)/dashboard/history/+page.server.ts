@@ -4,6 +4,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.auth();
+
+	const defaultLimit = 10;
 	const startDate = url.searchParams.get('start')
 		? new Date(url.searchParams.get('start')?.toString()!)
 		: new Date();
@@ -12,7 +14,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		: new Date();
 	const status = url.searchParams.get('status') ?? 'all';
 	const search = url.searchParams.get('search') ?? '';
-	const limit = url.searchParams.get('limit') ? Number(url.searchParams.get('limit')) : 25;
+	const limit = url.searchParams.get('limit')
+		? Number(url.searchParams.get('limit'))
+		: defaultLimit;
 	const page = url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1;
 
 	const { count, data: trxs } = await Transaction.getTransactionMember({
@@ -36,6 +40,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 	return {
 		transactions,
-		count
+		count,
+		defaultLimit
 	};
 };

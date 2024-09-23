@@ -4,7 +4,7 @@ export const themes = {
 		nav: 'bg-gradient-to-b from-slate-700/75 to-slate-800/75 border-b border-slate-700 backdrop-blur-md',
 		footer: 'border-t border-slate-700',
 		bgColor: 'bg-slate-800',
-		bgColorSecondary: 'bg-slate-700/50',
+		bgColorSecondary: 'bg-slate-700/75',
 		color: 'text-neutral-50',
 		border: 'border-slate-600',
 		button: 'btn btn-slate',

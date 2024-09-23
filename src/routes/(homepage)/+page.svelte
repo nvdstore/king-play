@@ -23,7 +23,7 @@
 						<img
 							src={promo.image}
 							alt={promo.alt ?? 'promo image'}
-							class="w-full aspect-[24/9] object-cover"
+							class="w-full aspect-[21/9] object-cover"
 						/>
 					</a>
 				</swiper-slide>
