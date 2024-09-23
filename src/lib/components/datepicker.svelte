@@ -1,12 +1,14 @@
-<script>
+<script lang="ts">
 	import './datepicker.css';
 
+	import { createEventDispatcher } from 'svelte';
 	import { DatePicker } from '@svelte-plugins/datepicker';
 	import { format } from 'date-fns';
 
 	import TextInput from './text-input.svelte';
 
-	const today = new Date();
+	const today = format(new Date(), 'yyyy-MM-dd');
+	const dispatch = createEventDispatcher();
 
 	export let startDate = today;
 	export let endDate = today;
@@ -15,25 +17,38 @@
 	export let isMultipane = false;
 	export let label = '';
 
+	let start = new Date(startDate);
+	let end = new Date(endDate);
 	let isOpen = false;
 	let formattedStartDate = '';
 
 	const toggleDatePicker = () => (isOpen = !isOpen);
-	const formatDate = (dateString) => (dateString && format(new Date(dateString), dateFormat)) || '';
+	const formatDate = (date: Date) => (date && format(date, dateFormat)) || '';
 
-	$: formattedStartDate = formatDate(startDate);
-	$: formattedEndDate = formatDate(endDate);
+	function onClick() {
+		if (startDate && endDate) {
+			dispatch('date', { startDate, endDate });
+		}
+	}
+
+	$: formattedStartDate = formatDate(start);
+	$: formattedEndDate = formatDate(end);
+	$: {
+		startDate = format(start, 'yyyy-MM-dd');
+		endDate = format(end, 'yyyy-MM-dd');
+	}
 </script>
 
 <DatePicker
 	bind:isOpen
-	bind:startDate
-	bind:endDate
+	bind:startDate={start}
+	bind:endDate={end}
 	{isRange}
 	{isMultipane}
 	theme="custom-datepicker"
 	monthLabels={'Jan_Feb_Mar_Apr_Mei_Jun_Jul_Agu_Sep_Okt_Nov_Des'.split('_')}
 	dowLabels={'Min_Sen_Sel_Rab_Kam_Jum_Sab'.split('_')}
+	onDayClick={onClick}
 >
 	<TextInput
 		{label}

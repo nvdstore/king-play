@@ -1,55 +1,14 @@
 <script>
 	import { ChevronLeft, ChevronRight, DownloadCloud, Inbox, SortAsc } from 'lucide-svelte';
 
-	import Datepicker from '$lib/components/datepicker.svelte';
 	import EmptyTable from './empty-table.svelte';
 
-	const statusItem = [
-		{ value: 'wait', label: 'Menunggu' },
-		{ value: 'process', label: 'Sedang diproses' },
-		{ value: 'done', label: 'Selesai' },
-		{ value: 'cancel', label: 'Dibatalkan' },
-		{ value: 'fail', label: 'Gagal' }
-	];
-
 	export let hideFilter = false;
-	export let data = ["hehe"];
-
-	let startDate = new Date();
-	let endDate = new Date();
-	let status = '';
-	let search = '';
-	let page = '25';
+	export let data = ['hehe'];
+	export let page = '25';
 </script>
 
 <div class="space-y-6">
-	{#if !hideFilter}
-		<div
-			class="grid md:grid-cols-3 gap-4 md:bg-neutral-800 md:border md:border-neutral-700 md:p-4 md:rounded-lg"
-		>
-			<Datepicker label="Pilih Tanggal" bind:startDate bind:endDate isRange />
-			<div class="input-group">
-				<label for="status" class="input-label">Status Transaksi</label>
-				<select bind:value={status} name="status" class="input">
-					<option value="">Semua Transaksi</option>
-					{#each statusItem as item}
-						<option value={item.value}>{item.label}</option>
-					{/each}
-				</select>
-			</div>
-			<div class="input-group">
-				<label for="search" class="input-label">Pencarian</label>
-				<input
-					bind:value={search}
-					type="text"
-					class="input"
-					name="search"
-					placeholder="Cari data transaksi"
-				/>
-			</div>
-		</div>
-	{/if}
-
 	<div class="space-y-4">
 		{#if !hideFilter}
 			<div class="flex items-center space-x-4">
@@ -105,12 +64,12 @@
 				<div class="flex items-center justify-between px-6 py-2 border-t border-t-neutral-700">
 					<span class="text-xs text-neutral-400">Menampilkan halaman 1 dari 1</span>
 					<div class="flex items-center space-x-2">
-						<button class="p-2 rounded-full hover:bg-neutral-700 transition-all"
-							><ChevronLeft size={18} /></button
-						>
-						<button class="p-2 rounded-full hover:bg-neutral-700 transition-all"
-							><ChevronRight size={18} /></button
-						>
+						<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+							<ChevronLeft size={18} />
+						</button>
+						<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+							<ChevronRight size={18} />
+						</button>
 					</div>
 				</div>
 			{/if}

@@ -22,7 +22,7 @@ export async function request({
 
 	const hashedPayload = crypto
 		.createHash('sha256')
-		.update(JSON.stringify(payload ?? {}, null, 0))
+		.update(JSON.stringify(payload ?? '', null, 0))
 		.digest('hex')
 		.toLowerCase();
 
