@@ -17,25 +17,27 @@
 	export let isMultipane = false;
 	export let label = '';
 
-	let start = new Date(startDate);
-	let end = new Date(endDate);
+	let start = new Date(startDate).getTime();
+	let end = new Date(endDate).getTime();
 	let isOpen = false;
 	let formattedStartDate = '';
 
 	const toggleDatePicker = () => (isOpen = !isOpen);
-	const formatDate = (date: Date) => (date && format(date, dateFormat)) || '';
+	const formatDate = (date: number) => (date && format(new Date(date), dateFormat)) || '';
 
 	function onClick() {
-		if (startDate && endDate) {
-			dispatch('date', { startDate, endDate });
+		if (start && end) {
+			setTimeout(() => {
+				dispatch('complete', { startDate, endDate });
+			}, 100);
 		}
 	}
 
 	$: formattedStartDate = formatDate(start);
 	$: formattedEndDate = formatDate(end);
 	$: {
-		startDate = format(start, 'yyyy-MM-dd');
-		endDate = format(end, 'yyyy-MM-dd');
+		startDate = format(new Date(start), 'yyyy-MM-dd');
+		endDate = format(new Date(end), 'yyyy-MM-dd');
 	}
 </script>
 

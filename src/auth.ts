@@ -116,5 +116,5 @@ export const { handle, signIn } = SvelteKitAuth(async ({ request, cookies }) => 
 			return decode(params);
 		}
 	},
-	debug: true
+	debug: false
 }));
