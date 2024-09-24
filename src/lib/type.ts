@@ -8,6 +8,7 @@ export type Game = {
 export type GameResponse = {
 	id_group_produk: number;
 	nama_group_produk: string;
+	slug: string;
 	img: string;
 	status: number;
 	tipe_group: string;

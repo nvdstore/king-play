@@ -66,7 +66,8 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 				({
 					id: game.id_group_produk,
 					name: game.nama_group_produk,
-					image: game.img
+					image: game.img,
+					slug: game.slug
 				}) as Game
 		);
 	}

@@ -137,11 +137,10 @@ export function CustomAdapter(db: Pool): Adapter {
 			};
 		},
 		updateSession: async (data) => {
-			await db.query('update sessions set user_id expires = $3 where session_token = $1', [
-				data.sessionToken,
-				data.userId,
-				data.expires
-			]);
+			await db.query(
+				'update sessions set session_token = $1, expires = $2 where session_token = $1',
+				[data.sessionToken, data.expires]
+			);
 
 			return {
 				userId: data.userId,

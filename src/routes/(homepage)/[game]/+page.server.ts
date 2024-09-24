@@ -2,23 +2,26 @@ import type { PageServerLoad } from './$types';
 import { request } from '$lib/request';
 
 import type { Game, PaymentChannelGroup, Product } from '$lib/type';
-import { getGroupById } from '$lib/models/game';
+import { getGroupById, getGroupBySlug } from '$lib/models/game';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
-	const { data } = await request({
-		method: 'GET',
-		endpoint: '/v1.0/api/produk/list-produk',
-		params: { id_group_produk: params.gameId },
-		uuid: cookies.get('uuid') ?? ''
-	});
-
-	const group = await getGroupById(params.gameId);
+	const group = await getGroupBySlug(params.game);
 	const game: Game = {
 		id: group.id_group_produk,
 		slug: group?.slug ?? '',
 		name: group.nama_group_produk,
 		image: group.img
 	};
+	// if (!game.id) {
+	// 	throw
+	// }
+
+	const { data } = await request({
+		method: 'POST',
+		endpoint: '/v1.0/api/produk/list-produk',
+		payload: { id_group_produk: game.id.toString() },
+		uuid: cookies.get('uuid') ?? ''
+	});
 
 	let products: Product[] = [
 		{

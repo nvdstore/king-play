@@ -49,7 +49,7 @@
 
 		<div class="grid grid-cols-3 gap-6 md:grid-cols-6">
 			{#each data.games as game}
-				<a href={game.id.toString()} class="card-link">
+				<a href={game.slug} class="card-link">
 					<div class="space-y-4 p-4 {data.theme.card}">
 						<div class="card">
 							<img src={game.image} class="card-image" alt={game.image} />

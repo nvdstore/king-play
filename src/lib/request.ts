@@ -7,14 +7,14 @@ export type RequestType = {
 	endpoint: string;
 	method?: 'POST' | 'GET';
 	payload?: Record<string, any> | null;
-	params: Record<string, string>;
+	params?: Record<string, string>;
 	uuid: string;
 };
 
 export async function request({
 	endpoint,
 	method = 'GET',
-	payload = null,
+	payload = {},
 	uuid,
 	params
 }: RequestType) {
@@ -22,11 +22,11 @@ export async function request({
 
 	const hashedPayload = crypto
 		.createHash('sha256')
-		.update(JSON.stringify(payload ?? '', null, 0))
+		.update(JSON.stringify(payload, null, 0))
 		.digest('hex')
 		.toLowerCase();
 
-	console.log('Signature Data', JSON.stringify([method, endpoint, hashedPayload, timestamp]));
+	console.log('Signature Data', [method, endpoint, hashedPayload, timestamp].join(':'));
 	const stringToSign = [method, endpoint, hashedPayload, timestamp].join(':');
 	const privKey = fs.readFileSync('./private-key.pem');
 	const sign = crypto.createSign('RSA-SHA256');
@@ -34,7 +34,7 @@ export async function request({
 	const signature = sign.sign(privKey, 'base64');
 
 	let finalUrl = new URL(endpoint, BASE_API_URL).href;
-	if (Object.keys(params).length > 0) {
+	if (params && Object.keys(params).length > 0) {
 		const urlSearchParams = new URLSearchParams();
 		for (const key in params) {
 			if (Object.prototype.hasOwnProperty.call(params, key)) {
@@ -54,7 +54,11 @@ export async function request({
 	console.log('Request Headers', JSON.stringify(Object.fromEntries(headers)));
 	console.log('Request Body', payload);
 
-	const response = await fetch(finalUrl, { headers });
+	const opts: RequestInit = { method, headers };
+	if (method === 'POST') {
+		opts.body = payload as any;
+	}
+	const response = await fetch(finalUrl, opts);
 	console.log('Response Status', response.status, response.statusText);
 	const data = await response.json();
 	console.log('Response Data', JSON.stringify(data));
