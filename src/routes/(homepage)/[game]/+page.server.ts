@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 import { request } from '$lib/request';
 
 import type { Game, PaymentChannelGroup, Product } from '$lib/type';
-import { getGroupById, getGroupBySlug } from '$lib/models/game';
+import { getGroupBySlug } from '$lib/models/game';
 
 export const load: PageServerLoad = async ({ cookies, params }) => {
 	const group = await getGroupBySlug(params.game);
@@ -12,9 +12,6 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 		name: group.nama_group_produk,
 		image: group.img
 	};
-	// if (!game.id) {
-	// 	throw
-	// }
 
 	const { data } = await request({
 		method: 'POST',

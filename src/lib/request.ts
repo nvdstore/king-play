@@ -20,9 +20,10 @@ export async function request({
 }: RequestType) {
 	const timestamp = formatISO(new Date(), { representation: 'complete' });
 
+	const strPayload = JSON.stringify(payload);
 	const hashedPayload = crypto
 		.createHash('sha256')
-		.update(JSON.stringify(payload, null, 0))
+		.update(JSON.stringify(strPayload, null, 0))
 		.digest('hex')
 		.toLowerCase();
 
@@ -56,7 +57,7 @@ export async function request({
 
 	const opts: RequestInit = { method, headers };
 	if (method === 'POST') {
-		opts.body = payload as any;
+		opts.body = JSON.stringify(payload);
 	}
 	const response = await fetch(finalUrl, opts);
 	console.log('Response Status', response.status, response.statusText);
