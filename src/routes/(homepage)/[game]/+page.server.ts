@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ cookies, params }) => {
 	const { data } = await request({
 		method: 'POST',
 		endpoint: '/v1.0/api/produk/list-produk',
-		payload: { id_group_produk: game.id.toString() },
+		payload: { id_group_produk: game.id },
 		uuid: cookies.get('uuid') ?? ''
 	});
 

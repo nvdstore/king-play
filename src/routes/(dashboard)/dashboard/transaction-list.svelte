@@ -2,9 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
-	import EmptyTable from './empty-table.svelte';
-	import type { Transcation } from '$lib/models/transactions';
 	import { currency } from '$lib/utils/formatter';
+	import type { Transcation } from '$lib/type';
+	import { TransactionStatus } from '$lib/constant';
+
+	import EmptyTable from './empty-table.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -12,6 +14,11 @@
 	export let limit: number;
 	export let total: number;
 	export let pageNum: number;
+
+	export function getTrxStatus(key: string) {
+		const status = TransactionStatus.find((val) => val.key == key) ?? null;
+		return `<span class="${status?.class}">${status?.value}</span>`;
+	}
 </script>
 
 <div class="overflow-x-auto border border-neutral-700 rounded-lg">
@@ -29,7 +36,7 @@
 				{#each data as item}
 					<tr>
 						<td>
-							{item.idInvoice}
+							{item.idInvoice ?? '-'}
 							<dl class="lg:hidden mt-2">
 								<dt>#{item.idTransaksi}</dt>
 								<dt class="mb-1">{item.produk}</dt>
@@ -40,7 +47,7 @@
 						<td class="hidden lg:table-cell">{item.groupProduk}<br />{item.produk}</td>
 						<td>{currency(item.nominal)}</td>
 						<td class="hidden md:table-cell">{item.tanggal}</td>
-						<td>Sukses</td>
+						<td>{@html getTrxStatus(item.status ?? '')}</td>
 					</tr>
 				{/each}
 			{:else}

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { format } from 'date-fns';
+	import { DownloadCloud } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
 	import Datepicker from '$lib/components/datepicker.svelte';
-	import TransactionList from '../transaction-list.svelte';
 	import type { PageData } from './$types';
-	import { DownloadCloud } from 'lucide-svelte';
+
+	import { TransactionStatus } from '../../../../lib/constant';
+	import TransactionList from '../transaction-list.svelte';
 
 	export let data: PageData;
 
@@ -17,18 +19,11 @@
 	let pageNum = $page.url.searchParams.get('page')?.toString()
 		? Number($page.url.searchParams.get('page')?.toString())
 		: 1;
+	let status = $page.url.searchParams.get('status') ?? 'all';
 	let search = $page.url.searchParams.get('search') ?? '';
 
 	let form: HTMLFormElement;
 	let timeout: number;
-
-	const statusItem = [
-		{ value: 'wait', label: 'Menunggu' },
-		{ value: 'process', label: 'Sedang diproses' },
-		{ value: 'done', label: 'Selesai' },
-		{ value: 'cancel', label: 'Dibatalkan' },
-		{ value: 'fail', label: 'Gagal' }
-	];
 
 	function debounce(cb: Function) {
 		if (timeout) clearTimeout(timeout);
@@ -60,10 +55,15 @@
 			/>
 			<div class="input-group">
 				<label for="status" class="input-label">Status Transaksi</label>
-				<select name="status" class="input" on:change={() => form.requestSubmit()}>
+				<select
+					name="status"
+					class="input"
+					bind:value={status}
+					on:change={() => form.requestSubmit()}
+				>
 					<option value="all">Semua Transaksi</option>
-					{#each statusItem as item}
-						<option value={item.value}>{item.label}</option>
+					{#each TransactionStatus as item}
+						<option value={item.key}>{item.value}</option>
 					{/each}
 				</select>
 			</div>

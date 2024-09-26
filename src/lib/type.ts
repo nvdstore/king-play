@@ -46,3 +46,24 @@ export type Promo = {
 	url: string;
 	alt?: string;
 };
+
+export type Transcation = {
+	idTransaksi: string;
+	idMember: string;
+	idInvoice: string;
+	nominal: number;
+	groupProduk: string;
+	produk: string;
+	tanggal: string;
+	status?: string;
+};
+
+export type GetTransactionMemberType = {
+	idMember: string;
+	startDate: Date;
+	endDate: Date;
+	status?: 'all' | 'waiting' | 'pending' | 'success';
+	limit: number;
+	offset: number;
+	search: string;
+};
