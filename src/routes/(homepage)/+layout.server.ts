@@ -13,7 +13,7 @@ const UUID_KEY = 'uuid';
 
 export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) => {
 	// TODO: check domain, get id member by domain
-	console.log(url.hostname);
+	// console.log(url.hostname);
 
 	let userId = cookies.get(UUID_KEY);
 	if (!userId) {

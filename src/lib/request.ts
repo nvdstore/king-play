@@ -20,10 +20,9 @@ export async function request({
 }: RequestType) {
 	const timestamp = formatISO(new Date(), { representation: 'complete' });
 
-	const strPayload = JSON.stringify(payload);
 	const hashedPayload = crypto
 		.createHash('sha256')
-		.update(JSON.stringify(strPayload, null, 0))
+		.update(JSON.stringify(payload, null, 0))
 		.digest('hex')
 		.toLowerCase();
 
@@ -49,6 +48,7 @@ export async function request({
 	headers.append('X-TIMESTAMP', timestamp);
 	headers.append('X-SIGNATURE', signature);
 	headers.append('Authorization', `Bearer ${uuid}`);
+	headers.append('Content-Type', 'application/json');
 
 	console.log('Request Method', method);
 	console.log('Request URL', finalUrl);
@@ -74,8 +74,8 @@ export async function request({
 }
 
 export async function getClientIp() {
-	const getIp = await fetch('https://api.ipify.org/?format=json');
-	const ipData = await getIp.json();
+	const reqIp = await fetch('https://api.ipify.org/?format=json');
+	const resIp = await reqIp.json();
 
-	return ipData?.ip ?? '';
+	return resIp?.ip ?? '';
 }

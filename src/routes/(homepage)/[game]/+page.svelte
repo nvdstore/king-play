@@ -1,23 +1,67 @@
 <script lang="ts">
+	import { tick } from 'svelte';
+	import { slide } from 'svelte/transition';
+	import { navigating } from '$app/stores';
+	import { toast } from '@zerodevx/svelte-toast';
 	import { ChevronDown, ChevronUp, Search, Wallet, X, Landmark, CircleHelp } from 'lucide-svelte';
 
-	import type { PageData } from './$types';
-	import type { PaymentChannel, PaymentChannelGroup, Product } from '../type';
-	import { slide } from 'svelte/transition';
 	import { currency } from '$lib/utils/formatter';
+	import type { PaymentChannel, PaymentChannelGroup, Product } from '$lib/type';
+
+	import type { PageData } from './$types';
+	import { applyAction, deserialize, enhance } from '$app/forms';
+	import type { ActionResult } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
+
 	export let data: PageData;
 
-	let selectedProduct: Product;
+	let form: HTMLFormElement;
+	let submitForm: HTMLFormElement;
+	let selectedProduct: Product | null = data.selectedProduct;
 	let searchValue: string = '';
 	let selectedGroupChannel: PaymentChannelGroup | null = null;
 	let selectedChannel: PaymentChannel | null = null;
 
+	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
+		const data = new FormData(event.currentTarget);
+
+		const response = await fetch(event.currentTarget.action, {
+			method: 'POST',
+			body: data
+		});
+
+		const result: ActionResult = deserialize(await response.text());
+
+		if (result.type === 'success') {
+			// rerun all `load` functions, following the successful update
+			await invalidateAll();
+		}
+
+		applyAction(result);
+	}
+
+	async function handleSelectProduct(product: Product) {
+		selectedProduct = product;
+		selectedChannel = null;
+
+		await tick();
+		form.requestSubmit();
+	}
+
 	function handleSelectGroupChannel(group: PaymentChannelGroup) {
+		if (!selectedProduct) {
+			return toast.push({ msg: 'Pilih produk terlebih dahulu' });
+		}
+
 		if (selectedGroupChannel?.id != group.id) {
 			selectedGroupChannel = group;
 		} else {
 			selectedGroupChannel = null;
 		}
+	}
+
+	function handleSelectChannel(channel: PaymentChannel) {
+		selectedChannel = channel;
 	}
 
 	$: filteredProducts =
@@ -39,7 +83,15 @@
 			</div>
 		</div>
 
-		<div class="space-y-8 p-4 py-6">
+		<form
+			bind:this={submitForm}
+			method="post"
+			use:enhance
+			on:submit|preventDefault={handleSubmit}
+			class="space-y-8 p-4 py-6"
+		>
+			<input type="hidden" name="product" value={selectedProduct?.id} />
+
 			<div class="w-full flex items-start gap-6">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">1.</h1>
 				<div class="space-y-4 w-full">
@@ -49,10 +101,39 @@
 							Silahkan anda mengisi dengan game ID anda, contoh : 213123123
 						</p>
 					</div>
-					<div class="flex items-center gap-4">
-						<input class="{data.theme.input} flex-1" placeholder="Masukkan ID Anda" />
-						<input class="{data.theme.input} flex-4" placeholder="ID Zona" />
-					</div>
+					{#if data.game.fields && data.game.fields?.length > 0}
+						<div class="grid {data.game.fields?.length % 2 == 0 ? 'md:grid-cols-2' : ''} gap-4">
+							{#each data.game.fields as field}
+								{#if field.type == 'dropdown'}
+									<select
+										class={data.theme.input}
+										name={field.target}
+										placeholder={field.placeholder}
+										required={field.required}
+									>
+										{#each JSON.parse(field.options) as option}
+											<option value={option.value}>{option.label}</option>
+										{/each}
+									</select>
+								{:else}
+									<input
+										class={data.theme.input}
+										name={field.target}
+										placeholder={field.placeholder}
+										required={field.required}
+									/>
+								{/if}
+							{/each}
+						</div>
+					{:else}
+						<div class="flex items-center gap-4">
+							<input
+								name="id_pelanggan_1"
+								class="{data.theme.input} flex-1"
+								placeholder="Masukkan ID Anda"
+							/>
+						</div>
+					{/if}
 				</div>
 			</div>
 
@@ -79,7 +160,7 @@
 									placeholder="Cari produk"
 								/>
 								{#if searchValue.length > 0}
-									<button on:click={() => (searchValue = '')}>
+									<button type="button" on:click={() => (searchValue = '')}>
 										<X size={18} class={data.theme.bgColor} />
 									</button>
 								{/if}
@@ -89,14 +170,15 @@
 								<h4 class="text-sm opacity-50">
 									{searchValue.length > 0 ? `Pencarian produk: ${searchValue}` : 'Semua Produk'}
 								</h4>
-								<div class="grid grid-cols-3 gap-2">
+								<div class="grid grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
 									{#each filteredProducts as product}
 										<button
+											type="button"
 											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {selectedProduct?.id !=
 											product.id
 												? data.theme.cardButton
 												: `${data.theme.cardButtonActive} border border-${data.color}-500`}"
-											on:click={() => (selectedProduct = product)}
+											on:click={() => handleSelectProduct(product)}
 										>
 											<img
 												src="https://api.duniagames.co.id/api/product/upload/image/10519365491555755415.png"
@@ -121,10 +203,16 @@
 					</div>
 					<div class="space-y-2">
 						{#each data.channels as group}
-							<div class="{data.theme.cardButton} w-full px-0">
+							<div
+								class="{data.theme.cardButton} w-full px-0 {$navigating
+									? 'opacity-60 pointer-events-none'
+									: ''}"
+							>
 								<button
+									type="button"
 									class="flex items-center justify-between gap-2 text-sm p-4 w-full cursor-pointer"
 									on:click={() => handleSelectGroupChannel(group)}
+									disabled={$navigating ? true : false}
 								>
 									<div class="flex items-center gap-2">
 										{#if group.type == 'EWALLET'}
@@ -148,11 +236,12 @@
 									>
 										{#each group.channels as channel}
 											<button
+												type="button"
 												class="flex items-center justify-between w-full p-2 rounded-md
 												{selectedChannel?.id != channel.id
 													? data.theme.cardButton
 													: `${data.theme.cardButtonActive} border border-${data.color}-500`}"
-												on:click={() => (selectedChannel = channel)}
+												on:click={() => handleSelectChannel(channel)}
 											>
 												<div class="flex items-center gap-3">
 													<div class="bg-white p-1 rounded-md">
@@ -165,7 +254,7 @@
 													<p class="text-sm">{channel.name}</p>
 												</div>
 												<div class="font-semibold text-{data.color}-500">
-													{currency(channel.price)}
+													{channel.price ? currency(channel.price) : ''}
 												</div>
 											</button>
 										{/each}
@@ -186,7 +275,11 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
+
+		<form bind:this={form} class="hidden" data-sveltekit-noscroll data-sveltekit-keepfocus>
+			<input type="hidden" name="product" value={selectedProduct?.id} />
+		</form>
 	</main>
 
 	<aside class="w-[600px] sticky top-24 space-y-6">
@@ -205,7 +298,9 @@
 					<p class="font-medium">{selectedChannel?.name ?? '-'}</p>
 				</div>
 			</div>
-			<button class="btn btn-red w-full">Bayar Sekarang</button>
+			<button class="btn btn-red w-full" on:click={() => submitForm.requestSubmit()}>
+				Bayar Sekarang
+			</button>
 		</div>
 
 		{#if selectedChannel}

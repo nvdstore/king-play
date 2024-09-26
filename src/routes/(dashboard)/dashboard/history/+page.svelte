@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { format } from 'date-fns';
 	import { DownloadCloud } from 'lucide-svelte';
 	import { page } from '$app/stores';
@@ -102,20 +103,20 @@
 		limit={Number(limit)}
 		total={data.count}
 		{pageNum}
-		on:prev={() => {
+		on:prev={async () => {
 			if (pageNum > 1) {
 				pageNum -= 1;
-				setTimeout(() => {
-					form.requestSubmit();
-				}, 200);
+
+				await tick();
+				form.requestSubmit();
 			}
 		}}
-		on:next={() => {
+		on:next={async () => {
 			if (pageNum < 10) {
 				pageNum += 1;
-				setTimeout(() => {
-					form.requestSubmit();
-				}, 200);
+
+				await tick();
+				form.requestSubmit();
 			}
 		}}
 	/>

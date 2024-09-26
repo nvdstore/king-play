@@ -15,3 +15,14 @@ export const TransactionStatus = [
 		class: 'p-1 block rounded-full	bg-green-500 text-neutral-50 text-center'
 	}
 ];
+
+export const MappingGroupChannel = [
+	{
+		group: 'EWALLET',
+		name: 'E-Wallet'
+	},
+	{
+		group: 'BANK',
+		name: 'Bank'
+	}
+];

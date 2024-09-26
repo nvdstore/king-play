@@ -31,7 +31,6 @@
 				loading = true;
 
 				return async ({ result }) => {
-					console.log(result);
 					if (result.type === 'redirect') {
 						toast.push('Berhasil membuat toko');
 						goto(result.location);

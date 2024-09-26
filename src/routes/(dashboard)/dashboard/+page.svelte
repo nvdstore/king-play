@@ -1,7 +1,17 @@
-<script>
+<script lang="ts">
+	import { tick } from 'svelte';
 	import { ArrowUp, BadgeCheckIcon, CircleX, Clock, RefreshCcw } from 'lucide-svelte';
+	import { page } from '$app/stores';
 
 	import TransactionList from './transaction-list.svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	let form: HTMLFormElement;
+	let pageNum = $page.url.searchParams.get('page')?.toString()
+		? Number($page.url.searchParams.get('page')?.toString())
+		: 1;
 </script>
 
 <section class="space-y-6">
@@ -10,7 +20,7 @@
 		<div class="card card-default">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">120</p>
+					<p class="text-3xl font-bold">{data.total}</p>
 					<ArrowUp class="text-green-500" />
 				</div>
 				<p class="text-sm text-neutral-300">Total Transaksi</p>
@@ -26,14 +36,14 @@
 			</div>
 		</div>
 	</div>
-	<div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+	<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
 		<div class="card card-yellow">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
 					<p class="text-3xl font-bold">2</p>
 					<Clock />
 				</div>
-				<p class="text-sm text-neutral-300">Menunggu</p>
+				<p class="text-sm text-neutral-300">Menunggu Pembayaran</p>
 			</div>
 		</div>
 		<div class="card card-blue">
@@ -54,19 +64,35 @@
 				<p class="text-sm text-neutral-300">Sukses</p>
 			</div>
 		</div>
-		<div class="card card-red">
-			<div class="p-6 space-y-2">
-				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">1</p>
-					<CircleX />
-				</div>
-				<p class="text-sm text-neutral-300">Gagal</p>
-			</div>
-		</div>
 	</div>
 
 	<h2 class="text-xl font-bold mb-4">Transaksi Terbaru</h2>
-	<TransactionList hideFilter />
+	<form bind:this={form} data-sveltekit-noscroll>
+		<input type="hidden" name="page" bind:value={pageNum} />
+	</form>
+
+	<TransactionList
+		data={data.transactions}
+		limit={data.limit}
+		total={data.total}
+		{pageNum}
+		on:prev={async () => {
+			if (pageNum > 1) {
+				pageNum -= 1;
+
+				await tick();
+				form.requestSubmit();
+			}
+		}}
+		on:next={async () => {
+			if (pageNum < 10) {
+				pageNum += 1;
+
+				await tick();
+				form.requestSubmit();
+			}
+		}}
+	/>
 </section>
 
 <style>

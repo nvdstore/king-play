@@ -3,6 +3,17 @@ export type Game = {
 	slug: string;
 	name: string;
 	image: string;
+	fields?: GameField[];
+};
+
+export type GameField = {
+	key: string;
+	title: string;
+	placeholder: string;
+	type: string;
+	options: string;
+	target: string;
+	required: boolean;
 };
 
 export type GameResponse = {
@@ -16,7 +27,7 @@ export type GameResponse = {
 };
 
 export type Product = {
-	id: number;
+	id: string;
 	name: string;
 	price: number;
 	icon?: string;
@@ -27,8 +38,8 @@ export type PaymentChannel = {
 	name: string;
 	code: string;
 	image: string;
-	price: number;
-	helper: string;
+	price?: number;
+	helper?: string;
 };
 
 export type PaymentChannelGroup = {
@@ -63,7 +74,7 @@ export type GetTransactionMemberType = {
 	startDate: Date;
 	endDate: Date;
 	status?: 'all' | 'waiting' | 'pending' | 'success';
-	limit: number;
-	offset: number;
-	search: string;
+	limit?: number;
+	offset?: number;
+	search?: string;
 };

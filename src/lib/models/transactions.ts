@@ -1,11 +1,13 @@
 import { db } from '$lib/db';
 import { format } from 'date-fns';
 
-import type { GetTransactionMemberType } from '$lib/type';
+import type { GetTransactionMemberType, Transcation } from '$lib/type';
 
-export async function getTransactionMember(params: GetTransactionMemberType) {
-	const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
-	const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
+export async function getTransactions(params: GetTransactionMemberType) {
+	// const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
+	// const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
+	const startDate = '2024-09-24';
+	const endDate = '2024-09-24';
 
 	const values = ['1000001', startDate, endDate, params.limit, params.offset];
 	let where = '';
@@ -39,8 +41,35 @@ export async function getTransactionMember(params: GetTransactionMemberType) {
 	});
 
 	const data = result.rows.length > 0 ? result.rows : [];
+
+	const transactions: Transcation[] = data.map((trx) => {
+		const statusTrx = trx.response_code;
+		const statusInvoice = trx.status;
+		const flagInvoice = trx.flag;
+
+		let status = 'waiting';
+		if (statusInvoice == 2 && flagInvoice == 1) {
+			if (statusTrx == '00') {
+				status = 'success';
+			} else {
+				status = 'pending';
+			}
+		}
+
+		return {
+			idTransaksi: trx.id_transaksi,
+			idMember: trx.id_member,
+			idInvoice: trx.id_invoice,
+			groupProduk: trx.nama_group_produk,
+			produk: trx.produk,
+			nominal: trx.nominal,
+			tanggal: format(trx.transaction_date, 'yyyy-MM-dd'),
+			status
+		};
+	});
+
 	return {
-		data,
-		count: data[0]?.full_count
+		data: transactions,
+		count: data[0]?.full_count ?? 0
 	};
 }

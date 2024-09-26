@@ -11,9 +11,9 @@
 	const dispatch = createEventDispatcher();
 
 	export let data: Transcation[] = [];
-	export let limit: number;
-	export let total: number;
-	export let pageNum: number;
+	export let limit: number = 25;
+	export let total: number = 0;
+	export let pageNum: number = 1;
 
 	export function getTrxStatus(key: string) {
 		const status = TransactionStatus.find((val) => val.key == key) ?? null;
