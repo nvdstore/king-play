@@ -11,66 +11,85 @@ export type RequestType = {
 	uuid: string;
 };
 
+export type ResponseType = {
+	ok: boolean;
+	code: string;
+	data: any;
+	message: string;
+	status: number;
+};
+
 export async function request({
 	endpoint,
 	method = 'GET',
 	payload = {},
 	uuid,
 	params
-}: RequestType) {
-	const timestamp = formatISO(new Date(), { representation: 'complete' });
+}: RequestType): Promise<ResponseType> {
+	try {
+		const timestamp = formatISO(new Date(), { representation: 'complete' });
 
-	const hashedPayload = crypto
-		.createHash('sha256')
-		.update(JSON.stringify(payload, null, 0))
-		.digest('hex')
-		.toLowerCase();
+		const hashedPayload = crypto
+			.createHash('sha256')
+			.update(JSON.stringify(payload, null, 0))
+			.digest('hex')
+			.toLowerCase();
 
-	console.log('Signature Data', [method, endpoint, hashedPayload, timestamp].join(':'));
-	const stringToSign = [method, endpoint, hashedPayload, timestamp].join(':');
-	const privKey = fs.readFileSync('./private-key.pem');
-	const sign = crypto.createSign('RSA-SHA256');
-	sign.update(stringToSign);
-	const signature = sign.sign(privKey, 'base64');
+		console.log('Signature Data', [method, endpoint, hashedPayload, timestamp].join(':'));
+		const stringToSign = [method, endpoint, hashedPayload, timestamp].join(':');
+		const privKey = fs.readFileSync('./private-key.pem');
+		const sign = crypto.createSign('RSA-SHA256');
+		sign.update(stringToSign);
+		const signature = sign.sign(privKey, 'base64');
 
-	let finalUrl = new URL(endpoint, BASE_API_URL).href;
-	if (params && Object.keys(params).length > 0) {
-		const urlSearchParams = new URLSearchParams();
-		for (const key in params) {
-			if (Object.prototype.hasOwnProperty.call(params, key)) {
-				urlSearchParams.append(key, params[key]);
+		let finalUrl = new URL(endpoint, BASE_API_URL).href;
+		if (params && Object.keys(params).length > 0) {
+			const urlSearchParams = new URLSearchParams();
+			for (const key in params) {
+				if (Object.prototype.hasOwnProperty.call(params, key)) {
+					urlSearchParams.append(key, params[key]);
+				}
 			}
+			finalUrl += `?${urlSearchParams.toString()}`;
 		}
-		finalUrl += `?${urlSearchParams.toString()}`;
+
+		const headers = new Headers();
+		headers.append('X-TIMESTAMP', timestamp);
+		headers.append('X-SIGNATURE', signature);
+		headers.append('Authorization', `Bearer ${uuid}`);
+		headers.append('Content-Type', 'application/json');
+
+		console.log('Request Method', method);
+		console.log('Request URL', finalUrl);
+		console.log('Request Headers', JSON.stringify(Object.fromEntries(headers)));
+		console.log('Request Body', payload);
+
+		const opts: RequestInit = { method, headers };
+		if (method === 'POST') {
+			opts.body = JSON.stringify(payload);
+		}
+		const response = await fetch(finalUrl, opts);
+		console.log('Response Status', response.status, response.statusText);
+		const data = await response.json();
+		console.log('Response Data', JSON.stringify(data));
+
+		return {
+			ok: response.ok,
+			code: data.response_code ?? '',
+			data: data.response_data,
+			message: data.response_message ?? '',
+			status: response.status
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			code: 'XX',
+			data: '',
+			message: '',
+			ok: false,
+			status: 500
+		};
 	}
-
-	const headers = new Headers();
-	headers.append('X-TIMESTAMP', timestamp);
-	headers.append('X-SIGNATURE', signature);
-	headers.append('Authorization', `Bearer ${uuid}`);
-	headers.append('Content-Type', 'application/json');
-
-	console.log('Request Method', method);
-	console.log('Request URL', finalUrl);
-	console.log('Request Headers', JSON.stringify(Object.fromEntries(headers)));
-	console.log('Request Body', payload);
-
-	const opts: RequestInit = { method, headers };
-	if (method === 'POST') {
-		opts.body = JSON.stringify(payload);
-	}
-	const response = await fetch(finalUrl, opts);
-	console.log('Response Status', response.status, response.statusText);
-	const data = await response.json();
-	console.log('Response Data', JSON.stringify(data));
-
-	return {
-		ok: response.ok,
-		code: data.response_code ?? '',
-		data: data.response_data,
-		message: data.response_message ?? '',
-		status: response.status
-	};
 }
 
 export async function getClientIp() {
