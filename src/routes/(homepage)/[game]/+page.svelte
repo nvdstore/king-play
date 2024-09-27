@@ -214,7 +214,7 @@
 								<h4 class="text-sm opacity-50">
 									{searchValue.length > 0 ? `Pencarian produk: ${searchValue}` : 'Semua Produk'}
 								</h4>
-								<div class="grid grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
+								<div class="grid grid-cols-3 gap-2">
 									{#each filteredProducts as product}
 										<button
 											type="button"
