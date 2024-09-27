@@ -6,8 +6,6 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import { navigating } from '$app/stores';
 
-	const toastOpts = {};
-
 	NProgress.configure({
 		minimum: 0.16
 	});
@@ -21,6 +19,16 @@
 	}
 </script>
 
-<SvelteToast options={toastOpts} />
+<SvelteToast options={{}} />
 
 <slot />
+
+<style>
+	:root {
+		--toastBackground: #efadabec;
+		--toastBarBackground: #ef4444;
+		--toastColor: #123456;
+		--toastPadding: 5px 10px 5px 10px;
+		--toastBorderRadius: 0.5rem;
+	}
+</style>

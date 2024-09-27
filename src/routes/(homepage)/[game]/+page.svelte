@@ -1,17 +1,20 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import type { ActionResult } from '@sveltejs/kit';
 	import { slide } from 'svelte/transition';
-	import { navigating } from '$app/stores';
-	import { toast } from '@zerodevx/svelte-toast';
 	import { ChevronDown, ChevronUp, Search, Wallet, X, Landmark, CircleHelp } from 'lucide-svelte';
+	import { toast } from '@zerodevx/svelte-toast';
+	import Swal from 'sweetalert2';
+
+	import { applyAction, deserialize } from '$app/forms';
+	import { goto, invalidateAll } from '$app/navigation';
+	import { navigating } from '$app/stores';
 
 	import { currency } from '$lib/utils/formatter';
 	import type { PaymentChannel, PaymentChannelGroup, Product } from '$lib/type';
 
-	import type { PageData } from './$types';
-	import { applyAction, deserialize, enhance } from '$app/forms';
-	import type { ActionResult } from '@sveltejs/kit';
-	import { invalidateAll } from '$app/navigation';
+	import type { ActionData, PageData } from './$types';
+	import { showLoader } from '$lib/stores/general';
 
 	export let data: PageData;
 
@@ -23,18 +26,60 @@
 	let selectedChannel: PaymentChannel | null = null;
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
-		const data = new FormData(event.currentTarget);
+		const formData = new FormData(event.currentTarget);
+
+		if (!formData.get('id_pelanggan_1')) {
+			return toast.push('Masukkan ID Anda');
+		}
+
+		const product = selectedProduct?.id.toString() ?? '';
+		if (!product) {
+			return toast.push('Pilih produk terlebih dahulu');
+		}
+
+		const channel = selectedChannel?.id.toString() ?? '';
+		if (!channel) {
+			return toast.push('Pilih metode pembayaran Anda');
+		}
+
+		formData.append('product', product);
+		formData.append('channel', channel);
+
+		$showLoader = true;
 
 		const response = await fetch(event.currentTarget.action, {
 			method: 'POST',
-			body: data
+			body: formData
 		});
 
 		const result: ActionResult = deserialize(await response.text());
 
 		if (result.type === 'success') {
-			// rerun all `load` functions, following the successful update
+			console.log(result);
+			const resData = result.data as ActionData;
+			if (resData && resData.code != '00') {
+				Swal.fire({
+					title: 'Whoops!',
+					icon: 'warning',
+					text: resData.message ?? 'Terjadi kesalahan pada sistem',
+					customClass: { confirmButton: `bg-${data.color}-500` }
+				});
+
+				$showLoader = false;
+			} else {
+				const invoiceAdditional = resData?.additional;
+				const checkoutUrl = invoiceAdditional?.response_invoice_detail?.checkout_url;
+				if (checkoutUrl) {
+					const base64Data = btoa(JSON.stringify(resData));
+					const url = new URLSearchParams();
+					url.append('d', base64Data);
+					window.location.href = '/payment' + '?' + url.toString();
+				}
+			}
+
 			await invalidateAll();
+		} else {
+			$showLoader = false;
 		}
 
 		applyAction(result);
@@ -50,7 +95,7 @@
 
 	function handleSelectGroupChannel(group: PaymentChannelGroup) {
 		if (!selectedProduct) {
-			return toast.push({ msg: 'Pilih produk terlebih dahulu' });
+			return toast.push('Pilih produk terlebih dahulu');
 		}
 
 		if (selectedGroupChannel?.id != group.id) {
@@ -86,17 +131,16 @@
 		<form
 			bind:this={submitForm}
 			method="post"
-			use:enhance
 			on:submit|preventDefault={handleSubmit}
+			data-sveltekit-keepfocus
+			data-sveltekit-noscroll
 			class="space-y-8 p-4 py-6"
 		>
-			<input type="hidden" name="product" value={selectedProduct?.id} />
-
 			<div class="w-full flex items-start gap-6">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">1.</h1>
 				<div class="space-y-4 w-full">
 					<div>
-						<h4 class="font-medium">Masukkan Game ID Mobile Legends Anda</h4>
+						<h4 class="font-medium">Masukkan Game ID {data.game.name} Anda</h4>
 						<p class="text-sm opacity-50">
 							Silahkan anda mengisi dengan game ID anda, contoh : 213123123
 						</p>
@@ -283,7 +327,7 @@
 	</main>
 
 	<aside class="w-[600px] sticky top-24 space-y-6">
-		<div class="{data.theme.card} p-4 space-y-4">
+		<div class="{data.theme.card} p-4 space-y-2">
 			<div>
 				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Game:</span>
@@ -295,8 +339,27 @@
 				</div>
 				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Metode Pembayaran:</span>
-					<p class="font-medium">{selectedChannel?.name ?? '-'}</p>
+					<div class="flex items-center space-x-2">
+						{#if selectedChannel}
+							<div class="bg-white p-1 rounded-md">
+								<img
+									src={selectedChannel?.image}
+									class="w-20 h-4 object-scale-down"
+									alt={selectedChannel?.name}
+								/>
+							</div>
+						{/if}
+						<p class="font-medium">{selectedChannel?.name ?? '-'}</p>
+					</div>
 				</div>
+				{#if selectedChannel}
+					<div class="py-2">
+						<span class="text-sm bg-opacity-50">Total Pembayaran:</span>
+						<p class="font-semibold text-lg text-{data.color}-500">
+							{selectedChannel?.price ? currency(selectedChannel.price) : '-'}
+						</p>
+					</div>
+				{/if}
 			</div>
 			<button class="btn btn-red w-full" on:click={() => submitForm.requestSubmit()}>
 				Bayar Sekarang

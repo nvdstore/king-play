@@ -78,3 +78,16 @@ export type GetTransactionMemberType = {
 	offset?: number;
 	search?: string;
 };
+
+export type InvoiceDataTyoe = {
+	channel: string;
+	idChannel: string;
+	idInquiry: number;
+	idInvoice: string;
+	timeLimit: Date;
+	total: number;
+	checkoutUrl: string;
+	payUrl: string;
+	panduan: string;
+	reffIdBiller: string;
+};

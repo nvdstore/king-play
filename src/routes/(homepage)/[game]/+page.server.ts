@@ -3,7 +3,7 @@ import { error, type Actions } from '@sveltejs/kit';
 import type { Game, PaymentChannel, PaymentChannelGroup, Product } from '$lib/type';
 import { getGameField, getGameGroupBySlug, getPaymentChannels } from '$lib/models/game';
 import { MappingGroupChannel } from '$lib/constant';
-import { request } from '$lib/request';
+import { request, generateMid } from '$lib/request';
 
 import type { PageServerLoad } from './$types';
 
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 	};
 
 	const fields = await getGameField(group.id_group_produk);
-	game.fields = (fields ?? []).map((fld) => ({
+	game.fields = fields.map((fld) => ({
 		key: fld.field_name,
 		title: fld.field_title,
 		target: fld.field_target,
@@ -42,7 +42,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		uuid: userId
 	});
 
-	const products: Product[] = (dataProducts ?? []).map((product: any) => ({
+	const products: Product[] = dataProducts?.map((product: any) => ({
 		id: product.id_produk,
 		name: product.produk,
 		price: product.nominal,
@@ -84,14 +84,16 @@ export const actions: Actions = {
 		const product = formData.get('product');
 		const idpel1 = formData.get('id_pelanggan_1');
 		const idpel2 = formData.get('id_pelanggan_2');
+		const channel = formData.get('channel');
 
+		const mid = generateMid();
 		const userId = cookies.get('uuid') ?? '';
 
-		const { data } = await request({
+		const inquiry = await request({
 			method: 'POST',
-			endpoint: '/v1.0/api/inquiry',
+			endpoint: '/v1.0/api/inquiry/',
 			payload: {
-				mid: crypto.randomUUID(),
+				mid,
 				step: 2,
 				data: {
 					id_produk: product,
@@ -105,7 +107,38 @@ export const actions: Actions = {
 			uuid: userId
 		});
 
-		console.log(data);
+		const inqAdditional = inquiry?.additional;
+		const idInquiry = inqAdditional?.response_transaction_detail?.id_transaksi_inquiry;
+		if (inquiry.code != '00' || !inquiry.data || !idInquiry) {
+			// inquiry gagal kembalikan response
+			return inquiry;
+		}
+
+		// TODO: lanjut create invoice
+		const invoice = await request({
+			method: 'POST',
+			endpoint: '/v1.0/api/invoices/',
+			payload: {
+				mid,
+				step: 2,
+				data: {
+					id_produk: product,
+					id_user: userId,
+					id_pelanggan1: idpel1 ?? '',
+					id_pelanggan2: idpel2 ?? '',
+					id_pelanggan3: '',
+					email: '',
+					phone: ''
+				},
+				invoice_detail: {
+					id_channel_pembayaran: channel,
+					id_transaksi_inquiry: idInquiry
+				}
+			},
+			uuid: userId
+		});
+
+		return invoice;
 	}
 };
 

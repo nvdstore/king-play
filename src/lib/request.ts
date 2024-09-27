@@ -1,6 +1,7 @@
 import { formatISO } from 'date-fns';
 import fs from 'fs';
 import crypto from 'crypto';
+import { customAlphabet } from 'nanoid';
 import { BASE_API_URL } from '$env/static/private';
 
 export type RequestType = {
@@ -17,6 +18,7 @@ export type ResponseType = {
 	data: any;
 	message: string;
 	status: number;
+	additional?: any;
 };
 
 export async function request({
@@ -73,12 +75,20 @@ export async function request({
 		const data = await response.json();
 		console.log('Response Data', JSON.stringify(data));
 
+		const {
+			response_code: code,
+			response_data: resData,
+			response_message: message,
+			...additional
+		} = data;
+
 		return {
 			ok: response.ok,
-			code: data.response_code ?? '',
-			data: data.response_data,
-			message: data.response_message ?? '',
-			status: response.status
+			code: code ?? '',
+			data: resData,
+			message: message ?? '',
+			status: response.status,
+			additional: additional
 		};
 	} catch (error) {
 		console.log(error);
@@ -97,4 +107,9 @@ export async function getClientIp() {
 	const resIp = await reqIp.json();
 
 	return resIp?.ip ?? '';
+}
+
+export function generateMid(length?: number) {
+	const nanoid = customAlphabet('1234567890', length ?? 16);
+	return nanoid();
 }
