@@ -15,8 +15,8 @@ export type RequestType = {
 export type ResponseType = {
 	ok: boolean;
 	code: string;
-	data: any;
-	message: string;
+	data?: any;
+	message?: string;
 	status: number;
 	additional?: any;
 };
@@ -94,8 +94,6 @@ export async function request({
 		console.log(error);
 		return {
 			code: 'XX',
-			data: '',
-			message: '',
 			ok: false,
 			status: 500
 		};
