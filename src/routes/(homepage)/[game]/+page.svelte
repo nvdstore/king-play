@@ -24,6 +24,7 @@
 	let searchValue: string = '';
 	let selectedGroupChannel: PaymentChannelGroup | null = null;
 	let selectedChannel: PaymentChannel | null = null;
+	let showAll = false;
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const formData = new FormData(event.currentTarget);
@@ -115,7 +116,7 @@
 			: data.products;
 </script>
 
-<div class="md:flex items-start gap-6">
+<div class="flex flex-col md:flex-row items-start gap-6">
 	<main class="{data.theme.card} w-full">
 		<div
 			class="flex items-start p-4 gap-6 {data.theme.bgColor} border-b {data.theme
@@ -137,10 +138,12 @@
 			class="space-y-8 p-4 py-6"
 		>
 			<div class="w-full flex items-start gap-6">
-				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">1.</h1>
+				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">1.</h1>
 				<div class="space-y-4 w-full">
 					<div>
-						<h4 class="font-medium">Masukkan Game ID {data.game.name} Anda</h4>
+						<h4 class="font-medium">
+							<span class="md:hidden">1. </span>Masukkan Game ID {data.game.name} Anda
+						</h4>
 						<p class="text-sm opacity-50">
 							Silahkan anda mengisi dengan game ID anda, contoh : 213123123
 						</p>
@@ -183,10 +186,12 @@
 
 			<div class="w-full flex items-center space-x-8 flex-1 -ml-13">
 				<div class="w-full flex items-start gap-6">
-					<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">2.</h1>
+					<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">2.</h1>
 					<div class="space-y-4 w-full">
 						<div>
-							<h4 class="font-medium">Pilih jumlah diamond yang ingin anda beli</h4>
+							<h4 class="font-medium">
+								<span class="md:hidden">2. </span>Pilih jumlah diamond yang ingin anda beli
+							</h4>
 							<p class="text-sm opacity-50">Pilih berapa banyak yang ingin anda beli</p>
 						</div>
 						<div class="space-y-4">
@@ -212,14 +217,17 @@
 
 							<div class="space-y-2">
 								<h4 class="text-sm opacity-50">
-									{searchValue.length > 0 ? `Pencarian produk: ${searchValue}` : 'Semua Produk'}
+									{searchValue.length > 0
+										? `Pencarian produk: ${searchValue}`
+										: `Semua Produk (${filteredProducts.length})`}
 								</h4>
 								<div class="grid grid-cols-3 gap-2">
-									{#each filteredProducts as product}
+									{#each showAll || searchValue ? filteredProducts : filteredProducts.splice(0, 9) ?? [] as product}
 										<button
 											type="button"
-											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {selectedProduct?.id !=
-											product.id
+											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {!product.isActive
+												? 'opacity-50'
+												: ''} {selectedProduct?.id != product.id
 												? data.theme.cardButton
 												: `${data.theme.cardButtonActive} border border-${data.color}-500`}"
 											on:click={() => handleSelectProduct(product)}
@@ -233,16 +241,32 @@
 									{/each}
 								</div>
 							</div>
+							{#if !searchValue && filteredProducts.length >= 9}
+								<button
+									type="button"
+									class="flex items-center justify-center w-full text-sm gap-1"
+									on:click={() => (showAll = !showAll)}
+								>
+									<span>{showAll ? 'Tampilkan Lebih Sedikit' : 'Tampilkan Semua Produk'}</span>
+									{#if showAll}
+										<ChevronUp size={24} />
+									{:else}
+										<ChevronDown size={24} />
+									{/if}
+								</button>
+							{/if}
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="w-full flex items-start gap-6">
-				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right">3.</h1>
+				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">3.</h1>
 				<div class="space-y-4 w-full">
 					<div>
-						<h4 class="font-medium">Pilih Metode Pembayaran</h4>
+						<h4 class="font-medium">
+							<span class="md:hidden">3. </span>Pilih Metode Pembayaran
+						</h4>
 						<p class="text-sm opacity-50">Silahkan Pilih Metode Bayar</p>
 					</div>
 					<div class="space-y-2">
@@ -305,7 +329,12 @@
 									</div>
 								{/if}
 
-								<div class="flex items-center justify-end border-t {data.theme.border} px-4 py-2">
+								<button
+									type="button"
+									on:click={() => handleSelectGroupChannel(group)}
+									class="flex items-center justify-end border-t {data.theme
+										.border} px-4 py-2 w-full"
+								>
 									<div class="flex items-center gap-1">
 										{#each group.images as img}
 											<div class="bg-neutral-50 rounded-md p-1">
@@ -313,7 +342,7 @@
 											</div>
 										{/each}
 									</div>
-								</div>
+								</button>
 							</div>
 						{/each}
 					</div>
@@ -326,7 +355,7 @@
 		</form>
 	</main>
 
-	<aside class="w-[600px] sticky top-24 space-y-6">
+	<aside class="w-full md:w-[600px] sticky top-24 space-y-6">
 		<div class="{data.theme.card} p-4 space-y-2">
 			<div>
 				<div class="py-2">

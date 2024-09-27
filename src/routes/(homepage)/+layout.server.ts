@@ -44,10 +44,10 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 	const getTheme = url.searchParams.get('theme');
 
 	type ThemeType = typeof themes;
-	let dataTheme: keyof ThemeType = (getTheme as 'dark') ?? 'dark';
-	let dataColor = 'yellow';
+	let dataTheme: keyof ThemeType = (getTheme as 'light') ?? 'light';
+	let dataColor = 'blue';
 	const color = dataColor ?? '';
-	const theme = themes[dataTheme ?? 'dark'];
+	const theme = themes[dataTheme ?? 'light'];
 
 	let games: Game[] = [];
 
@@ -70,6 +70,8 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 					slug: game.slug
 				}) as Game
 		);
+	} else {
+		games = [];
 	}
 
 	const popularGames: Game[] = games.slice(0, 3);

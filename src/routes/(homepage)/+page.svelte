@@ -12,7 +12,6 @@
 	<section class="border border-slate-800/50 rounded-lg overflow-hidden">
 		<swiper-container
 			pagination="true"
-			navigation="true"
 			autoplay-delay="2500"
 			autoplay-disable-on-interaction="false"
 			loop="true"
@@ -47,10 +46,10 @@
 	<section class="space-y-4">
 		<h4 class="text-xl font-medium">Topup Game</h4>
 
-		<div class="grid grid-cols-3 gap-6 md:grid-cols-6">
+		<div class="grid grid-cols-3 gap-4 md:gap-10 md:grid-cols-6">
 			{#each data.games as game}
 				<a href={game.slug} class="card-link">
-					<div class="space-y-4 p-4 {data.theme.card}">
+					<div class="space-y-4">
 						<div class="card">
 							<img src={game.image} class="card-image" alt={game.image} />
 						</div>
@@ -80,12 +79,12 @@
 		@apply scale-105 transition-transform;
 	}
 	.card {
-		@apply relative aspect-square cursor-pointer overflow-hidden rounded-xl shadow-lg;
+		@apply relative aspect-square cursor-pointer overflow-hidden rounded-2xl shadow-lg;
 	}
 	.card-image {
 		@apply h-full w-full;
 	}
 	.card-text {
-		@apply line-clamp-1 text-center font-medium  transition-colors md:text-sm;
+		@apply line-clamp-2 md:line-clamp-1 text-center font-medium  transition-colors;
 	}
 </style>

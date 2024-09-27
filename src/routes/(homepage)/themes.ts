@@ -17,6 +17,7 @@ export const themes = {
 	light: {
 		main: 'bg-neutral-50 text-slate-800',
 		nav: 'bg-neutral-100/75 border-b border-neutral-200 backdrop-blur-md',
+		footer: 'border-t border-neutral-200',
 		bgColor: 'bg-neutral-100',
 		bgColorSecondary: 'bg-neutral-200',
 		color: 'text-slate-800',
@@ -24,8 +25,8 @@ export const themes = {
 		button: 'btn btn-slate text-neutral-50',
 		input:
 			'px-2.5 h-10 bg-neutral-100/75 border border-neutral-300 focus:border-neutral-400 rounded-lg outline-none text-sm',
-		card: 'bg-neutral-100/75 border border-neutral-200 rounded-xl',
+		card: 'bg-neutral-100/75 md:border border-neutral-200 rounded-xl',
 		cardButton: 'border border-neutral-300 rounded-lg outline-none text-sm',
-		cardButtonActive: 'rounded-lg outline-none text-sm'
+		cardButtonActive: 'rounded-lg border-neutral-800 outline-none text-sm'
 	}
 };

@@ -31,6 +31,7 @@ export type Product = {
 	name: string;
 	price: number;
 	icon?: string;
+	isActive?: boolean;
 };
 
 export type PaymentChannel = {

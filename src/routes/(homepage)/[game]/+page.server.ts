@@ -46,7 +46,9 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		id: product.id_produk,
 		name: product.produk,
 		price: product.nominal,
-		icon: ''
+		icon: '',
+		isActive: true
+		// isActive: product.is_active
 	}));
 
 	let channels: PaymentChannelGroup[] = [];
