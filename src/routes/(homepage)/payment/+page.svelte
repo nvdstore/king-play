@@ -10,7 +10,7 @@
 
 <div class=" {data.theme.card}">
 	<div class="flex flex-col items-center justify-center space-y-6 px-5 py-10 text-center">
-		{#if data.status == 2}
+		{#if data.status == 4}
 			<Check size={48} />
 			<h4 class="text-2xl font-medium">Pembayaran Berhasil</h4>
 		{:else}
