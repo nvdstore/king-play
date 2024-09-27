@@ -10,30 +10,31 @@ return {
 	assets: new Set(["favicon.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.BcLXE-Gg.js","app":"_app/immutable/entry/app.CFM_bqCF.js","imports":["_app/immutable/entry/start.BcLXE-Gg.js","_app/immutable/chunks/entry.D6cYmGy0.js","_app/immutable/chunks/8.4XKJvd4g.js","_app/immutable/entry/app.CFM_bqCF.js","_app/immutable/chunks/8.4XKJvd4g.js","_app/immutable/chunks/index.BrjDpy8l.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.B-pnS1cx.js","app":"_app/immutable/entry/app.CjvifCwR.js","imports":["_app/immutable/entry/start.B-pnS1cx.js","_app/immutable/chunks/entry.MILWr-Un.js","_app/immutable/chunks/scheduler.BocGr1Ux.js","_app/immutable/chunks/index.Ark2ieeu.js","_app/immutable/entry/app.CjvifCwR.js","_app/immutable/chunks/scheduler.BocGr1Ux.js","_app/immutable/chunks/index.BQZXa2CZ.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
-			__memo(() => import('./chunks/0-DZLf5UoZ.js')),
-			__memo(() => import('./chunks/1-1569oasf.js')),
-			__memo(() => import('./chunks/2-Dl0V8bDz.js')),
-			__memo(() => import('./chunks/3-DTrxg6_u.js')),
-			__memo(() => import('./chunks/4-BSNpsa7P.js')),
-			__memo(() => import('./chunks/5-B7LqpvLV.js')),
-			__memo(() => import('./chunks/6-BZZaldI1.js')),
-			__memo(() => import('./chunks/7-2_wQUJgf.js')),
-			__memo(() => import('./chunks/8-BKFtByrg.js')),
-			__memo(() => import('./chunks/9-DEWq35_W.js')),
-			__memo(() => import('./chunks/10-BXKVNuFO.js')),
-			__memo(() => import('./chunks/11-tbUBBlQX.js')),
-			__memo(() => import('./chunks/12-CG4ko7I5.js')),
-			__memo(() => import('./chunks/13-DFJ0PlKs.js')),
-			__memo(() => import('./chunks/14-C_V0PU75.js')),
-			__memo(() => import('./chunks/15-Ddlnz35a.js')),
-			__memo(() => import('./chunks/16-DsTbWd4M.js')),
-			__memo(() => import('./chunks/17-C9DYNHqS.js')),
-			__memo(() => import('./chunks/18-B7gNFOFL.js')),
-			__memo(() => import('./chunks/19-7rU-EC7S.js')),
-			__memo(() => import('./chunks/20-DmB_2Q7M.js')),
-			__memo(() => import('./chunks/21-BC3GzX9_.js'))
+			__memo(() => import('./chunks/0-BH-LFFoM.js')),
+			__memo(() => import('./chunks/1-D5wccsRT.js')),
+			__memo(() => import('./chunks/2-CXwnMptb.js')),
+			__memo(() => import('./chunks/3-D0MRkrzd.js')),
+			__memo(() => import('./chunks/4-C38bNX34.js')),
+			__memo(() => import('./chunks/5-DMhZLY8W.js')),
+			__memo(() => import('./chunks/6-CjonJtih.js')),
+			__memo(() => import('./chunks/7-DJzAQpG0.js')),
+			__memo(() => import('./chunks/8-gQc_amAy.js')),
+			__memo(() => import('./chunks/9-U9nfFlvi.js')),
+			__memo(() => import('./chunks/10-wneVKACa.js')),
+			__memo(() => import('./chunks/11-1qx7nWGd.js')),
+			__memo(() => import('./chunks/12-CfTreIKG.js')),
+			__memo(() => import('./chunks/13-DUoQp8F3.js')),
+			__memo(() => import('./chunks/14-MuP_jtGq.js')),
+			__memo(() => import('./chunks/15-CWoMk6Uz.js')),
+			__memo(() => import('./chunks/16-CLmJWXNC.js')),
+			__memo(() => import('./chunks/17-P76D2LS-.js')),
+			__memo(() => import('./chunks/18-B8hdZM6_.js')),
+			__memo(() => import('./chunks/19-pSkEwE26.js')),
+			__memo(() => import('./chunks/20-CqTVc19Q.js')),
+			__memo(() => import('./chunks/21-ms_qlj1x.js')),
+			__memo(() => import('./chunks/22-xT0wZ7y0.js'))
 		],
 		routes: [
 			{
@@ -128,23 +129,30 @@ return {
 				endpoint: null
 			},
 			{
+				id: "/(homepage)/payment",
+				pattern: /^\/payment\/?$/,
+				params: [],
+				page: { layouts: [0,5,], errors: [1,,], leaf: 20 },
+				endpoint: null
+			},
+			{
 				id: "/(homepage)/privacy-policy",
 				pattern: /^\/privacy-policy\/?$/,
 				params: [],
-				page: { layouts: [0,5,], errors: [1,,], leaf: 20 },
+				page: { layouts: [0,5,], errors: [1,,], leaf: 21 },
 				endpoint: null
 			},
 			{
 				id: "/(homepage)/terms-condition",
 				pattern: /^\/terms-condition\/?$/,
 				params: [],
-				page: { layouts: [0,5,], errors: [1,,], leaf: 21 },
+				page: { layouts: [0,5,], errors: [1,,], leaf: 22 },
 				endpoint: null
 			},
 			{
-				id: "/(homepage)/[gameId]",
+				id: "/(homepage)/[game]",
 				pattern: /^\/([^/]+?)\/?$/,
-				params: [{"name":"gameId","optional":false,"rest":false,"chained":false}],
+				params: [{"name":"game","optional":false,"rest":false,"chained":false}],
 				page: { layouts: [0,5,], errors: [1,,], leaf: 19 },
 				endpoint: null
 			}
