@@ -1,22 +1,5 @@
 import { db } from '$lib/db';
 
-export type Store = {
-	id: number;
-	idMember: string;
-	name: string;
-	description: string;
-	email: string;
-	phone: string;
-	domain: string;
-	info?: {
-		fb?: string;
-		tiktok?: string;
-		ig?: string;
-		twitter?: string;
-		telegram?: string;
-	};
-};
-
 export type CreateStoreParams = {
 	memberId: string;
 	name: string;
@@ -76,4 +59,12 @@ export async function updateStore(data: UpdateStoreParams) {
 			[data.memberId, data.name, data.description, data.email, data.phone]
 		);
 	} catch (error) {}
+}
+
+export async function getStoreByDomain(host: string) {
+	const res = await db.query(
+		'select * from mt_store ms left join mt_store_info msi on msi.id_store = ms.id where domain = $1 or custom_domain = $1 limit 1',
+		[host]
+	);
+	return res.rows[0] ?? null;
 }

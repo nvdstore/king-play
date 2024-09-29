@@ -19,21 +19,31 @@
 </script>
 
 <svelte:head>
-	<title>KingPlay - Topup Game</title>
+	<title>{data.store.name} - Topup Game</title>
 </svelte:head>
 
 <div class="min-h-screen {data.theme.main}">
 	<div class="{data.theme.nav} sticky top-0 z-20">
-		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[1024px]">
+		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[1024px] space-x-2">
 			<a href="/" class="flex items-center space-x-2 flex-1">
-				<Crown size={30} />
-				<span class="font-semibold text-lg">
-					King<span class="text-{data.color}-500">Play</span>.id
-				</span>
+				{#if data.isMaster}
+					<Crown size={30} />
+					<span class="font-semibold text-lg">
+						King<span class="text-{data.color}-500">Play</span>
+					</span>
+				{:else if data.store.logo}
+					<img src={data.store.logo} class="h-10" alt={data.store.name} />
+				{:else}
+					<span class="font-semibold text-lg">{data.store.name}</span>
+				{/if}
 			</a>
 			<div class="flex items-center justify-end space-x-2">
-				<div class="hidden md:block">
-					<div class="{showSearchBox ? 'w-[400px]' : 'max-w-[200px]'} transition-all relative z-50">
+				<div class="">
+					<div
+						class="{showSearchBox
+							? 'md:w-[400px]'
+							: 'max-w-[150px] md:max-w-[200px]'} transition-all relative z-50"
+					>
 						<div
 							class="{data.theme.bgColor} 
 							border {data.theme.border} rounded-lg overflow-hidden flex items-center space-x-2 px-3"
@@ -97,19 +107,21 @@
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
 							transition:fade={{ duration: 50 }}
-							class="fixed h-[100vw] w-[100vw] top-[-20vh] right-0 block bg-neutral-900/75 z-40"
+							class="fixed h-[300vw] md:h-[100vw] w-[100vw] top-[-20vh] right-0 block bg-neutral-900/75 z-40"
 							on:click={() => (showSearchBox = false)}
 						></div>
 					{/if}
 				</div>
-				<a href="/auth/login" class="btn btn-{data.color}">
-					<Crown class="pr-2" /> Member
-				</a>
+				{#if data.isMaster}
+					<a href="/auth/login" class="btn btn-{data.color}">
+						<Crown class="pr-2" /> Member
+					</a>
+				{/if}
 			</div>
 		</nav>
 	</div>
 
-	<main class="mx-auto md:max-w-[1024px] p-4 my-10">
+	<main class="mx-auto md:max-w-[1024px] p-4 md:my-10">
 		<slot />
 	</main>
 
@@ -152,12 +164,25 @@
 				<div class="space-y-2 flex-1">
 					<div class="text-{data.color}-500 font-medium">Kontak Kami</div>
 					<ul>
-						<li><a href="#!">WhatsApp</a></li>
-						<li><a href="#!">Email</a></li>
-						<li><a href="#!">Facebook</a></li>
-						<li><a href="#!">Tiktok</a></li>
-						<li><a href="#!">Instagram</a></li>
-						<li><a href="#!">X.com</a></li>
+						{#if data.store.phone}
+							<li><a href="https://wa.me/{data.store.phone}" target="_blank">WhatsApp</a></li>
+						{/if}
+						{#if data.store.email}
+							<li><a href="mailto:{data.store.email}" target="_blank">Email</a></li>
+						{/if}
+						{#if data.store.info?.fb}
+							<li><a href={data.store.info?.fb} target="_blank">Facebook</a></li>
+						{/if}
+
+						{#if data.store.info?.tiktok}
+							<li><a href={data.store.info?.tiktok} target="_blank">Tiktok</a></li>
+						{/if}
+						{#if data.store.info?.ig}
+							<li><a href={data.store.info?.ig} target="_blank">Instagram</a></li>
+						{/if}
+						{#if data.store.info?.twitter}
+							<li><a href={data.store.info?.twitter} target="_blank">x.com</a></li>
+						{/if}
 					</ul>
 				</div>
 			</section>

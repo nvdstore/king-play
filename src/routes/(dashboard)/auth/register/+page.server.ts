@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import type { Actions } from './$types';
 
-import { User, type CreateUserParams } from '$lib/models/user';
+import { createUser, type CreateUserParams } from '$lib/models/user';
 import { validateEmail } from '$lib/utils/validator';
 
 export const actions = {
@@ -53,7 +53,7 @@ export const actions = {
 			password: hashPassword,
 			emailVerified: null
 		};
-		const { data, error } = await User.createUser(payload);
+		const { data, error } = await createUser(payload);
 		if (error || !data) {
 			errorBag.message = error ?? 'Terjadi kesalahan saat melakukan registrasi';
 			return { errors: errorBag, values: valueBag };

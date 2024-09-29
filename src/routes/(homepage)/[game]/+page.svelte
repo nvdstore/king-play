@@ -56,7 +56,6 @@
 		const result: ActionResult = deserialize(await response.text());
 
 		if (result.type === 'success') {
-			console.log(result);
 			const resData = result.data as ActionData;
 			if (resData && resData.code != '00') {
 				Swal.fire({
@@ -117,10 +116,10 @@
 </script>
 
 <div class="flex flex-col md:flex-row items-start gap-6">
-	<main class="{data.theme.card} w-full">
+	<main class="md:{data.theme.card} w-full">
 		<div
-			class="flex items-start p-4 gap-6 {data.theme.bgColor} border-b {data.theme
-				.border} rounded-t-lg sticky top-[4.5rem] z-10 bg-opacity-75 backdrop-blur-md"
+			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} border-b {data.theme
+				.border} rounded-t-lg md:sticky top-[4.5rem] z-10 bg-opacity-75 backdrop-blur-md"
 		>
 			<img src={data.game.image} class="w-[72px] aspect-square rounded-lg" alt="" />
 			<div>
@@ -135,7 +134,7 @@
 			on:submit|preventDefault={handleSubmit}
 			data-sveltekit-keepfocus
 			data-sveltekit-noscroll
-			class="space-y-8 p-4 py-6"
+			class="space-y-8 md:p-4 py-6"
 		>
 			<div class="w-full flex items-start gap-6">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">1.</h1>
@@ -356,7 +355,7 @@
 	</main>
 
 	<aside class="w-full md:w-[600px] sticky top-24 space-y-6">
-		<div class="{data.theme.card} p-4 space-y-2">
+		<div class="md:{data.theme.card} md:p-4 space-y-2">
 			<div>
 				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Game:</span>

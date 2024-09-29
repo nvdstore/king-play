@@ -4,12 +4,10 @@ import { format } from 'date-fns';
 import type { GetTransactionMemberType, Transcation } from '$lib/type';
 
 export async function getTransactions(params: GetTransactionMemberType) {
-	// const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
-	// const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
-	const startDate = '2024-09-24';
-	const endDate = '2024-09-24';
+	const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
+	const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
 
-	const values = ['1000001', startDate, endDate, params.limit, params.offset];
+	const values = [params.idMember, startDate, endDate, params.limit, params.offset];
 	let where = '';
 	if (params.search && params.search != '') {
 		where +=
@@ -35,6 +33,7 @@ export async function getTransactions(params: GetTransactionMemberType) {
     left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
     where t.id_member = $1 and transaction_date between $2 and $3 ${where}
     order by transaction_date desc, transaction_time desc limit $4 offset $5`;
+
 	const result = await db.query({
 		text: query,
 		values

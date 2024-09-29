@@ -2,9 +2,17 @@ import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { getStoreByMember } from '$lib/models/store';
 
-export const load: LayoutServerLoad = async (events) => {
-	const session = await events.locals.auth();
-	const pathname = events.url.pathname;
+export const load: LayoutServerLoad = async ({ locals, url }) => {
+	const session = await locals.auth();
+	const pathname = url.pathname;
+	const host = url.hostname;
+
+	if (host != 'kingplay.id') {
+		const store = await getStoreByMember(session?.user?.id!);
+		if ((store.domain ?? store.custom_domain) != host) {
+			redirect(307, '/');
+		}
+	}
 
 	if (pathname.startsWith('/dashboard') || pathname.startsWith('/onboarding')) {
 		if (!session?.user) {

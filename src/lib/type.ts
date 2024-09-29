@@ -26,6 +26,30 @@ export type GameResponse = {
 	form_fields: [];
 };
 
+export type StorePromo = {
+	imageUrl: string;
+	desc?: string;
+	url?: string;
+};
+
+export type Store = {
+	idMember: string;
+	name: string;
+	description: string;
+	email: string;
+	phone: string;
+	domain: string;
+	logo: string;
+	promo?: StorePromo[];
+	info?: {
+		fb?: string;
+		tiktok?: string;
+		ig?: string;
+		twitter?: string;
+		telegram?: string;
+	};
+};
+
 export type Product = {
 	id: string;
 	name: string;

@@ -1,7 +1,14 @@
 import type { Adapter, AdapterSession } from '@auth/core/adapters';
 import type { Pool } from 'pg';
 
-import { User, type CreateUserParams } from '$lib/models/user';
+import {
+	createSession,
+	createUser,
+	getAccountByProvider,
+	getUserByEmail,
+	getUserById,
+	type CreateUserParams
+} from '$lib/models/user';
 
 export function CustomAdapter(db: Pool): Adapter {
 	return {
@@ -12,7 +19,7 @@ export function CustomAdapter(db: Pool): Adapter {
 				emailVerified: data.emailVerified,
 				image: data.image!
 			};
-			const { data: userData } = await User.createUser(payload);
+			const { data: userData } = await createUser(payload);
 
 			return {
 				id: userData.id_member,
@@ -23,7 +30,7 @@ export function CustomAdapter(db: Pool): Adapter {
 			};
 		},
 		getUser: async (id) => {
-			const row = await User.getUserById(id);
+			const row = await getUserById(id);
 			if (row) {
 				return {
 					id: row.id_member,
@@ -37,7 +44,7 @@ export function CustomAdapter(db: Pool): Adapter {
 			return null;
 		},
 		getUserByEmail: async (email) => {
-			const user = await User.getUserByEmail(email);
+			const user = await getUserByEmail(email);
 			if (user) {
 				return {
 					id: user.id_member,
@@ -51,7 +58,7 @@ export function CustomAdapter(db: Pool): Adapter {
 			return null;
 		},
 		getUserByAccount: async ({ providerAccountId, provider }) => {
-			const user = await User.getAccountByProvider(providerAccountId, provider);
+			const user = await getAccountByProvider(providerAccountId, provider);
 			if (user) {
 				return {
 					id: user.id_member,
@@ -128,7 +135,7 @@ export function CustomAdapter(db: Pool): Adapter {
 			};
 		},
 		createSession: async (data) => {
-			await User.createSession(data);
+			await createSession(data);
 
 			return {
 				userId: data.userId,

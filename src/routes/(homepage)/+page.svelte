@@ -8,40 +8,44 @@
 	export let data: PageData;
 </script>
 
-<div class="space-y-10">
-	<section class="border border-slate-800/50 rounded-lg overflow-hidden">
-		<swiper-container
-			pagination="true"
-			autoplay-delay="2500"
-			autoplay-disable-on-interaction="false"
-			loop="true"
-		>
-			{#each data.listPromo as promo}
-				<swiper-slide>
-					<a href={promo.url}>
-						<img
-							src={promo.image}
-							alt={promo.alt ?? 'promo image'}
-							class="w-full aspect-[21/9] object-cover"
-						/>
-					</a>
-				</swiper-slide>
-			{/each}
-		</swiper-container>
-	</section>
+<div class="space-y-6 md:space-y-10">
+	{#if data.store?.promo && data.store.promo.length > 0}
+		<section class="border border-slate-800/50 rounded-lg overflow-hidden aspect-[21/9]">
+			<swiper-container
+				pagination="true"
+				autoplay-delay="2500"
+				autoplay-disable-on-interaction="false"
+				loop="true"
+			>
+				{#each data.store?.promo as promo}
+					<swiper-slide>
+						<a href={promo.url}>
+							<img
+								src={promo.imageUrl}
+								alt={promo.desc ?? 'promo image'}
+								class="w-full aspect-[21/9] object-cover"
+							/>
+						</a>
+					</swiper-slide>
+				{/each}
+			</swiper-container>
+		</section>
+	{/if}
 
-	<section
-		class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
-		style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
-	>
-		<div class="bg-neutral-800/60 py-8 flex flex-col items-center">
-			<h1 class="text-2xl font-bold mb-4 text-center shadown drop-shadow-lg">
-				Join Sekarang<br />buat <span class="text-{data.color}-500">Website Topup Game</span><br
-				/>kamu sendiri!
-			</h1>
-			<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
-		</div>
-	</section>
+	{#if data.isMaster}
+		<section
+			class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
+			style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
+		>
+			<div class="bg-neutral-800/60 py-8 flex flex-col items-center">
+				<h1 class="text-2xl font-bold mb-4 text-center shadown drop-shadow-lg">
+					Join Sekarang<br />buat <span class="text-{data.color}-500">Website Topup Game</span><br
+					/>kamu sendiri!
+				</h1>
+				<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
+			</div>
+		</section>
+	{/if}
 
 	<section class="space-y-4">
 		<h4 class="text-xl font-medium">Topup Game</h4>
@@ -49,7 +53,7 @@
 		<div class="grid grid-cols-3 gap-4 md:gap-10 md:grid-cols-6">
 			{#each data.games as game}
 				<a href={game.slug} class="card-link">
-					<div class="space-y-4">
+					<div class="space-y-2 md:space-y-4">
 						<div class="card">
 							<img src={game.image} class="card-image" alt={game.image} />
 						</div>
@@ -60,18 +64,20 @@
 		</div>
 	</section>
 
-	<section
-		class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
-		style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
-	>
-		<div class="bg-neutral-800/60 py-8 flex flex-col items-center">
-			<h1 class="text-2xl font-bold mb-4 text-center shadown drop-shadow-lg">
-				Join Sekarang<br />buat <span class="text-{data.color}-500">Website Topup Game</span><br
-				/>kamu sendiri!
-			</h1>
-			<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
-		</div>
-	</section>
+	{#if data.isMaster}
+		<section
+			class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
+			style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
+		>
+			<div class="bg-neutral-800/60 py-8 flex flex-col items-center">
+				<h1 class="text-2xl font-bold mb-4 text-center shadown drop-shadow-lg">
+					Join Sekarang<br />buat <span class="text-{data.color}-500">Website Topup Game</span><br
+					/>kamu sendiri!
+				</h1>
+				<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
+			</div>
+		</section>
+	{/if}
 </div>
 
 <style>
@@ -85,6 +91,6 @@
 		@apply h-full w-full;
 	}
 	.card-text {
-		@apply line-clamp-2 md:line-clamp-1 text-center font-medium  transition-colors;
+		@apply line-clamp-1 text-sm md:text-base text-center font-medium  transition-colors;
 	}
 </style>

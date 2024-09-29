@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 
 import { db } from '$lib/db';
 import { CustomAdapter } from '$lib/auth/adapter';
-import { User } from '$lib/models/user';
+import { createSession, getUserByEmail } from '$lib/models/user';
 
 class InvalidInput extends CredentialsSignin {
 	code = 'bad-request';
@@ -40,7 +40,7 @@ export const { handle, signIn } = SvelteKitAuth(async ({ request, cookies }) => 
 					throw new InvalidInput();
 				}
 
-				const user = await User.getUserByEmail(credentials.email as string);
+				const user = await getUserByEmail(credentials.email as string);
 
 				if (!user || !bcrypt.compareSync(`${credentials.password}`, user.password)) {
 					throw new InvalidCredentials();
@@ -67,7 +67,7 @@ export const { handle, signIn } = SvelteKitAuth(async ({ request, cookies }) => 
 				if (user && 'id' in user) {
 					const sessionToken = crypto.randomUUID();
 					const sessionExpiry = new Date(Date.now() + SESSION_CONFIG.maxAge * 1000);
-					await User.createSession({
+					await createSession({
 						sessionToken: sessionToken,
 						userId: user.id!,
 						expires: sessionExpiry

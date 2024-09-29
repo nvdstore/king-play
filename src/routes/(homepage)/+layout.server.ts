@@ -1,9 +1,11 @@
 import { error } from '@sveltejs/kit';
 import { BASE_API_URL } from '$env/static/private';
 import { addDays } from 'date-fns';
-import { User } from '$lib/models/user';
+
+import { createSession } from '$lib/models/user';
+import { getStoreByDomain } from '$lib/models/store';
 import { getClientIp } from '$lib/request';
-import type { Game, GameResponse } from '$lib/type';
+import type { Game, GameResponse, Store } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
 import { themes } from './themes';
@@ -12,8 +14,38 @@ const ID_MASTER = '1000001';
 const UUID_KEY = 'uuid';
 
 export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) => {
-	// TODO: check domain, get id member by domain
-	// console.log(url.hostname);
+	let idMember = ID_MASTER;
+	let store: Store;
+
+	let host = url.hostname;
+	if (host == 'localhost') {
+		host = 'jelogaming.kingplay.id';
+	}
+
+	const storeData = await getStoreByDomain(host);
+	if (storeData && storeData.id_member) {
+		idMember = storeData.id_member;
+
+		store = {
+			idMember: storeData.id_member,
+			name: storeData.name,
+			description: storeData.description,
+			phone: storeData.phone,
+			email: storeData.email,
+			domain: storeData.custom_domain ?? storeData.domain,
+			logo: storeData.logo,
+			promo: [],
+			info: {
+				fb: storeData.fb,
+				tiktok: storeData.tiktok,
+				ig: storeData.ig,
+				telegram: storeData.telegram,
+				twitter: storeData.twitter
+			}
+		};
+	} else {
+		error(404, 'Store Not Found');
+	}
 
 	let userId = cookies.get(UUID_KEY);
 	if (!userId) {
@@ -22,11 +54,12 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 
 		// Register new user session
 		userId = crypto.randomUUID();
-		const { data, error } = await User.createSession({
-			userId: ID_MASTER,
+		const { data, error } = await createSession({
+			userId: store.idMember,
 			sessionToken: userId,
 			expires,
 			type: 'user',
+			host,
 			ip,
 			deviceInfo: request.headers.get('user-agent') ?? ''
 		});
@@ -34,6 +67,7 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 		if (error == null) {
 			cookies.set(UUID_KEY, userId, {
 				path: '/',
+				domain: host == 'localhost' ? '' : host,
 				secure: true,
 				expires,
 				httpOnly: true
@@ -79,7 +113,9 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 	return {
 		color,
 		theme,
+		store,
 		games,
-		popularGames
+		popularGames,
+		isMaster: idMember == ID_MASTER
 	};
 };

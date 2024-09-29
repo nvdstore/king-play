@@ -1,20 +1,21 @@
 import type { Actions, PageServerLoad } from './$types';
 
-import { getStoreByMember, type Store } from '$lib/models/store';
+import { getStoreByMember } from '$lib/models/store';
 import { validateEmail } from '$lib/utils/validator';
+import type { Store } from '$lib/type';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
 	const result = await getStoreByMember(session?.user?.id!);
 
 	const store: Store = {
-		id: result.id,
 		idMember: result.id_member,
 		name: result.name,
 		description: result.description,
 		phone: result.phone,
 		email: result.email,
 		domain: result.domain,
+		logo: result.logo,
 		info: {
 			fb: result.fb,
 			tiktok: result.tiktok,
