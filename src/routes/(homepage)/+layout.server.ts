@@ -19,7 +19,7 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 
 	let host = url.hostname;
 	if (host == 'localhost') {
-		host = 'jelogaming.kingplay.id';
+		host = 'kingplay.id';
 	}
 
 	const storeData = await getStoreByDomain(host);
@@ -67,7 +67,7 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 		if (error == null) {
 			cookies.set(UUID_KEY, userId, {
 				path: '/',
-				domain: host == 'localhost' ? '' : host,
+				domain: url.hostname == 'localhost' ? '' : host,
 				secure: true,
 				expires,
 				httpOnly: true

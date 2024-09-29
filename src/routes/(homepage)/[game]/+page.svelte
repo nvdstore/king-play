@@ -218,10 +218,10 @@
 								<h4 class="text-sm opacity-50">
 									{searchValue.length > 0
 										? `Pencarian produk: ${searchValue}`
-										: `Semua Produk (${filteredProducts.length})`}
+										: `Semua Produk (${filteredProducts?.length})`}
 								</h4>
 								<div class="grid grid-cols-3 gap-2">
-									{#each showAll || searchValue ? filteredProducts : filteredProducts.splice(0, 9) ?? [] as product}
+									{#each showAll || searchValue ? filteredProducts : filteredProducts?.splice(0, 9) ?? [] as product}
 										<button
 											type="button"
 											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {!product.isActive
@@ -240,7 +240,7 @@
 									{/each}
 								</div>
 							</div>
-							{#if !searchValue && filteredProducts.length >= 9}
+							{#if !searchValue && filteredProducts?.length >= 9}
 								<button
 									type="button"
 									class="flex items-center justify-center w-full text-sm gap-1"
