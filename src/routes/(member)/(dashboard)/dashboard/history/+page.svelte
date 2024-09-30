@@ -5,9 +5,9 @@
 	import { page } from '$app/stores';
 
 	import Datepicker from '$lib/components/datepicker.svelte';
-	import type { PageData } from './$types';
+	import { TransactionStatus } from '$lib/constant';
 
-	import { TransactionStatus } from '../../../../lib/constant';
+	import type { PageData } from './$types';
 	import TransactionList from '../transaction-list.svelte';
 
 	export let data: PageData;
