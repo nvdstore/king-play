@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let email: string;
 	let confirmEmail: string;
@@ -22,7 +25,7 @@
 			<input
 				bind:value={email}
 				name="email"
-				class="input"
+				class={data.theme.input}
 				type="email"
 				placeholder="Masukkan Email Anda"
 			/>
@@ -32,13 +35,13 @@
 			<input
 				bind:value={confirmEmail}
 				name="confirm-email"
-				class="input"
+				class={data.theme.input}
 				type="email"
 				placeholder="Konfirmasi Email Anda"
 			/>
 		</div>
 
 		<button class="btn btn-primary w-full" type="submit">Kirim Link</button>
-		<a href="/auth/login" class="btn btn-outline">Masuk</a>
+		<a href="/auth/login" class={data.theme.button}>Masuk</a>
 	</section>
 </form>

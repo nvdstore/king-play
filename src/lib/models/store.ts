@@ -15,6 +15,8 @@ export type UpdateStoreParams = {
 	description?: string;
 	email: string;
 	phone: string;
+	theme: string;
+	color: string;
 };
 
 export async function getStoreByMember(memberId: string) {
@@ -22,7 +24,7 @@ export async function getStoreByMember(memberId: string) {
 		'select * from mt_store s left join mt_store_info msi on msi.id_store = s.id where id_member = $1',
 		[memberId]
 	);
-	return res.rows[0] ?? null;
+	return res?.rows[0] ?? null;
 }
 
 export async function createStore(data: CreateStoreParams) {
@@ -34,7 +36,7 @@ export async function createStore(data: CreateStoreParams) {
 
 		return {
 			error: null,
-			data: res.rows[0] ?? null
+			data: res?.rows[0] ?? null
 		};
 	} catch (error: any) {
 		console.log(error);
@@ -52,13 +54,31 @@ export async function createStore(data: CreateStoreParams) {
 	}
 }
 
-export async function updateStore(data: UpdateStoreParams) {
+export async function updateStore(params: UpdateStoreParams) {
 	try {
 		const res = await db.query(
-			'insert into mt_store (id_member, name, description, email, phone) values ($1, $2, $3, $4, $5) returning id',
-			[data.memberId, data.name, data.description, data.email, data.phone]
+			'update mt_store set name = $2, description = $3, email = $4, phone = $5, theme = $6, color = $7 where id_member = $1 returning id',
+			[
+				params.memberId,
+				params.name,
+				params.description,
+				params.email,
+				params.phone,
+				params.theme,
+				params.color
+			]
 		);
-	} catch (error) {}
+		return {
+			error: null,
+			data: res?.rows[0] ?? null
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
 }
 
 export async function getStoreByDomain(host: string) {
@@ -66,5 +86,5 @@ export async function getStoreByDomain(host: string) {
 		'select * from mt_store ms left join mt_store_info msi on msi.id_store = ms.id where domain = $1 or custom_domain = $1 limit 1',
 		[host]
 	);
-	return res.rows[0] ?? null;
+	return res?.rows[0] ?? null;
 }

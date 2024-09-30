@@ -39,7 +39,9 @@ export type Store = {
 	email: string;
 	phone: string;
 	domain: string;
-	logo: string;
+	logo?: string;
+	theme?: string;
+	color?: string;
 	promo?: StorePromo[];
 	info?: {
 		fb?: string;

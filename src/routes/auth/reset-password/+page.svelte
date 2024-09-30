@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let password: string;
 	let confirmPassword: string;
@@ -20,7 +23,7 @@
 			<input
 				bind:value={password}
 				name="password"
-				class="input"
+				class={data.theme.input}
 				type="password"
 				placeholder="Masukkan Kata Sandi Anda"
 			/>
@@ -30,7 +33,7 @@
 			<input
 				bind:value={confirmPassword}
 				name="confirm-password"
-				class="input"
+				class="data.theme.input"
 				type="password"
 				placeholder="Konfirmasi Kata Sandi Baru Anda"
 			/>

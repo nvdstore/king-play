@@ -25,9 +25,7 @@
 
 <style>
 	:root {
-		--toastBackground: #efadabec;
-		--toastBarBackground: #ef4444;
-		--toastColor: #123456;
+		--toastBarBackground: white;
 		--toastPadding: 5px 10px 5px 10px;
 		--toastBorderRadius: 0.5rem;
 	}

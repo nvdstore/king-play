@@ -1,8 +1,20 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import { Save } from 'lucide-svelte';
-	import type { PageData } from './$types';
+	import { applyAction, enhance } from '$app/forms';
 
+	import type { ActionData, PageData } from './$types';
+	import { toast } from '@zerodevx/svelte-toast';
+
+	export let form: ActionData;
 	export let data: PageData;
+
+	let name = form?.values.name ?? data.store.name;
+	let description = form?.values.desc ?? data.store.description;
+	let email = form?.values.email ?? data.store.email;
+	let phone = form?.values.phone ?? data.store.phone;
+	let theme = form?.values.theme ?? data.store.theme;
+	let color = form?.values.color ?? data.store.color;
 </script>
 
 <section class="space-y-6">
@@ -13,25 +25,44 @@
 		</p>
 	</header>
 
-	<form method="POST" action="?/store" class="space-y-4">
-		<h4 class="font-semibold text-red-500">Informasi Toko</h4>
+	<form
+		method="POST"
+		use:enhance={() => {
+			return async ({ result }) => {
+				await applyAction(result);
+
+				if (form?.message) {
+					toast.push(form?.message);
+				}
+			};
+		}}
+		action="?/store"
+		class="space-y-4"
+		enctype="multipart/form-data"
+	>
+		<h4 class="font-semibold text-red-500">Sesuaikan Website Toko</h4>
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
 				<label for="store-name" class="input-label">Nama Toko</label>
 				<input
 					type="text"
 					name="store-name"
-					value={data.store.name ?? ''}
-					class="input"
+					value={name}
+					class="input {form?.errors.storeName ? 'input-error' : ''}"
 					placeholder="Nama toko"
 				/>
+				{#if form?.errors.name}
+					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
+						{form.errors.name}
+					</p>
+				{/if}
 			</div>
 			<div class="input-group">
 				<label for="store-desc" class="input-label">Deskripsi Toko</label>
 				<input
 					type="text"
 					name="store-desc"
-					value={data.store.description ?? ''}
+					value={description}
 					class="input"
 					placeholder="Deskripsi toko"
 				/>
@@ -41,20 +72,50 @@
 				<input
 					type="text"
 					name="store-email"
-					value={data.store.email ?? ''}
-					class="input"
+					value={email}
+					class="input {form?.errors.storeEmail ? 'input-error' : ''}"
 					placeholder="Email toko"
 				/>
+				{#if form?.errors.email}
+					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
+						{form.errors.email}
+					</p>
+				{/if}
 			</div>
 			<div class="input-group">
 				<label for="store-phone" class="input-label">Nomor WhatsApp</label>
 				<input
 					type="text"
 					name="store-phone"
-					value={data.store.phone ?? ''}
-					class="input"
+					value={phone}
+					class="input {form?.errors.storePhone ? 'input-error' : ''}"
 					placeholder="Nomor whatsapp toko"
 				/>
+				{#if form?.errors.phone}
+					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
+						{form.errors.phone}
+					</p>
+				{/if}
+			</div>
+			<div class="input-group">
+				<label for="theme" class="input-label">Logo</label>
+				<input type="file" class="input" name="store-logo" />
+			</div>
+
+			<div class="input-group">
+				<label for="theme" class="input-label">Tema</label>
+				<select name="store-theme" class="input" value={theme}>
+					<option value="light">Terang (Default)</option>
+					<option value="dark">Gelap</option>
+				</select>
+			</div>
+			<div class="input-group">
+				<label for="theme" class="input-label">Warna</label>
+				<select name="store-color" class="input" value={color}>
+					<option value="blue">Biru</option>
+					<option value="yellow">Kuning</option>
+					<option value="red">Merah</option>
+				</select>
 			</div>
 		</div>
 		<button type="submit" class="btn btn-primary w-full md:w-auto">

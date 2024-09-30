@@ -4,9 +4,10 @@
 	import { toast } from '@zerodevx/svelte-toast';
 	import { applyAction, enhance } from '$app/forms';
 
-	import type { ActionData } from './$types';
+	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
+	export let data: PageData;
 
 	let loading = false;
 </script>
@@ -17,15 +18,15 @@
 		loading = true;
 
 		return async ({ result }) => {
-			const errors = result.data.errors;
-			const values = result.data.values;
+			const errors = form?.errors;
+			const values = form?.values;
 
-			if (errors.length > 0) {
+			if (errors) {
 				loading = false;
 				await applyAction(result);
 			} else {
 				toast.push('Berhasil melakukan pendaftaran');
-				await signIn('credentials', { email: values.email, password: values.password });
+				await signIn('credentials', { email: values?.email, password: values?.password });
 			}
 		};
 	}}
@@ -43,7 +44,6 @@
 			<span>
 				{form.errors.message}
 			</span>
-			<!-- <button on:click={() => (form.errors.message = '')} class="ml-2"><X size={16} /></button> -->
 		</div>
 	{/if}
 
@@ -53,7 +53,7 @@
 			<input
 				name="name"
 				value={form?.values.name ?? ''}
-				class="input {form?.errors.name ? 'input-error' : ''}"
+				class="{data.theme.input} {form?.errors.name ? 'input-error' : ''}"
 				type="text"
 				placeholder="Masukkan Nama Anda"
 			/>
@@ -68,7 +68,7 @@
 			<input
 				name="email"
 				value={form?.values.email ?? ''}
-				class="input {form?.errors.email ? 'input-error' : ''}"
+				class="{data.theme.input} {form?.errors.email ? 'input-error' : ''}"
 				type="email"
 				placeholder="Masukkan Email Anda"
 			/>
@@ -84,7 +84,7 @@
 				<input
 					name="password"
 					value={form?.values.password ?? ''}
-					class="input {form?.errors.password ? 'input-error' : ''}"
+					class="{data.theme.input} {form?.errors.password ? 'input-error' : ''}"
 					type="password"
 					placeholder="Masukkan kata sandi Anda"
 				/>
@@ -99,7 +99,7 @@
 				<input
 					name="confirm-password"
 					value={form?.values.confirmPassword ?? ''}
-					class="input {form?.errors.confirmPassword ? 'input-error' : ''}"
+					class="{data.theme.input} {form?.errors.confirmPassword ? 'input-error' : ''}"
 					type="password"
 					placeholder="Konfirmasi kata sandi"
 				/>
@@ -129,8 +129,8 @@
 			{/if}
 		</div>
 		<button class="btn btn-primary w-full" type="submit" disabled={loading}>Daftar</button>
-		<p class="text-center text-xs text-neutral-300">Atau</p>
-		<button class="btn w-full space-x-2" type="button">
+		<p class="text-center text-xs opacity-75">Atau</p>
+		<button class="{data.theme.button} w-full space-x-2" type="button">
 			<svg
 				role="img"
 				viewBox="0 0 24 24"
@@ -146,7 +146,7 @@
 			<span>Daftar dengan Google</span>
 		</button>
 
-		<p class="text-center text-xs text-neutral-300">Sudah punya akun?</p>
-		<a href="/auth/login" class="btn btn-outline">Masuk</a>
+		<p class="text-center text-xs opacity-75">Sudah punya akun?</p>
+		<a href="/auth/login" class={data.theme.button}>Masuk</a>
 	</section>
 </form>

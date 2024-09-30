@@ -4,9 +4,11 @@
 	import { page } from '$app/stores';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { goto } from '$app/navigation';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let loading = false;
-
 	let email: string;
 	let password: string;
 
@@ -38,7 +40,11 @@
 		<p class="text-sm">Masuk dengan akun yang telah Anda daftarkan.</p>
 	</header>
 	<section class="space-y-4">
-		<button type="button" on:click={() => signIn('google')} class="btn w-full space-x-2">
+		<button
+			type="button"
+			on:click={() => signIn('google')}
+			class="{data.theme.button} w-full space-x-2"
+		>
 			<svg
 				role="img"
 				viewBox="0 0 24 24"
@@ -53,13 +59,13 @@
 			</svg>
 			<span>Masuk dengan Google</span>
 		</button>
-		<p class="text-center text-xs text-neutral-300">Atau masuk dengan Email</p>
+		<p class="text-center text-xs opacity-75">Atau masuk dengan Email</p>
 		<div class="input-group w-full">
 			<label for="email" class="input-label">Email</label>
 			<input
 				bind:value={email}
 				name="email"
-				class="input"
+				class={data.theme.input}
 				type="email"
 				placeholder="Masukkan Email Anda"
 			/>
@@ -70,7 +76,7 @@
 				<input
 					bind:value={password}
 					name="password"
-					class="input"
+					class={data.theme.input}
 					type="password"
 					placeholder="Masukkan Kata Sandi Anda"
 				/>
@@ -79,8 +85,8 @@
 				<a href="/auth/forgot-password" class="text-xs hover:underline">Lupa kata sandi?</a>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary w-full" disabled={loading}>Masuk</button>
-		<p class="text-center text-xs text-neutral-300">Belum punya akun?</p>
-		<a href="/auth/register" class="btn btn-outline">Daftar Sekarang</a>
+		<button type="submit" class="btn btn-red w-full" disabled={loading}>Masuk</button>
+		<p class="text-center text-xs opacity-75">Belum punya akun?</p>
+		<a href="/auth/register" class={data.theme.button}>Daftar Sekarang</a>
 	</section>
 </form>
