@@ -15,6 +15,7 @@ const UUID_KEY = 'uuid';
 
 export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) => {
 	const host = url.hostname;
+	// const host = 'jelogaming.kingplay.id';
 
 	let idMember = ID_MASTER;
 	let store: Store;
@@ -32,6 +33,8 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 			email: storeData.email,
 			domain: storeData.custom_domain ?? storeData.domain,
 			logo: storeData.logo,
+			theme: storeData.theme,
+			color: storeData.color,
 			promo: [],
 			info: {
 				fb: storeData.fb,
