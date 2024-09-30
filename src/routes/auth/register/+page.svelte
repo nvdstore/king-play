@@ -18,12 +18,13 @@
 		loading = true;
 
 		return async ({ result }) => {
+			await applyAction(result);
+
 			const errors = form?.errors;
 			const values = form?.values;
 
 			if (errors) {
 				loading = false;
-				await applyAction(result);
 			} else {
 				toast.push('Berhasil melakukan pendaftaran');
 				await signIn('credentials', { email: values?.email, password: values?.password });
