@@ -7,11 +7,8 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 	const pathname = url.pathname;
 	const host = url.hostname;
 
-	if (host != 'kingplay.id') {
-		const store = await getStoreByMember(session?.user?.id!);
-		if ((store.domain ?? store.custom_domain) != host) {
-			redirect(307, '/');
-		}
+	if (host != 'localhost' && host != 'kingplay.id') {
+		redirect(307, '/');
 	}
 
 	if (pathname.startsWith('/dashboard') || pathname.startsWith('/onboarding')) {

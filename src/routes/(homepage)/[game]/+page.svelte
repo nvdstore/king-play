@@ -112,7 +112,9 @@
 	$: filteredProducts =
 		searchValue.length > 0
 			? data.products.filter((val) => val.name.toLowerCase().includes(searchValue.toLowerCase()))
-			: data.products;
+			: showAll
+				? data.products
+				: data.products.slice(0, 9);
 </script>
 
 <div class="flex flex-col md:flex-row items-start gap-6">
@@ -221,7 +223,7 @@
 										: `Semua Produk (${filteredProducts?.length})`}
 								</h4>
 								<div class="grid grid-cols-3 gap-2">
-									{#each showAll || searchValue ? filteredProducts : filteredProducts?.splice(0, 9) ?? [] as product}
+									{#each showAll || searchValue ? filteredProducts : filteredProducts ?? [] as product}
 										<button
 											type="button"
 											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {!product.isActive
