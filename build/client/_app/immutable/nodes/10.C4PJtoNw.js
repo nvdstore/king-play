@@ -1,1 +1,0 @@
-import{s as n,t as o,d as r,i as c,n as e,f as m}from"../chunks/scheduler.6KT2eGMr.js";import{S as l,i as p}from"../chunks/index.B8s6-p5L.js";function f(s){let t;return{c(){t=o("Kebijakan Privasi")},l(a){t=r(a,"Kebijakan Privasi")},m(a,i){c(a,t,i)},p:e,i:e,o:e,d(a){a&&m(t)}}}class x extends l{constructor(t){super(),p(this,t,null,f,n,{})}}export{x as component};
