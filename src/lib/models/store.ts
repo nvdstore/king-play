@@ -122,6 +122,10 @@ export async function updateStoreInfo(params: UpdateStoreInfoParams) {
 }
 
 export async function getStoreByDomain(host: string) {
+	if (host == 'localhost') {
+		host = 'www.kingplay.id';
+	}
+
 	const res = await db.query(
 		'select * from mt_store ms left join mt_store_info msi on msi.id_store = ms.id where domain = $1 or custom_domain = $1 limit 1',
 		[host]

@@ -5,10 +5,12 @@
 
 	import type { ActionData, PageData } from './$types';
 	import { toast } from '@zerodevx/svelte-toast';
+	import { invalidateAll } from '$app/navigation';
 
 	export let form: ActionData;
 	export let data: PageData;
 
+	let loadingStoreForm = false;
 	let name = form?.store?.values.name ?? data.store.name;
 	let description = form?.store?.values.desc ?? data.store.description;
 	let email = form?.store?.values.email ?? data.store.email;
@@ -16,6 +18,7 @@
 	let theme = form?.store?.values.theme ?? data.store.theme;
 	let color = form?.store?.values.color ?? data.store.color;
 
+	let loadingStoreInfoForm = false;
 	let tiktok = form?.social?.values.tiktok ?? data.store.info?.tiktok;
 	let fb = form?.social?.values.fb ?? data.store.info?.fb;
 	let ig = form?.social?.values.ig ?? data.store.info?.ig;
@@ -34,12 +37,15 @@
 	<form
 		method="POST"
 		use:enhance={() => {
+			loadingStoreForm = true;
+
 			return async ({ result }) => {
 				await applyAction(result);
-
 				if (form?.store?.message) {
 					toast.push(form?.store?.message);
 				}
+				invalidateAll();
+				loadingStoreForm = false;
 			};
 		}}
 		action="?/store"
@@ -124,7 +130,7 @@
 				</select>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary w-full md:w-auto">
+		<button type="submit" class="btn btn-primary w-full md:w-auto" disabled={loadingStoreForm}>
 			<Save class="mr-2" size={18} />Simpan Perubahan
 		</button>
 	</form>
@@ -132,12 +138,15 @@
 	<form
 		method="POST"
 		use:enhance={() => {
+			loadingStoreInfoForm = true;
+
 			return async ({ result }) => {
 				await applyAction(result);
-
 				if (form?.social?.message) {
 					toast.push(form?.social?.message);
 				}
+				invalidateAll();
+				loadingStoreInfoForm = false;
 			};
 		}}
 		action="?/social"
@@ -196,7 +205,7 @@
 				/>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-primary w-full md:w-auto">
+		<button type="submit" class="btn btn-primary w-full md:w-auto" disabled={loadingStoreInfoForm}>
 			<Save class="mr-2" size={18} />Simpan Perubahan
 		</button>
 	</form>

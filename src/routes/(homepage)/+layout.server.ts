@@ -8,26 +8,24 @@ import { getClientIp } from '$lib/request';
 import type { Game, GameResponse, Store } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
-import { themes } from './themes';
+import { themes } from '$lib/themes';
 
 const ID_MASTER = '1000001';
 const UUID_KEY = 'uuid';
 
 export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) => {
+	const host = url.hostname;
+
 	let idMember = ID_MASTER;
 	let store: Store;
-
-	let host = url.hostname;
-	if (host == 'localhost') {
-		host = 'kingplay.id';
-	}
 
 	const storeData = await getStoreByDomain(host);
 	if (storeData && storeData.id_member) {
 		idMember = storeData.id_member;
 
+		// this is store for domain spesific store
 		store = {
-			idMember: storeData.id_member,
+			idMember,
 			name: storeData.name,
 			description: storeData.description,
 			phone: storeData.phone,
@@ -75,12 +73,9 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) =
 		}
 	}
 
-	const getTheme = url.searchParams.get('theme');
-
 	type ThemeType = typeof themes;
-	let dataTheme: keyof ThemeType = (getTheme as 'light') ?? 'light';
-	let dataColor = 'blue';
-	const color = dataColor ?? '';
+	let dataTheme: keyof ThemeType = store.theme as 'light';
+	const color = store.color ?? 'blue';
 	const theme = themes[dataTheme ?? 'light'];
 
 	let games: Game[] = [];
