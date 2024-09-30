@@ -42,15 +42,13 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		uuid: userId
 	});
 
-	let products: Product[] = dataProducts?.map((product: any) => ({
+	const products: Product[] = dataProducts?.map((product: any) => ({
 		id: product.id_produk,
 		name: product.produk,
 		price: product.nominal,
 		icon: '',
-		isActive: true
+		isActive: product.status
 	}));
-
-	products = products.sort((a, b) => a.price - b.price);
 
 	let channels: PaymentChannelGroup[] = [];
 	let selectedProduct: Product | null = null;

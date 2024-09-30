@@ -38,17 +38,19 @@
 				{/if}
 			</a>
 			<div class="flex items-center justify-end space-x-2">
-				<div class="">
+				<div class={showSearchBox ? 'fixed left-5 right-5 md:relative' : ''}>
 					<div
 						class="{showSearchBox
 							? 'md:w-[400px]'
-							: 'max-w-[150px] md:max-w-[200px]'} transition-all relative z-50"
+							: 'max-w-24 md:max-w-[200px]'} transition-all relative z-50"
 					>
 						<div
 							class="{data.theme.bgColor} 
 							border {data.theme.border} rounded-lg overflow-hidden flex items-center space-x-2 px-3"
 						>
-							<div class="flex-1">
+							<!-- svelte-ignore a11y-click-events-have-key-events -->
+							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<div class="flex-1" on:click={() => (showSearchBox = true)}>
 								<Search size={18} class={data.theme.bgColor} />
 							</div>
 							<input
@@ -107,7 +109,7 @@
 						<!-- svelte-ignore a11y-no-static-element-interactions -->
 						<div
 							transition:fade={{ duration: 50 }}
-							class="fixed h-[300vw] md:h-[100vw] w-[100vw] top-[-20vh] right-0 block bg-neutral-900/75 z-40"
+							class="fixed h-[300vh] md:h-[100vh] w-[100vw] top-0 right-0 block bg-neutral-900/75 z-40"
 							on:click={() => (showSearchBox = false)}
 						></div>
 					{/if}
