@@ -4,6 +4,8 @@ export type Game = {
 	name: string;
 	image: string;
 	fields?: GameField[];
+	itemImg?: string;
+	itemName?: string;
 };
 
 export type GameField = {
@@ -57,7 +59,7 @@ export type Product = {
 	name: string;
 	price: number;
 	icon?: string;
-	isActive?: boolean;
+	status?: number;
 };
 
 export type PaymentChannel = {

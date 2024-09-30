@@ -14,12 +14,15 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 	if (!group || !group.id_group_produk) {
 		error(404);
 	}
+
 	const game: Game = {
 		id: group.id_group_produk,
 		slug: group?.slug ?? '',
 		name: group.nama_group_produk,
 		image: group.img,
-		fields: []
+		fields: [],
+		itemImg: group.item_img,
+		itemName: group.item_name
 	};
 
 	const fields = await getGameField(group.id_group_produk);
@@ -47,7 +50,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 		name: product.produk,
 		price: product.nominal,
 		icon: '',
-		isActive: product.status
+		status: product.status
 	}));
 
 	let channels: PaymentChannelGroup[] = [];

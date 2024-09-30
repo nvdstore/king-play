@@ -10,7 +10,7 @@ export const themes = {
 		button: 'btn btn-slate',
 		input:
 			'px-2.5 h-10 bg-slate-700/50 border border-slate-600 focus:border-slate-600 rounded-lg outline-none text-sm',
-		card: 'bg-slate-800 border border-slate-700 rounded-xl',
+		card: 'bg-slate-800 md:border border-slate-700 rounded-xl',
 		cardButton: 'bg-slate-700/50 border border-slate-600 rounded-lg outline-none',
 		cardButtonActive: 'bg-slate-700/75 rounded-lg outline-none transition-all'
 	},

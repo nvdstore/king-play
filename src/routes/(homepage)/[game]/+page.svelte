@@ -86,6 +86,8 @@
 	}
 
 	async function handleSelectProduct(product: Product) {
+		if (product.status == 0) return;
+
 		selectedProduct = product;
 		selectedChannel = null;
 
@@ -114,13 +116,13 @@
 			? data.products.filter((val) => val.name.toLowerCase().includes(searchValue.toLowerCase()))
 			: showAll
 				? data.products
-				: data.products.slice(0, 9);
+				: data.products?.slice(0, 9);
 </script>
 
 <div class="flex flex-col md:flex-row items-start gap-6">
 	<main class="md:{data.theme.card} w-full">
 		<div
-			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} border-b {data.theme
+			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} md:border-b {data.theme
 				.border} rounded-t-lg md:sticky top-[4.5rem] z-10 bg-opacity-75 backdrop-blur-md"
 		>
 			<img src={data.game.image} class="w-[72px] aspect-square rounded-lg" alt="" />
@@ -191,7 +193,8 @@
 					<div class="space-y-4 w-full">
 						<div>
 							<h4 class="font-medium">
-								<span class="md:hidden">2. </span>Pilih jumlah diamond yang ingin anda beli
+								<span class="md:hidden">2. </span>Pilih jumlah {data.game.itemName ?? 'item'} yang ingin
+								anda beli
 							</h4>
 							<p class="text-sm opacity-50">Pilih berapa banyak yang ingin anda beli</p>
 						</div>
@@ -226,17 +229,15 @@
 									{#each showAll || searchValue ? filteredProducts : filteredProducts ?? [] as product}
 										<button
 											type="button"
-											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {!product.isActive
-												? 'opacity-50'
+											class="flex flex-col items-center gap-2 cursor-pointer h-auto p-2 {product.status ==
+											0
+												? 'opacity-50 cursor-not-allowed'
 												: ''} {selectedProduct?.id != product.id
 												? data.theme.cardButton
 												: `${data.theme.cardButtonActive} border border-${data.color}-500`}"
 											on:click={() => handleSelectProduct(product)}
 										>
-											<img
-												src="https://api.duniagames.co.id/api/product/upload/image/10519365491555755415.png"
-												alt="icon"
-											/>
+											<img src={data.game.itemImg} class="w-10" alt="icon" />
 											<span class="text-sm line-clamp-2">{product.name}</span>
 										</button>
 									{/each}
