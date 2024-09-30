@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 
-import { getStoreByMember, updateStore } from '$lib/models/store';
+import { getStoreByMember, updateStore, updateStoreInfo } from '$lib/models/store';
 import { validateEmail } from '$lib/utils/validator';
 import type { Store } from '$lib/type';
 import { error } from '@sveltejs/kit';
@@ -70,10 +70,10 @@ export const actions = {
 		}
 
 		if (Object.keys(errorBag).length) {
-			return { errors: errorBag, values: valueBag, message: 'Terjadi kesalahan' };
+			return { store: { errors: errorBag, values: valueBag, message: 'Terjadi kesalahan' } };
 		}
 
-		const updateId = await updateStore({
+		const { data, error } = await updateStore({
 			memberId: session?.user?.id!,
 			name: name!,
 			description: desc ?? '',
@@ -83,13 +83,48 @@ export const actions = {
 			color: color
 		});
 
-		if (!updateId) {
-			return { errors: {}, values: valueBag, message: 'Terjadi kesalahan saat menyimpan data' };
+		if (error) {
+			return {
+				store: { errors: {}, values: valueBag, message: 'Terjadi kesalahan saat menyimpan data' }
+			};
 		}
 
-		return { errors: {}, values: valueBag, message: 'Berhasil merubah data' };
+		return { store: { errors: {}, values: valueBag, message: 'Berhasil menyimpan data' } };
 	},
-	social: async (event) => {},
-	user: async (event) => {},
-	password: async (event) => {}
+	social: async ({ locals, request }) => {
+		const session = await locals.auth();
+		const frmData = await request.formData();
+
+		const tiktok = frmData.get('store-tiktok')?.toString() ?? '';
+		const fb = frmData.get('store-fb')?.toString() ?? '';
+		const ig = frmData.get('store-ig')?.toString() ?? '';
+		const twitter = frmData.get('store-twitter')?.toString() ?? '';
+		const telegram = frmData.get('store-telegram')?.toString() ?? '';
+
+		let errorBag: Record<string, string> = {};
+		let valueBag = {
+			tiktok,
+			fb,
+			ig,
+			twitter,
+			telegram
+		};
+
+		const { data, error } = await updateStoreInfo({
+			memberId: session?.user?.id!,
+			tiktok,
+			fb,
+			ig,
+			twitter,
+			telegram
+		});
+
+		if (error) {
+			return {
+				social: { errors: {}, values: valueBag, message: 'Terjadi kesalahan saat menyimpan data' }
+			};
+		}
+
+		return { social: { errors: {}, values: valueBag, message: 'Berhasil menyimpan data' } };
+	}
 } satisfies Actions;

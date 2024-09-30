@@ -9,12 +9,18 @@
 	export let form: ActionData;
 	export let data: PageData;
 
-	let name = form?.values.name ?? data.store.name;
-	let description = form?.values.desc ?? data.store.description;
-	let email = form?.values.email ?? data.store.email;
-	let phone = form?.values.phone ?? data.store.phone;
-	let theme = form?.values.theme ?? data.store.theme;
-	let color = form?.values.color ?? data.store.color;
+	let name = form?.store?.values.name ?? data.store.name;
+	let description = form?.store?.values.desc ?? data.store.description;
+	let email = form?.store?.values.email ?? data.store.email;
+	let phone = form?.store?.values.phone ?? data.store.phone;
+	let theme = form?.store?.values.theme ?? data.store.theme;
+	let color = form?.store?.values.color ?? data.store.color;
+
+	let tiktok = form?.social?.values.tiktok ?? data.store.info?.tiktok;
+	let fb = form?.social?.values.fb ?? data.store.info?.fb;
+	let ig = form?.social?.values.ig ?? data.store.info?.ig;
+	let twitter = form?.social?.values.twitter ?? data.store.info?.twitter;
+	let telegram = form?.social?.values.telegram ?? data.store.info?.telegram;
 </script>
 
 <section class="space-y-6">
@@ -31,8 +37,8 @@
 			return async ({ result }) => {
 				await applyAction(result);
 
-				if (form?.message) {
-					toast.push(form?.message);
+				if (form?.store?.message) {
+					toast.push(form?.store?.message);
 				}
 			};
 		}}
@@ -48,12 +54,12 @@
 					type="text"
 					name="store-name"
 					value={name}
-					class="input {form?.errors.storeName ? 'input-error' : ''}"
+					class="input {form?.store?.errors.name ? 'input-error' : ''}"
 					placeholder="Nama toko"
 				/>
-				{#if form?.errors.name}
+				{#if form?.store?.errors.name}
 					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.name}
+						{form.store?.errors.name}
 					</p>
 				{/if}
 			</div>
@@ -73,12 +79,12 @@
 					type="text"
 					name="store-email"
 					value={email}
-					class="input {form?.errors.storeEmail ? 'input-error' : ''}"
+					class="input {form?.store?.errors.storeEmail ? 'input-error' : ''}"
 					placeholder="Email toko"
 				/>
-				{#if form?.errors.email}
+				{#if form?.store?.errors.email}
 					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.email}
+						{form.store?.errors.email}
 					</p>
 				{/if}
 			</div>
@@ -88,12 +94,12 @@
 					type="text"
 					name="store-phone"
 					value={phone}
-					class="input {form?.errors.storePhone ? 'input-error' : ''}"
+					class="input {form?.store?.errors.storePhone ? 'input-error' : ''}"
 					placeholder="Nomor whatsapp toko"
 				/>
-				{#if form?.errors.phone}
+				{#if form?.store?.errors.phone}
 					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
-						{form.errors.phone}
+						{form.store?.errors.phone}
 					</p>
 				{/if}
 			</div>
@@ -123,7 +129,20 @@
 		</button>
 	</form>
 
-	<form method="POST" action="?/social" class="space-y-4">
+	<form
+		method="POST"
+		use:enhance={() => {
+			return async ({ result }) => {
+				await applyAction(result);
+
+				if (form?.social?.message) {
+					toast.push(form?.social?.message);
+				}
+			};
+		}}
+		action="?/social"
+		class="space-y-4"
+	>
 		<h4 class="font-semibold text-red-500">Sosial Media</h4>
 		<div class="grid md:grid-cols-2 gap-4">
 			<div class="input-group">
@@ -131,9 +150,9 @@
 				<input
 					type="text"
 					name="store-tiktok"
-					value={data.store?.info?.tiktok ?? ''}
+					value={tiktok}
 					class="input"
-					placeholder="fb.com/kinggaming"
+					placeholder="tiktok.com/kinggaming"
 				/>
 			</div>
 			<div class="input-group">
@@ -141,9 +160,9 @@
 				<input
 					type="text"
 					name="store-fb"
-					value={data.store?.info?.fb ?? ''}
+					value={fb}
 					class="input"
-					placeholder="instagram.com/kinggaming"
+					placeholder="ig.com/kinggaming"
 				/>
 			</div>
 			<div class="input-group">
@@ -151,7 +170,7 @@
 				<input
 					type="text"
 					name="store-ig"
-					value={data.store?.info?.ig ?? ''}
+					value={ig}
 					class="input"
 					placeholder="instagram.com/kinggaming"
 				/>
@@ -161,7 +180,7 @@
 				<input
 					type="text"
 					name="store-twitter"
-					value={data.store?.info?.twitter ?? ''}
+					value={twitter}
 					class="input"
 					placeholder="x.com/kinggaming"
 				/>
@@ -171,7 +190,7 @@
 				<input
 					type="text"
 					name="store-tgram"
-					value={data.store?.info?.telegram ?? ''}
+					value={telegram}
 					class="input"
 					placeholder="t.me/6280.."
 				/>

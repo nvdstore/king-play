@@ -19,6 +19,15 @@ export type UpdateStoreParams = {
 	color: string;
 };
 
+export type UpdateStoreInfoParams = {
+	memberId: string;
+	tiktok?: string;
+	fb?: string;
+	ig?: string;
+	twitter?: string;
+	telegram?: string;
+};
+
 export async function getStoreByMember(memberId: string) {
 	const res = await db.query(
 		'select * from mt_store s left join mt_store_info msi on msi.id_store = s.id where id_member = $1',
@@ -71,6 +80,37 @@ export async function updateStore(params: UpdateStoreParams) {
 		return {
 			error: null,
 			data: res?.rows[0] ?? null
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
+}
+
+export async function updateStoreInfo(params: UpdateStoreInfoParams) {
+	try {
+		const store = await db.query('select id from mt_store where id_member = $1', [params.memberId]);
+		const storeId = store?.rows[0].id;
+		console.log(storeId);
+
+		let result;
+		result = await db.query(
+			`update mt_store_info set tiktok = $2, fb = $3, ig = $4, twitter = $5, telegram = $6 where id_store = $1 returning id;`,
+			[storeId, params.tiktok, params.fb, params.ig, params.twitter, params.telegram]
+		);
+		if (!result?.rows || result?.rows.length <= 0) {
+			result = await db.query(
+				`insert into mt_store_info (id_store, tiktok, fb, ig, twitter, telegram) values ($1, $2, $3, $4, $5, $6);`,
+				[storeId, params.tiktok, params.fb, params.ig, params.twitter, params.telegram]
+			);
+		}
+
+		return {
+			error: null,
+			data: result?.rows[0] ?? null
 		};
 	} catch (error) {
 		console.log(error);
