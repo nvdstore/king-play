@@ -1,5 +1,6 @@
 import type { Adapter, AdapterSession } from '@auth/core/adapters';
 import type { Pool } from 'pg';
+import { db as DB } from '$lib/db';
 
 import {
 	createSession,
@@ -10,7 +11,7 @@ import {
 	type CreateUserParams
 } from '$lib/models/user';
 
-export function CustomAdapter(db: Pool): Adapter {
+export function CustomAdapter(db: typeof DB): Adapter {
 	return {
 		createUser: async ({ id: _id, ...data }) => {
 			const payload: CreateUserParams = {
@@ -77,7 +78,7 @@ export function CustomAdapter(db: Pool): Adapter {
 				data.name,
 				data.image
 			]);
-			const row = res.rows[0];
+			const row = res?.rows[0];
 			return {
 				id: row.id_member,
 				name: row.name,
@@ -116,7 +117,7 @@ export function CustomAdapter(db: Pool): Adapter {
 				'select * from sessions s left join mt_member mm on mm.id_member = s.user_id where session_token = $1',
 				[sessionToken]
 			);
-			const row = res.rows[0];
+			const row = res?.rows[0];
 			if (!row) return null;
 
 			return {
@@ -179,7 +180,7 @@ export function CustomAdapter(db: Pool): Adapter {
 				'select * from accounts where provider_account_id = $1 and provider = $3',
 				[providerAccountId, provider]
 			);
-			const row = res.rows[0];
+			const row = res?.rows[0];
 
 			return {
 				provider: row.provider,

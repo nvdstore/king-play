@@ -30,9 +30,7 @@
 <section class="space-y-6">
 	<header class="space-y-1" id="store">
 		<h2 class="text-xl font-bold">Pengaturan Toko</h2>
-		<p class="text-sm">
-			Informasi ini bersifat rahasia, jadi berhati-hatilah dengan apa yang Anda bagikan..
-		</p>
+		<p class="text-sm">Kelola toko Anda dengan mudah melalui menu Pengaturan Toko.</p>
 	</header>
 
 	<form

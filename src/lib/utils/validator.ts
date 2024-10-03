@@ -1,23 +1,24 @@
 export function validateEmail(email: string) {
-	if (
-		/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(
-			email
-		)
-	) {
-		return true;
-	}
-
-	return false;
+	return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
 }
 
 export function checkDomain(domain: string) {
-	if (
-		/^(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{2,63}(?<!-)$/.test(
-			domain
-		)
-	) {
-		return true;
-	}
+	return /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{2,63}(?<!-)$/.test(
+		domain
+	);
+}
 
-	return false;
+export function validatePassword(password: string) {
+	const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
+
+	// Explanation:
+	// ^               : Start of string
+	// (?=.*[a-z])     : Ensure string has at least one lowercase letter
+	// (?=.*[A-Z])     : Ensure string has at least one uppercase letter
+	// (?=.*\d)        : Ensure string has at least one digit
+	// (?=.*[@$!%*?&#]): Ensure string has at least one special character
+	// [A-Za-z\d@$!%*?&#]{8,} : Ensure string is at least 8 characters long and contains allowed characters
+	// $               : End of string
+
+	return passwordRegex.test(password);
 }

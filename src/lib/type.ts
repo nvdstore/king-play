@@ -1,3 +1,12 @@
+export type UserInfo = {
+	idMember: string;
+	username: string;
+	email: string;
+	name: string;
+	image: string;
+	balance: string;
+};
+
 export type Game = {
 	id: number;
 	slug: string;

@@ -34,12 +34,9 @@ export async function getTransactions(params: GetTransactionMemberType) {
     where t.id_member = $1 and transaction_date between $2 and $3 ${where}
     order by transaction_date desc, transaction_time desc limit $4 offset $5`;
 
-	const result = await db.query({
-		text: query,
-		values
-	});
+	const result = await db.query(query, values);
 
-	const data = result.rows.length > 0 ? result.rows : [];
+	const data = result?.rows && result?.rows.length > 0 ? result?.rows : [];
 
 	const transactions: Transcation[] = data.map((trx) => {
 		const statusTrx = trx.response_code;
@@ -71,4 +68,40 @@ export async function getTransactions(params: GetTransactionMemberType) {
 		data: transactions,
 		count: data[0]?.full_count ?? 0
 	};
+}
+
+export async function getResumeTrx(idMember: string) {
+	const now = format(new Date(), 'yyyy-MM-dd');
+
+	let statusses = ['waiting', 'pending', 'success', 'totalnum'];
+	let data: any = {};
+	for (let id = 0; id < statusses.length; id++) {
+		const status = statusses[id];
+
+		let where = '';
+		if (status == 'waiting') {
+			where = ' and (coalesce(i.status::int, 0) = 0 or coalesce(i.flag::int, 0) = 0) ';
+		} else if (status == 'pending') {
+			where =
+				" and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code <> '00')";
+		} else if (status == 'success') {
+			where =
+				" and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code = '00')";
+		}
+
+		const query = `select count(*) as total, sum(nominal) as total_nominal from transaksi t
+		left join invoice i on i.id_invoice = t.id_invoice 
+    where t.id_member = $1 and transaction_date = $2 ${where}`;
+
+		const result = await db.query(query, [idMember, now]);
+		if (status == 'totalnum') {
+			Object.assign(data, { totalnum: result?.rows[0]?.total_nominal ?? 0 });
+		} else {
+			Object.assign(data, {
+				[status]: result?.rows[0]?.total ?? 0
+			});
+		}
+	}
+
+	return { ...data };
 }

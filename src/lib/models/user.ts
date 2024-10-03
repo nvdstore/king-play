@@ -1,4 +1,5 @@
 import { db } from '$lib/db';
+import bcrypt from 'bcrypt';
 
 export type CreateUserParams = {
 	name: string;
@@ -6,6 +7,17 @@ export type CreateUserParams = {
 	emailVerified: Date | null;
 	password?: string;
 	image?: string;
+};
+
+export type UpdateUserParams = {
+	idMember: string;
+	name: string;
+	email: string;
+};
+
+export type UpdatePasswordParams = {
+	idMember: string;
+	password: string;
 };
 
 export type CreateSessionParams = {
@@ -20,24 +32,24 @@ export type CreateSessionParams = {
 
 export async function getUserById(id: string) {
 	const res = await db.query('select * from mt_member where id_member = $1', [id]);
-	return res.rows[0] ?? null;
+	return res?.rows[0] ?? null;
 }
 
 export async function getUserByEmail(email: string) {
 	const res = await db.query('select * from mt_member where email = $1', [email]);
-	return res.rows[0] ?? null;
+	return res?.rows[0] ?? null;
 }
 
-export async function createUser(data: CreateUserParams) {
+export async function createUser(params: CreateUserParams) {
 	try {
 		const res = await db.query(
 			'insert into mt_member (email, email_verified, password, name, image) values ($1, $2, $3, $4, $5) returning id_member',
-			[data.email, data.emailVerified, data.password ?? '', data.name, data.image]
+			[params.email, params.emailVerified, params.password ?? '', params.name, params.image]
 		);
 
 		return {
 			error: null,
-			data: res.rows[0] ?? null
+			data: res?.rows[0] ?? null
 		};
 	} catch (error: any) {
 		console.log(error);
@@ -50,6 +62,66 @@ export async function createUser(data: CreateUserParams) {
 
 		return {
 			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
+}
+
+export async function updateUser(params: UpdateUserParams) {
+	try {
+		let needVerify = false;
+		const user = await db.query('select email from mt_member where id_member = $1', [
+			params.idMember
+		]);
+		if (!user) throw new Error('User tidak ditemukan');
+
+		if (user.rows[0]?.email != params.email) {
+			needVerify = true;
+		}
+
+		const res = await db.query(
+			`update mt_member set name = $2, email = $3 ${needVerify ? ', email_verified = null' : ''} where id_member = $1 returning id_member`,
+			[params.idMember, params.name, params.email]
+		);
+
+		return {
+			error: null,
+			data: res?.rows[0] ?? null
+		};
+	} catch (error: any) {
+		console.log(error);
+		if (error.code == 23505) {
+			return {
+				error: 'Email sudah terdaftar',
+				data: null
+			};
+		}
+
+		return {
+			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
+}
+
+export async function updatePassword(params: UpdatePasswordParams) {
+	try {
+		const hashPassword = bcrypt.hashSync(params.password, 10);
+
+		const res = await db.query(
+			`update mt_member set password = $2 where id_member = $1 returning id_member`,
+			[params.idMember, hashPassword]
+		);
+
+		return {
+			error: null,
+			data: res?.rows[0] ?? null
+		};
+	} catch (error: any) {
+		console.log(error);
+
+		return {
+			error: error?.message,
 			data: null
 		};
 	}
@@ -72,7 +144,7 @@ export async function createSession(params: CreateSessionParams) {
 
 		return {
 			error: null,
-			data: res.rows[0] ?? null
+			data: res?.rows[0] ?? null
 		};
 	} catch (error: any) {
 		console.log(error);
@@ -88,5 +160,5 @@ export async function getAccountByProvider(providerAccountId: string, provider: 
 		'select * from accounts a left join mt_member mm on mm.id_member = a.user_id where provider_account_id = $1 and provider = $2',
 		[providerAccountId, provider]
 	);
-	return res.rows[0] ?? null;
+	return res?.rows[0] ?? null;
 }

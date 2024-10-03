@@ -1,4 +1,4 @@
-import { getTransactions } from '$lib/models/transactions';
+import { getResumeTrx, getTransactions } from '$lib/models/transactions';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
@@ -15,9 +15,12 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		offset: limit * page
 	});
 
+	const resume = await getResumeTrx(session?.user?.id!);
+
 	return {
 		transactions,
 		total: count,
-		limit
+		limit,
+		resume
 	};
 };

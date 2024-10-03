@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { ArrowUp, BadgeCheckIcon, CircleX, Clock, RefreshCcw } from 'lucide-svelte';
+	import {
+		ArrowUp,
+		BadgeCheckIcon,
+		ArrowLeftRight,
+		Clock,
+		RefreshCcw,
+		HandCoins
+	} from 'lucide-svelte';
 	import { page } from '$app/stores';
 
 	import TransactionList from './transaction-list.svelte';
@@ -21,7 +28,7 @@
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
 					<p class="text-3xl font-bold">{data.total}</p>
-					<ArrowUp class="text-green-500" />
+					<ArrowLeftRight class="text-green-500" />
 				</div>
 				<p class="text-sm text-neutral-300">Total Transaksi</p>
 			</div>
@@ -29,8 +36,8 @@
 		<div class="card card-default">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">10</p>
-					<ArrowUp class="text-green-500" />
+					<p class="text-3xl font-bold">{data.resume.totalnum}</p>
+					<HandCoins class="text-green-500" />
 				</div>
 				<p class="text-sm text-neutral-300">Total Penjualan</p>
 			</div>
@@ -40,7 +47,7 @@
 		<div class="card card-yellow">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">2</p>
+					<p class="text-3xl font-bold">{data.resume.waiting}</p>
 					<Clock />
 				</div>
 				<p class="text-sm text-neutral-300">Menunggu Pembayaran</p>
@@ -49,7 +56,7 @@
 		<div class="card card-blue">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">0</p>
+					<p class="text-3xl font-bold">{data.resume.pending}</p>
 					<RefreshCcw />
 				</div>
 				<p class="text-sm text-neutral-300">Dalam Proses</p>
@@ -58,7 +65,7 @@
 		<div class="card card-green">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">120</p>
+					<p class="text-3xl font-bold">{data.resume.success}</p>
 					<BadgeCheckIcon />
 				</div>
 				<p class="text-sm text-neutral-300">Sukses</p>

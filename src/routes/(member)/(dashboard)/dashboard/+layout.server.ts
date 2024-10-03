@@ -4,9 +4,9 @@ import type { Store } from '$lib/type';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (events) => {
-	const session = await events.locals.auth();
+	const { user } = await events.parent();
 
-	const storeData = await getStoreByMember(session?.user?.id!);
+	const storeData = await getStoreByMember(user?.idMember);
 	// this is store for authenticated member for dashboard
 	const store: Store = {
 		idMember: storeData.id_member,
@@ -29,7 +29,6 @@ export const load: LayoutServerLoad = async (events) => {
 	};
 
 	return {
-		store,
-		user: session?.user
+		store
 	};
 };
