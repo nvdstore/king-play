@@ -17,6 +17,7 @@
 	let phone = form?.store?.values.phone ?? data.store.phone;
 	let theme = form?.store?.values.theme ?? data.store.theme;
 	let color = form?.store?.values.color ?? data.store.color;
+	let logo = data.store.logo;
 
 	let loadingStoreInfoForm = false;
 	let tiktok = form?.social?.values.tiktok ?? data.store.info?.tiktok;
@@ -111,7 +112,13 @@
 			</div>
 			<div class="input-group">
 				<label for="theme" class="input-label">Logo</label>
-				<input type="file" class="input" name="store-logo" />
+				<input type="file" class="input" name="store-logo" accept="image/*" />
+				{#if form?.store?.errors.logo}
+					<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
+						{form.store?.errors.logo}
+					</p>
+				{/if}
+				<img src={logo} alt="logo" class="w-40" />
 			</div>
 
 			<div class="input-group">

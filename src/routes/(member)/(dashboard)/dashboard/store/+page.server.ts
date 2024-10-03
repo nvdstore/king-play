@@ -1,7 +1,9 @@
+import fs from 'fs';
 import type { Actions, PageServerLoad } from './$types';
 
 import { updateStore, updateStoreInfo } from '$lib/models/store';
 import { validateEmail } from '$lib/utils/validator';
+import { upload } from '$lib/upload';
 
 export const actions = {
 	store: async ({ request, locals }) => {
@@ -14,6 +16,7 @@ export const actions = {
 		const phone = frmData.get('store-phone')?.toString();
 		const theme = frmData.get('store-theme')?.toString() ?? 'light';
 		const color = frmData.get('store-color')?.toString() ?? 'blue';
+		const logo = frmData.get('store-logo') as File;
 
 		let errorBag: Record<string, string> = {};
 		let valueBag = {
@@ -35,11 +38,15 @@ export const actions = {
 		if (!phone) {
 			errorBag.phone = 'Nomor harus diisi';
 		}
+		if (logo && !logo.type.match('image/')) {
+			errorBag.logo = 'Format file salah';
+		}
 
 		if (Object.keys(errorBag).length) {
 			return { store: { errors: errorBag, values: valueBag, message: 'Terjadi kesalahan' } };
 		}
 
+		const filename = await upload({ file: logo, dirname: session?.user?.id });
 		const { data, error } = await updateStore({
 			memberId: session?.user?.id!,
 			name: name!,
@@ -47,7 +54,8 @@ export const actions = {
 			email: email!,
 			phone: phone!,
 			theme: theme,
-			color: color
+			color: color,
+			logo: filename ?? undefined
 		});
 
 		if (error) {

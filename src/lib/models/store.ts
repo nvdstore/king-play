@@ -17,6 +17,7 @@ export type UpdateStoreParams = {
 	phone: string;
 	theme: string;
 	color: string;
+	logo?: string;
 };
 
 export type UpdateStoreInfoParams = {
@@ -65,18 +66,24 @@ export async function createStore(data: CreateStoreParams) {
 
 export async function updateStore(params: UpdateStoreParams) {
 	try {
-		const res = await db.query(
-			'update mt_store set name = $2, description = $3, email = $4, phone = $5, theme = $6, color = $7 where id_member = $1 returning id',
-			[
-				params.memberId,
-				params.name,
-				params.description,
-				params.email,
-				params.phone,
-				params.theme,
-				params.color
-			]
-		);
+		const queryParams = [
+			params.memberId,
+			params.name,
+			params.description,
+			params.email,
+			params.phone,
+			params.theme,
+			params.color
+		];
+
+		let setLogo = '';
+		if (params.logo) {
+			setLogo = ', logo = $8';
+			queryParams.push(params.logo);
+		}
+
+		const query = `update mt_store set name = $2, description = $3, email = $4, phone = $5, theme = $6, color = $7 ${setLogo} where id_member = $1 returning id`;
+		const res = await db.query(query, queryParams);
 		return {
 			error: null,
 			data: res?.rows[0] ?? null
