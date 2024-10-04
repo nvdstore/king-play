@@ -30,16 +30,19 @@
 		const formData = new FormData(event.currentTarget);
 
 		if (!formData.get('id_pelanggan_1')) {
+			scrollToTargetAdjusted('inputIdpel');
 			return toast.push('Masukkan ID Anda');
 		}
 
 		const product = selectedProduct?.id.toString() ?? '';
 		if (!product) {
+			scrollToTargetAdjusted('listProduct');
 			return toast.push('Pilih produk terlebih dahulu');
 		}
 
 		const channel = selectedChannel?.id.toString() ?? '';
 		if (!channel) {
+			scrollToTargetAdjusted('payMethod');
 			return toast.push('Pilih metode pembayaran Anda');
 		}
 
@@ -88,6 +91,8 @@
 	async function handleSelectProduct(product: Product) {
 		if (product.status == 0) return;
 
+		scrollToTargetAdjusted('payMethod');
+
 		selectedProduct = product;
 		selectedChannel = null;
 
@@ -111,6 +116,17 @@
 		selectedChannel = channel;
 	}
 
+	function scrollToTargetAdjusted(targetId: string, offset = 10) {
+		const element: HTMLElement | null = document.getElementById(targetId);
+		const elementPosition = element?.getBoundingClientRect().top;
+		const offsetPosition = elementPosition ?? 0 + window.pageYOffset - offset;
+
+		window.scrollTo({
+			top: offsetPosition,
+			behavior: 'smooth'
+		});
+	}
+
 	$: filteredProducts =
 		searchValue.length > 0
 			? data.products.filter((val) => val.name.toLowerCase().includes(searchValue.toLowerCase()))
@@ -119,7 +135,7 @@
 				: data.products?.slice(0, 9);
 </script>
 
-<div class="flex flex-col md:flex-row items-start gap-6">
+<div class="flex flex-col md:flex-row items-start gap-2 md:gap-6">
 	<main class="md:{data.theme.card} w-full">
 		<div
 			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} md:border-b {data.theme
@@ -140,7 +156,7 @@
 			data-sveltekit-noscroll
 			class="space-y-8 md:p-4 py-6"
 		>
-			<div class="w-full flex items-start gap-6">
+			<div class="w-full flex items-start gap-6" id="inputIdpel">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">1.</h1>
 				<div class="space-y-4 w-full">
 					<div>
@@ -187,7 +203,7 @@
 				</div>
 			</div>
 
-			<div class="w-full flex items-center space-x-8 flex-1 -ml-13">
+			<div class="w-full flex items-center space-x-8 flex-1 -ml-13" id="listProduct">
 				<div class="w-full flex items-start gap-6">
 					<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">2.</h1>
 					<div class="space-y-4 w-full">
@@ -262,7 +278,7 @@
 				</div>
 			</div>
 
-			<div class="w-full flex items-start gap-6">
+			<div class="w-full flex items-start gap-6" id="payMethod">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">3.</h1>
 				<div class="space-y-4 w-full">
 					<div>
@@ -358,7 +374,7 @@
 	</main>
 
 	<aside class="w-full md:w-[600px] sticky top-24 space-y-6">
-		<div class="md:{data.theme.card} md:p-4 space-y-2">
+		<div class="{data.theme.cardButton} p-4 space-y-2">
 			<div>
 				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Game:</span>

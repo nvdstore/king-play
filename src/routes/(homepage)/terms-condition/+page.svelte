@@ -1,1 +1,0 @@
-syarat dan ketentuan

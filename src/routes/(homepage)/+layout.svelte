@@ -39,18 +39,19 @@
 			</a>
 			<div class="flex items-center justify-end space-x-2">
 				<div class={showSearchBox ? 'fixed left-5 right-5 md:relative' : ''}>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
+						on:click={() => (showSearchBox = true)}
 						class="{showSearchBox
 							? 'md:w-[400px]'
-							: 'max-w-24 md:max-w-[200px]'} transition-all relative z-50"
+							: 'max-w-11 md:max-w-[200px]'} transition-all relative z-50"
 					>
 						<div
 							class="{data.theme.bgColor} 
 							border {data.theme.border} rounded-lg overflow-hidden flex items-center space-x-2 px-3"
 						>
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<!-- svelte-ignore a11y-no-static-element-interactions -->
-							<div class="flex-1" on:click={() => (showSearchBox = true)}>
+							<div class="flex-1">
 								<Search size={18} class={data.theme.bgColor} />
 							</div>
 							<input
@@ -131,17 +132,25 @@
 		<div class="mx-auto space-y-4 md:space-y-8 md:max-w-[1024px] p-4 py-10">
 			<section class="flex md:grid md:grid-cols-4 gap-4 text-sm">
 				<div class="space-y-4 flex-1">
-					<a href="/" class="flex space-x-2">
-						<Crown size={30} />
-						<span class="font-semibold text-lg">
-							King<span class="text-{data.color}-500">Play</span>.id
-						</span>
-					</a>
-					<div>
-						<div>&copy; 2024 - KingPlay Teams, All rights reserved.</div>
-					</div>
+					{#if data.isMaster}
+						<a href="/" class="flex space-x-2">
+							<Crown size={30} />
+							<span class="font-semibold text-lg">
+								King<span class="text-{data.color}-500">Play</span>
+							</span>
+						</a>
+						<div>
+							<div>&copy; 2024 - KingPlay Teams, All rights reserved.</div>
+						</div>
+					{:else}
+						<a href="/" class="flex space-x-2">
+							<img src={data.store.logo} class="h-10" alt={data.store.name} />
+						</a>
+					{/if}
 					<ul>
-						<li><a href="/about-us">Tentang Kami</a></li>
+						{#if data.isMaster}
+							<li><a href="/about-us">Tentang Kami</a></li>
+						{/if}
 						<li><a href="/privacy-policy">Kebijakan Privasi</a></li>
 						<li><a href="/terms">Syarat & Ketentuan</a></li>
 					</ul>
@@ -155,13 +164,15 @@
 							<li><a href="/transactions">Cek Transaksi</a></li>
 						</ul>
 					</div>
-					<div class="space-y-2">
-						<div class="text-{data.color}-500 font-medium">Member</div>
-						<ul>
-							<li><a href="/auth/register">Daftar Member</a></li>
-							<li><a href="/dashboard">Dashboard</a></li>
-						</ul>
-					</div>
+					{#if data.isMaster}
+						<div class="space-y-2">
+							<div class="text-{data.color}-500 font-medium">Member</div>
+							<ul>
+								<li><a href="/auth/register">Daftar Member</a></li>
+								<li><a href="/dashboard">Dashboard</a></li>
+							</ul>
+						</div>
+					{/if}
 				</div>
 				<div class="space-y-2 flex-1">
 					<div class="text-{data.color}-500 font-medium">Kontak Kami</div>
