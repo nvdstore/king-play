@@ -161,7 +161,7 @@
 		<div>
 			<div class="mb-4">
 				<h5 class="font-medium">Default Fee</h5>
-				<p class="text-sm">Setting fee default untuk semua produk</p>
+				<p class="text-sm">Ubah nominal fee default untuk semua produk</p>
 			</div>
 			<form
 				method="POST"
@@ -204,7 +204,7 @@
 		<div>
 			<div class="mb-4">
 				<h5 class="font-medium">Custom Fee</h5>
-				<p class="text-sm">Setting fee per produk</p>
+				<p class="text-sm">Ubah nominal custom fee per produk</p>
 			</div>
 			<form
 				method="POST"

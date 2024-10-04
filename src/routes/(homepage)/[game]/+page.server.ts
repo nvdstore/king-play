@@ -102,7 +102,7 @@ export const actions: Actions = {
 				data: {
 					id_produk: product,
 					id_user: userId,
-					id_pelanggan: idpel1 ?? '',
+					id_pelanggan1: idpel1 ?? '',
 					id_pelanggan2: idpel2 ?? '',
 					id_pelanggan3: '',
 					email: ''
