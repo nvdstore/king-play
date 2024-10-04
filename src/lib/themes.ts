@@ -12,7 +12,7 @@ export const themes = {
 			'px-2.5 h-10 bg-slate-700/50 border border-slate-600 focus:border-slate-600 rounded-lg outline-none text-sm',
 		card: 'bg-slate-800 md:border border-slate-700 rounded-xl',
 		cardButton: 'bg-slate-700/50 border border-slate-600 rounded-lg outline-none',
-		cardButtonActive: 'bg-slate-700/75 rounded-lg outline-none transition-all'
+		cardButtonActive: 'bg-slate-700/75 rounded-lg outline-none transition-all bg-slate-600/75'
 	},
 	light: {
 		main: 'bg-neutral-50 text-slate-800',
@@ -27,6 +27,6 @@ export const themes = {
 			'px-2.5 h-10 bg-neutral-100/75 border border-neutral-300 focus:border-neutral-400 rounded-lg outline-none text-sm',
 		card: 'bg-neutral-100/75 md:border border-neutral-200 rounded-xl',
 		cardButton: 'border border-neutral-300 rounded-lg outline-none text-sm',
-		cardButtonActive: 'rounded-lg border-neutral-800 outline-none text-sm'
+		cardButtonActive: 'rounded-lg border-neutral-800 outline-none text-sm bg-neutral-200/75'
 	}
 };

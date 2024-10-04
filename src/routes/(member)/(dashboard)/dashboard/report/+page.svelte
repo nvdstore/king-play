@@ -2,7 +2,7 @@
 	import { ChevronLeft, ChevronRight, DownloadCloud, Inbox, SortAsc } from 'lucide-svelte';
 
 	import Datepicker from '$lib/components/datepicker.svelte';
-	import EmptyTable from '../empty-table.svelte';
+	import EmptyTable from '$lib/components/empty-table.svelte';
 
 	export let dataReport = [];
 

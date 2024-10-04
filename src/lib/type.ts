@@ -129,3 +129,10 @@ export type InvoiceDataTyoe = {
 	panduan: string;
 	reffIdBiller: string;
 };
+
+export type FeeMember = {
+	memberId: string;
+	productId: string;
+	product: string;
+	fee: string;
+};

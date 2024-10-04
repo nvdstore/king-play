@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ cookies, params, url }) => {
 	};
 
 	const fields = await getGameField(group.id_group_produk);
-	game.fields = fields.map((fld) => ({
+	game.fields = fields.map((fld: any) => ({
 		key: fld.field_name,
 		title: fld.field_title,
 		target: fld.field_target,

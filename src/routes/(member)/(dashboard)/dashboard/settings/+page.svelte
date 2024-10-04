@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { Save, Store } from 'lucide-svelte';
-	import type { ActionData, PageData } from './$types';
 	import { slide } from 'svelte/transition';
-	import { applyAction, enhance } from '$app/forms';
+	import { Save, Store } from 'lucide-svelte';
 	import { toast } from '@zerodevx/svelte-toast';
+
+	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+
+	import type { ActionData, PageData } from './$types';
 
 	export let form: ActionData;
 	export let data: PageData;
@@ -96,7 +98,7 @@
 					? 'Pastikan Anda mengingat kata sandi baru Anda sebelum mengubahnya.'
 					: 'Silakan masukkan kata sandi baru untuk akun Anda'}
 			</p>
-			<div class="border p-2 border-neutral-700 rounded-md mt-4">
+			<div class="border p-2 border-red-700 bg-red-600/20 rounded-md mt-4">
 				<span class="text-sm">Format password:</span>
 				<ul class="text-xs list-disc ml-4">
 					<li>Minimal 8 karakter</li>

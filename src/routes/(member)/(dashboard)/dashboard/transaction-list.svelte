@@ -6,7 +6,7 @@
 	import type { Transcation } from '$lib/type';
 	import { TransactionStatus } from '$lib/constant';
 
-	import EmptyTable from './empty-table.svelte';
+	import EmptyTable from '$lib/components/empty-table.svelte';
 
 	const dispatch = createEventDispatcher();
 
