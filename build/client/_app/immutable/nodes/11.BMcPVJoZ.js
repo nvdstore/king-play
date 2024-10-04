@@ -1,1 +1,0 @@
-import{s as o,t as r,m as i,k as c,n as e,h as m}from"../chunks/scheduler.BBfqLarD.js";import{S as l,i as p}from"../chunks/index.BP6FsQ8L.js";function u(n){let t;return{c(){t=r("syarat dan ketentuan")},l(a){t=i(a,"syarat dan ketentuan")},m(a,s){c(a,t,s)},p:e,i:e,o:e,d(a){a&&m(t)}}}class x extends l{constructor(t){super(),p(this,t,null,u,o,{})}}export{x as component};

@@ -840,11 +840,11 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1304le8"
+  version_hash: "euze1q"
 };
 async function get_hooks() {
   return {
-    ...await import('./chunks/hooks.server-w9jT2wRs.js')
+    ...await import('./chunks/hooks.server-BOy947x8.js')
   };
 }
 
