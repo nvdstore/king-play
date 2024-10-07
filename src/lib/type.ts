@@ -117,6 +117,22 @@ export type GetTransactionMemberType = {
 	search?: string;
 };
 
+export type ReportTransaction = {
+	date: Date;
+	totalTrx: number;
+	totalNum: number;
+	totalFee: number;
+};
+
+export type GetReportTransactionMemberType = {
+	idMember: string;
+	startDate: Date;
+	endDate: Date;
+	product?: string;
+	limit?: number;
+	offset?: number;
+};
+
 export type InvoiceDataTyoe = {
 	channel: string;
 	idChannel: string;

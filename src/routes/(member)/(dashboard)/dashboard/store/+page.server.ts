@@ -16,7 +16,7 @@ import type { FeeMember } from '$lib/type';
 export const load: PageServerLoad = async ({ parent }) => {
 	const { user } = await parent();
 
-	const { fees, defaultFee } = await getMemberFees(user.idMember);
+	const { fees, defaultFee } = await getMemberFees(user?.idMember!);
 	const feeList: FeeMember[] = fees?.map(
 		(fee: any) =>
 			({

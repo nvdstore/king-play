@@ -162,6 +162,14 @@ export async function getAllProduct() {
 	return res?.rows ?? [];
 }
 
+export async function getAllGroupProduct() {
+	const res = await db.query(
+		'select mgp.id_group_produk, mgp.nama_group_produk from mt_group_produk mgp order by nama_group_produk asc',
+		[]
+	);
+	return res?.rows ?? [];
+}
+
 export async function getMemberFees(memberId: string) {
 	const resFee = await db.query(`select mf.fee_member from mt_fee mf where mf.id_member = $1`, [
 		memberId

@@ -10,7 +10,7 @@
 		<Crown size={38} />
 	</a>
 
-	<div class="w-full md:w-[450px] md:{data.theme.card} md:px-8 md:py-10">
+	<div class="w-full md:w-[450px] md:{data.theme.card} px-8 md:py-10">
 		<slot />
 	</div>
 </div>

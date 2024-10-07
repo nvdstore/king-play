@@ -73,14 +73,14 @@
 			<Clock size={20} />
 			<span class="ml-3 text-sm">Transaksi</span>
 		</a>
-		<a
+		<!-- <a
 			href="/dashboard/comission"
 			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"
 			class:active={isActive('/dashboard/comission')}
 		>
 			<BadgePercent size={20} />
 			<span class="ml-3 text-sm">Komisi</span>
-		</a>
+		</a> -->
 		<a
 			href="/dashboard/report"
 			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"

@@ -1,5 +1,5 @@
-import { getTransactions } from '$lib/models/transactions';
-
+import { getAllGroupProduct } from '$lib/models/store';
+import { getReportTransactions } from '$lib/models/transactions';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent, url }) => {
@@ -12,26 +12,26 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 	const endDate = url.searchParams.get('end')
 		? new Date(url.searchParams.get('end')?.toString()!)
 		: new Date();
-	const status = url.searchParams.get('status') ?? 'all';
-	const search = url.searchParams.get('search') ?? '';
+	const product = url.searchParams.get('product') ?? 'all';
 	const limit = url.searchParams.get('limit')
 		? Number(url.searchParams.get('limit'))
 		: defaultLimit;
 	const page = url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1;
 
-	const { count, data: transactions } = await getTransactions({
+	const { data } = await getReportTransactions({
 		idMember: user?.idMember.toString()!,
 		startDate,
 		endDate,
+		product,
 		limit: limit,
-		offset: (page - 1) * limit,
-		search,
-		status: status as any
+		offset: (page - 1) * limit
 	});
 
+	const products = await getAllGroupProduct();
+
 	return {
-		transactions,
-		count,
+		report: data,
+		products,
 		defaultLimit
 	};
 };

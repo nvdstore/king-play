@@ -48,6 +48,4 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 			user: userInfo
 		};
 	}
-
-	redirect(307, '/auth/login');
 };

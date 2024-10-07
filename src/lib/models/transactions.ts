@@ -1,7 +1,12 @@
 import { db } from '$lib/db';
 import { format } from 'date-fns';
 
-import type { GetTransactionMemberType, Transcation } from '$lib/type';
+import type {
+	GetReportTransactionMemberType,
+	GetTransactionMemberType,
+	ReportTransaction,
+	Transcation
+} from '$lib/type';
 
 export async function getTransactions(params: GetTransactionMemberType) {
 	const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
@@ -38,7 +43,7 @@ export async function getTransactions(params: GetTransactionMemberType) {
 
 	const data = result?.rows && result?.rows.length > 0 ? result?.rows : [];
 
-	const transactions: Transcation[] = data.map((trx) => {
+	const transactions: Transcation[] = data.map((trx: any) => {
 		const statusTrx = trx.response_code;
 		const statusInvoice = trx.status;
 		const flagInvoice = trx.flag;
@@ -104,4 +109,43 @@ export async function getResumeTrx(idMember: string) {
 	}
 
 	return { ...data };
+}
+
+export async function getReportTransactions(params: GetReportTransactionMemberType) {
+	const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
+	const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
+
+	const values = [params.idMember, startDate, endDate, params.limit, params.offset];
+	let where = '';
+	if (params.product && params.product != 'all') {
+		where += ' and mgp.id_group_produk = $6 ';
+		values.push(params.product);
+	}
+
+	const query = `select t.transaction_date, t.id_member, count(t.transaction_date) as total_trx, sum(t.nominal) as total_nominal, 
+		sum(i.fee_member) as total_fee_member 
+		from transaksi t
+			left join invoice i on i.id_invoice = t.id_invoice 
+			left join mt_produk mp on mp.id_produk = t.id_produk 
+			left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
+    where t.id_member = $1 and transaction_date between $2 and $3 
+		and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code = '00') ${where} 
+		group by t.transaction_date, t.id_member 
+    order by transaction_date desc limit $4 offset $5`;
+	const result = await db.query(query, values);
+	const data = result?.rows && result?.rows.length > 0 ? result?.rows : [];
+
+	const reportTrxs: ReportTransaction[] = data.map(
+		(trx: any) =>
+			({
+				date: trx.transaction_date,
+				totalTrx: trx.total_trx,
+				totalNum: trx.total_nominal,
+				totalFee: trx.total_fee_member
+			}) as ReportTransaction
+	);
+
+	return {
+		data: reportTrxs
+	};
 }
