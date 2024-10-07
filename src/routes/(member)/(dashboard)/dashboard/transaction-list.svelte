@@ -28,6 +28,7 @@
 			<th class="hidden lg:table-cell">ID Transaksi</th>
 			<th class="hidden lg:table-cell">Produk</th>
 			<th>Harga</th>
+			<th>Fee</th>
 			<th class="hidden md:table-cell">Tanggal</th>
 			<th>Status</th>
 		</thead>
@@ -46,6 +47,7 @@
 						<td class="hidden lg:table-cell">{item.idTransaksi}</td>
 						<td class="hidden lg:table-cell">{item.groupProduk}<br />{item.produk}</td>
 						<td>{currency(item.nominal)}</td>
+						<td>{currency(item.feeMember)}</td>
 						<td class="hidden md:table-cell">{item.tanggal}</td>
 						<td>{@html getTrxStatus(item.status ?? '')}</td>
 					</tr>

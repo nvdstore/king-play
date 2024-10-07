@@ -30,7 +30,7 @@ export async function getTransactions(params: GetTransactionMemberType) {
 			" and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code = '00')";
 	}
 
-	const query = `select count(*) OVER() AS full_count, t.id_transaksi, t.id_member, i.id_invoice, t.nominal, t.response_code, t.transaction_date, 
+	const query = `select count(*) OVER() AS full_count, t.id_transaksi, t.id_member, i.id_invoice, i.fee_member, t.nominal, t.response_code, t.transaction_date, 
 		mgp.nama_group_produk, mp.produk, i.status, i.flag 
     from transaksi t
 		left join invoice i on i.id_invoice = t.id_invoice 
@@ -64,6 +64,7 @@ export async function getTransactions(params: GetTransactionMemberType) {
 			groupProduk: trx.nama_group_produk,
 			produk: trx.produk,
 			nominal: trx.nominal,
+			feeMember: trx.fee_member,
 			tanggal: format(trx.transaction_date, 'yyyy-MM-dd'),
 			status
 		};

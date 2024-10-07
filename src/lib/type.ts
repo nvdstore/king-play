@@ -101,6 +101,7 @@ export type Transcation = {
 	idMember: string;
 	idInvoice: string;
 	nominal: number;
+	feeMember: number;
 	groupProduk: string;
 	produk: string;
 	tanggal: string;
