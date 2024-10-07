@@ -1,3 +1,5 @@
+import { startOfMonth } from 'date-fns';
+
 import { getAllGroupProduct } from '$lib/models/store';
 import { getReportTransactions } from '$lib/models/transactions';
 import type { PageServerLoad } from './$types';
@@ -8,7 +10,7 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 	const defaultLimit = 10;
 	const startDate = url.searchParams.get('start')
 		? new Date(url.searchParams.get('start')?.toString()!)
-		: new Date();
+		: startOfMonth(new Date());
 	const endDate = url.searchParams.get('end')
 		? new Date(url.searchParams.get('end')?.toString()!)
 		: new Date();

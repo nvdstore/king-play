@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { format } from 'date-fns';
+	import { format, startOfMonth } from 'date-fns';
 	import { ChevronLeft, ChevronRight, DownloadCloud, Inbox, SortAsc } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
@@ -10,7 +10,8 @@
 
 	export let data: PageData;
 
-	let startDate = $page.url.searchParams.get('start') ?? format(new Date(), 'yyyy-MM-dd');
+	let startDate =
+		$page.url.searchParams.get('start') ?? format(startOfMonth(new Date()), 'yyyy-MM-dd');
 	let endDate = $page.url.searchParams.get('end') ?? format(new Date(), 'yyyy-MM-dd');
 	let limit = $page.url.searchParams.get('limit')?.toString()
 		? Number($page.url.searchParams.get('limit')?.toString())
@@ -46,7 +47,7 @@
 				<label for="product" class="input-label">Produk</label>
 				<div class="input-group">
 					<select name="product" class="input" on:change={() => form.requestSubmit()}>
-						<option value="">Pilih Produk</option>
+						<option value="all">Semua Produk</option>
 						{#each data.products as product}
 							<option value={product.id_group_produk}>{product.nama_group_produk}</option>
 						{/each}

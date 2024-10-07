@@ -18,7 +18,7 @@
 
 		if (error == 'CredentialsSignin') {
 			if (code == 'credentials') {
-				toast.push('User tidak ditemukan atau password salah!');
+				toast.push('User atau password salah!');
 			} else if (code == 'bad-request') {
 				toast.push('Email dan password harus diisi!');
 			}
