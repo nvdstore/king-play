@@ -29,6 +29,12 @@ export type UpdateStoreInfoParams = {
 	telegram?: string;
 };
 
+export type GetMemberFeesParams = {
+	memberId: string;
+	limit?: number;
+	offset?: number;
+};
+
 export type SetFeeDefaultParams = {
 	memberId: string;
 	amount?: number;
@@ -37,6 +43,12 @@ export type SetFeeDefaultParams = {
 export type SetFeeParams = {
 	memberId: string;
 	product?: string;
+	amount?: number;
+};
+
+export type SetFeeGroupParams = {
+	memberId: string;
+	groupProduct?: string;
 	amount?: number;
 };
 
@@ -170,17 +182,17 @@ export async function getAllGroupProduct() {
 	return res?.rows ?? [];
 }
 
-export async function getMemberFees(memberId: string) {
+export async function getMemberFees(params: GetMemberFeesParams) {
 	const resFee = await db.query(`select mf.fee_member from mt_fee mf where mf.id_member = $1`, [
-		memberId
+		params.memberId
 	]);
 
 	const resFeeCustom = await db.query(
 		`select mfc.*, mp.produk, mgp.nama_group_produk from mt_fee_custom mfc 
 			left join mt_produk mp on mp.id_produk = mfc.id_produk 
 			left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk 
-		where mfc.id_member = $1`,
-		[memberId]
+		where mfc.id_member = $1 limit $2 offset $3`,
+		[params.memberId, params.limit, params.offset]
 	);
 	return {
 		defaultFee: resFee?.rows[0]?.fee_member ?? 0,
@@ -232,6 +244,45 @@ export async function setFee(params: SetFeeParams) {
 		return {
 			error: null,
 			data: result?.rows[0] ?? null
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
+}
+
+export async function setFeeGroup(params: SetFeeGroupParams) {
+	try {
+		const resProducts = await db.query(
+			'select id_produk from mt_produk where id_group_produk = $1',
+			[params.groupProduct]
+		);
+		const products = resProducts.rows ?? [];
+
+		const resultAll = await Promise.all(
+			products.map(async (product: any) => {
+				let result;
+				result = await db.query(
+					`update mt_fee_custom set fee_member = $3 where id_member = $1 and id_produk = $2 returning id_member;`,
+					[params.memberId, product.id_produk, params.amount]
+				);
+				if (!result?.rows || result?.rows.length <= 0) {
+					result = await db.query(
+						`insert into mt_fee_custom (id_member, id_produk, fee_member) values ($1, $2, $3) returning id_member;`,
+						[params.memberId, product.id_produk, params.amount]
+					);
+				}
+
+				return result?.rowCount > 0;
+			})
+		);
+
+		return {
+			error: null,
+			data: resultAll
 		};
 	} catch (error) {
 		console.log(error);

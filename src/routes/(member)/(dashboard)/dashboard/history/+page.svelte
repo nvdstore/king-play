@@ -30,6 +30,37 @@
 		if (timeout) clearTimeout(timeout);
 		timeout = setTimeout(cb, 700);
 	}
+
+	function handleExport() {
+		const searchParams = new URLSearchParams();
+		searchParams.append('start', startDate);
+		searchParams.append('start', endDate);
+
+		fetch(`/api/export-trx?${searchParams.toString()}`)
+			.then((res) => res.blob())
+			.then((blob) => {
+				var file = window.URL.createObjectURL(blob);
+				window.location.assign(file);
+			});
+	}
+
+	async function handlePrev() {
+		if (pageNum > 1) {
+			pageNum -= 1;
+
+			await tick();
+			form.requestSubmit();
+		}
+	}
+
+	async function handleNext() {
+		if (pageNum < 10) {
+			pageNum += 1;
+
+			await tick();
+			form.requestSubmit();
+		}
+	}
 </script>
 
 <section class="space-y-4">
@@ -87,7 +118,7 @@
 				<option value={50}>50 Entries</option>
 				<option value={100}>100 Entries</option>
 			</select>
-			<button class="btn">
+			<button class="btn" type="button" on:click={handleExport}>
 				<DownloadCloud size={18} class="md:mr-2" />
 				<span class="hidden md:block">Ekspor ke XLSX</span>
 			</button>
@@ -103,21 +134,7 @@
 		limit={Number(limit)}
 		total={data.count}
 		{pageNum}
-		on:prev={async () => {
-			if (pageNum > 1) {
-				pageNum -= 1;
-
-				await tick();
-				form.requestSubmit();
-			}
-		}}
-		on:next={async () => {
-			if (pageNum < 10) {
-				pageNum += 1;
-
-				await tick();
-				form.requestSubmit();
-			}
-		}}
+		on:prev={handlePrev}
+		on:next={handleNext}
 	/>
 </section>

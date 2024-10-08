@@ -2,10 +2,12 @@ import type { Actions, PageServerLoad, RequestEvent } from './$types';
 
 import {
 	deleteFee,
+	getAllGroupProduct,
 	getAllProduct,
 	getMemberFees,
 	setFee,
 	setFeeDefault,
+	setFeeGroup,
 	updateStore,
 	updateStoreInfo
 } from '$lib/models/store';
@@ -13,25 +15,36 @@ import { validateEmail } from '$lib/utils/validator';
 import { upload } from '$lib/upload';
 import type { FeeMember } from '$lib/type';
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ parent, url }) => {
 	const { user } = await parent();
 
-	const { fees, defaultFee } = await getMemberFees(user?.idMember!);
+	const page = url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1;
+
+	const { fees, defaultFee } = await getMemberFees({
+		memberId: user?.idMember!,
+		limit: 10,
+		offset: (page - 1) * 10
+	});
 	const feeList: FeeMember[] = fees?.map(
 		(fee: any) =>
 			({
 				memberId: fee.id_member,
 				productId: fee.id_produk,
-				product: `${fee.nama_group_produk} - ${fee.produk}`,
+				product: fee.produk,
+				groupProductId: fee.id_group_produk,
+				groupProduct: fee.nama_group_produk,
 				fee: fee.fee_member
 			}) as FeeMember
 	);
+
+	const groupProducts = await getAllGroupProduct();
 
 	const products = await getAllProduct();
 
 	return {
 		fees: feeList ?? [],
 		defaultFee,
+		groupProducts,
 		products
 	};
 };
@@ -39,6 +52,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 export const actions = {
 	store: storeAction,
 	setdefault: setfeeDefaultAction,
+	setfeeGroup: setfeeGroupAction,
 	setfee: setfeeAction,
 	deletefee: deletefeeAction,
 	social: socialAction
@@ -137,6 +151,51 @@ async function setfeeDefaultAction(event: RequestEvent) {
 	return { feedefault: { errors: {}, values: valueBag, message: 'Berhasil menyimpan data' } };
 }
 
+async function setfeeGroupAction(event: RequestEvent) {
+	const session = await event.locals.auth();
+	const frmData = await event.request.formData();
+
+	const groupProduct = frmData.get('fee-product')?.toString() ?? '';
+	const fee = frmData.get('fee-nominal')?.toString() ?? '';
+
+	let errorBag: Record<string, string> = {};
+	let valueBag = { groupProduct, fee };
+	if (!groupProduct) {
+		errorBag.product = 'Pilih grup produk terlebih dahulu';
+	}
+	if (!fee || Number(fee) <= 0) {
+		errorBag.fee = 'Nominal harus diisi';
+	}
+
+	if (Object.keys(errorBag).length) {
+		return {
+			feegroup: { errors: errorBag, values: valueBag, message: 'Input salah, periksa form' }
+		};
+	}
+
+	const { data, error } = await setFeeGroup({
+		memberId: session?.user?.id!,
+		groupProduct: groupProduct,
+		amount: Number(fee)
+	});
+
+	if (error) {
+		return {
+			feegroup: { errors: {}, values: valueBag, message: 'Terjadi kesalahan saat menyimpan data' }
+		};
+	}
+
+	const isAllSuccess = data?.every((currVal: boolean) => currVal == true);
+
+	return {
+		feegroup: {
+			errors: {},
+			values: valueBag,
+			message: isAllSuccess ? 'Berhasil menyimpan data' : 'Berhasil menyimpan data sebagian'
+		}
+	};
+}
+
 async function setfeeAction(event: RequestEvent) {
 	const session = await event.locals.auth();
 	const frmData = await event.request.formData();
@@ -149,7 +208,6 @@ async function setfeeAction(event: RequestEvent) {
 	if (!product) {
 		errorBag.product = 'Pilih produk terlebih dahulu';
 	}
-	console.log(fee);
 	if (!fee || Number(fee) <= 0) {
 		errorBag.fee = 'Nominal harus diisi';
 	}

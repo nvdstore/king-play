@@ -151,5 +151,7 @@ export type FeeMember = {
 	memberId: string;
 	productId: string;
 	product: string;
+	groupProductId: string;
+	groupProduct: string;
 	fee: string;
 };

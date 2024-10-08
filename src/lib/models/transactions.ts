@@ -12,11 +12,23 @@ export async function getTransactions(params: GetTransactionMemberType) {
 	const startDate = format(params.startDate ?? new Date(), 'yyyy-MM-dd');
 	const endDate = format(params.endDate ?? new Date(), 'yyyy-MM-dd');
 
-	const values = [params.idMember, startDate, endDate, params.limit, params.offset];
+	const values = [params.idMember, startDate, endDate];
+
+	let limit = '';
+	if (params.limit) {
+		limit = ` limit $${values.length + 1}`;
+		values.push(params.limit.toString());
+	}
+
+	let offset = '';
+	if (params.offset) {
+		offset = ` offset $${values.length + 1}`;
+		values.push(params.offset.toString());
+	}
+
 	let where = '';
 	if (params.search && params.search != '') {
-		where +=
-			' and (cast(id_transaksi as varchar) ilike $6 or nama_group_produk ilike $6 or produk ilike $6) ';
+		where += ` and (cast(id_transaksi as varchar) ilike $${values.length + 1} or nama_group_produk ilike $${values.length + 1} or produk ilike $${values.length + 1}) `;
 		values.push(`%${params.search}%`);
 	}
 
@@ -37,8 +49,7 @@ export async function getTransactions(params: GetTransactionMemberType) {
     left join mt_produk mp on mp.id_produk = t.id_produk 
     left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
     where t.id_member = $1 and transaction_date between $2 and $3 ${where}
-    order by transaction_date desc, transaction_time desc limit $4 offset $5`;
-
+    order by transaction_date desc, transaction_time desc ${limit} ${offset}`;
 	const result = await db.query(query, values);
 
 	const data = result?.rows && result?.rows.length > 0 ? result?.rows : [];
