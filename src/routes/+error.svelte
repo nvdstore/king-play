@@ -17,8 +17,8 @@
 				<a href="/" class="btn btn-red"><House size={18} class="mr-2" />Kembali ke Beranda</a>
 			{/if}
 			<p class="text-sm mt-3">
-				Butuh bantuan: <a href="mailto:supprot@kingplay.id" class="text-red-500">
-					supprot@kingplay.id
+				Butuh bantuan: <a href="mailto:support@kingplay.id" class="text-red-500">
+					support@kingplay.id
 				</a>
 			</p>
 		</div>
