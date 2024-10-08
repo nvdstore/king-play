@@ -111,6 +111,8 @@ export async function getResumeTrx(idMember: string) {
     where t.id_member = $1 and transaction_date = $2 ${where}`;
 
 		const result = await db.query(query, [idMember, now]);
+		Object.assign(data, { total: result?.rows[0]?.total ?? 0 });
+
 		if (status == 'totalnum') {
 			Object.assign(data, { totalnum: result?.rows[0]?.total_nominal ?? 0 });
 		} else {

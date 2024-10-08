@@ -1,5 +1,5 @@
 import { getTransactions } from '$lib/models/transactions';
-import { xslsxBuffer } from '$lib/excel';
+import { writeBuffer } from '$lib/excel';
 
 import type { RequestHandler } from './$types';
 
@@ -20,7 +20,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		limit: 100
 	});
 
-	const xlsxBuff = xslsxBuffer(transactions);
+	const xlsxBuff = writeBuffer(transactions);
 
 	return new Response(xlsxBuff, {
 		headers: {

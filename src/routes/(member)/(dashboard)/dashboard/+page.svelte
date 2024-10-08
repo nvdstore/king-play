@@ -12,6 +12,7 @@
 
 	import TransactionList from './transaction-list.svelte';
 	import type { PageData } from './$types';
+	import { currency } from '$lib/utils/formatter';
 
 	export let data: PageData;
 
@@ -27,7 +28,7 @@
 		<div class="card card-default">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">{data.total}</p>
+					<p class="text-3xl font-bold">{data.resume.total}</p>
 					<ArrowLeftRight class="text-green-500" />
 				</div>
 				<p class="text-sm text-neutral-300">Total Transaksi</p>
@@ -36,7 +37,7 @@
 		<div class="card card-default">
 			<div class="p-6 space-y-2">
 				<div class="flex items-center justify-between">
-					<p class="text-3xl font-bold">{data.resume.totalnum}</p>
+					<p class="text-3xl font-bold">{currency(data.resume.totalnum)}</p>
 					<HandCoins class="text-green-500" />
 				</div>
 				<p class="text-sm text-neutral-300">Total Penjualan</p>
