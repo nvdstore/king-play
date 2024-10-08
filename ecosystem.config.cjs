@@ -2,7 +2,7 @@ module.exports = {
 	apps: [
 		{
 			name: 'kingplay-fe',
-			script: './build/index.js',
+			script: './build/',
 			args: '-r dotenv/config',
 			env: {
 				NODE_ENV: 'development'
