@@ -19,6 +19,7 @@
 		"@types/bcrypt": "^5.0.2",
 		"@types/eslint": "^8.56.7",
 		"@types/nprogress": "^0.2.3",
+		"@types/pg": "^8.11.10",
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"autoprefixer": "^10.4.19",
 		"eslint": "^9.0.0",
