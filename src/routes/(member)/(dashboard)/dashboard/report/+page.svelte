@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { format, startOfMonth } from 'date-fns';
-	import { ChevronLeft, ChevronRight, DownloadCloud, Inbox, SortAsc } from 'lucide-svelte';
+	import { ChevronLeft, ChevronRight, DownloadCloud } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
+	import { currency } from '$lib/utils/formatter';
 	import Datepicker from '$lib/components/datepicker.svelte';
 	import EmptyTable from '$lib/components/empty-table.svelte';
+
 	import type { PageData } from './$types';
-	import { currency } from '$lib/utils/formatter';
 
 	export let data: PageData;
 
@@ -21,6 +23,24 @@
 		: 1;
 
 	let form: HTMLFormElement;
+
+	async function handlePrev() {
+		if (pageNum > 1) {
+			pageNum -= 1;
+
+			await tick();
+			form.requestSubmit();
+		}
+	}
+
+	async function handleNext() {
+		if (pageNum < 10) {
+			pageNum += 1;
+
+			await tick();
+			form.requestSubmit();
+		}
+	}
 </script>
 
 <section class="space-y-4">
@@ -55,13 +75,18 @@
 				</div>
 			</div>
 			<div class="flex items-center space-x-4">
-				<select bind:value={limit} name="limit" class="input">
+				<select
+					bind:value={limit}
+					name="limit"
+					class="input"
+					on:change={() => form.requestSubmit()}
+				>
 					<option value={10}>10 Entries</option>
 					<option value={25}>25 Entries</option>
 					<option value={50}>50 Entries</option>
 					<option value={100}>100 Entries</option>
 				</select>
-				<button class="btn">
+				<button class="btn" type="button">
 					<DownloadCloud size={18} class="md:mr-2" />
 					<span class="hidden md:block">Ekspor ke XLSX</span>
 				</button>
@@ -106,12 +131,21 @@
 
 		{#if data.report.length > 0}
 			<div class="flex items-center justify-between px-6 py-2 border-t border-t-neutral-700">
-				<span class="text-xs text-neutral-400">Menampilkan halaman 1 dari 1</span>
+				<span class="text-xs text-neutral-400">
+					Menampilkan data {limit} dari {data.report.length}
+				</span>
 				<div class="flex items-center space-x-2">
-					<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+					<button
+						class="p-2 rounded-full hover:bg-neutral-700 transition-all"
+						on:click={handlePrev}
+					>
 						<ChevronLeft size={18} />
 					</button>
-					<button class="p-2 rounded-full hover:bg-neutral-700 transition-all">
+					<div class="px-2">{pageNum}</div>
+					<button
+						class="p-2 rounded-full hover:bg-neutral-700 transition-all"
+						on:click={handleNext}
+					>
 						<ChevronRight size={18} />
 					</button>
 				</div>
