@@ -353,7 +353,7 @@
 									class="flex items-center justify-end border-t {data.theme
 										.border} px-4 py-2 w-full"
 								>
-									<div class="flex items-center gap-1">
+									<div class="flex items-center justify-end gap-1 flex-wrap">
 										{#each group.images as img}
 											<div class="bg-neutral-50 rounded-md p-1">
 												<img src={img} class="w-20 h-4 object-scale-down" alt="payment-channel" />

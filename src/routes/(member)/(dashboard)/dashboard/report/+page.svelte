@@ -74,23 +74,19 @@
 					</select>
 				</div>
 			</div>
-			<div class="flex items-center space-x-4">
-				<select
-					bind:value={limit}
-					name="limit"
-					class="input"
-					on:change={() => form.requestSubmit()}
-				>
-					<option value={10}>10 Entries</option>
-					<option value={25}>25 Entries</option>
-					<option value={50}>50 Entries</option>
-					<option value={100}>100 Entries</option>
-				</select>
-				<button class="btn" type="button">
-					<DownloadCloud size={18} class="md:mr-2" />
-					<span class="hidden md:block">Ekspor ke XLSX</span>
-				</button>
-			</div>
+		</div>
+
+		<div class="flex items-center space-x-4">
+			<select bind:value={limit} name="limit" class="input" on:change={() => form.requestSubmit()}>
+				<option value={10}>10 Entries</option>
+				<option value={25}>25 Entries</option>
+				<option value={50}>50 Entries</option>
+				<option value={100}>100 Entries</option>
+			</select>
+			<button class="btn" type="button">
+				<DownloadCloud size={18} class="md:mr-2" />
+				<span class="hidden md:block">Ekspor ke XLSX</span>
+			</button>
 		</div>
 
 		<input type="hidden" name="start" bind:value={startDate} />
