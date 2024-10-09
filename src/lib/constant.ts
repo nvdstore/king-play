@@ -24,5 +24,13 @@ export const MappingGroupChannel = [
 	{
 		group: 'BANK',
 		name: 'Bank'
+	},
+	{
+		group: 'QRIS',
+		name: 'QRIS'
+	},
+	{
+		group: 'RETAIL',
+		name: 'Toko Retail'
 	}
 ];

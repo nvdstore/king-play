@@ -2,7 +2,17 @@
 	import { tick } from 'svelte';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { slide } from 'svelte/transition';
-	import { ChevronDown, ChevronUp, Search, Wallet, X, Landmark, CircleHelp } from 'lucide-svelte';
+	import {
+		ChevronDown,
+		ChevronUp,
+		Search,
+		Wallet,
+		X,
+		Landmark,
+		CircleHelp,
+		ScanQrCode,
+		Store
+	} from 'lucide-svelte';
 	import { toast } from '@zerodevx/svelte-toast';
 	import Swal from 'sweetalert2';
 
@@ -297,7 +307,7 @@
 								<button
 									type="button"
 									class="flex items-center justify-between gap-2 text-sm p-4 w-full cursor-pointer"
-									on:click={() => handleSelectGroupChannel(group)}
+									on:click|preventDefault|stopPropagation={() => handleSelectGroupChannel(group)}
 									disabled={$navigating ? true : false}
 								>
 									<div class="flex items-center gap-2">
@@ -305,6 +315,10 @@
 											<Wallet size={20} />
 										{:else if group.type == 'BANK'}
 											<Landmark size={20} />
+										{:else if group.type == 'QRIS'}
+											<ScanQrCode />
+										{:else if group.type == 'RETAIL'}
+											<Store />
 										{/if}
 										<p class="font-medium">{group.label}</p>
 									</div>
