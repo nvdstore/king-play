@@ -10,6 +10,7 @@ export type RequestType = {
 	payload?: Record<string, any> | null;
 	params?: Record<string, string>;
 	uuid: string;
+	timeout?: number;
 };
 
 export type ResponseType = {
@@ -26,7 +27,8 @@ export async function request({
 	method = 'GET',
 	payload = {},
 	uuid,
-	params
+	params,
+	timeout
 }: RequestType): Promise<ResponseType> {
 	try {
 		const timestamp = formatISO(new Date(), { representation: 'complete' });
@@ -66,11 +68,15 @@ export async function request({
 		console.log('Request Headers', JSON.stringify(Object.fromEntries(headers)));
 		console.log('Request Body', payload);
 
-		const opts: RequestInit = { method, headers };
+		const controller = new AbortController();
+		const fetchTimeout = setTimeout(() => controller.abort(), timeout ?? 10000);
+
+		const opts: RequestInit = { method, headers, signal: controller.signal };
 		if (method === 'POST') {
 			opts.body = JSON.stringify(payload);
 		}
 		const response = await fetch(finalUrl, opts);
+		clearTimeout(fetchTimeout);
 		console.log('Response Status', response.status, response.statusText);
 		const data = await response.json();
 		console.log('Response Data', JSON.stringify(data));
