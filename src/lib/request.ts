@@ -69,7 +69,7 @@ export async function request({
 		console.log('Request Body', payload);
 
 		const controller = new AbortController();
-		const fetchTimeout = setTimeout(() => controller.abort(), timeout ?? 10000);
+		const fetchTimeout = setTimeout(() => controller.abort(), timeout ?? 60000);
 
 		const opts: RequestInit = { method, headers, signal: controller.signal };
 		if (method === 'POST') {
