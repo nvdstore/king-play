@@ -15,7 +15,7 @@ export const pool = new pg.Pool({
 export const db = {
 	async query(query: string | QueryConfig, values: any[]): Promise<QueryResult<any> | null> {
 		try {
-			return pool.query(query, values);
+			return await pool.query(query, values);
 		} catch (error) {
 			console.log(error);
 			return null;
