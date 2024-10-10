@@ -89,8 +89,6 @@
 					window.location.href = '/payment' + '?' + url.toString();
 				}
 			}
-
-			await invalidateAll();
 		} else {
 			$showLoader = false;
 		}

@@ -37,7 +37,6 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		timeLimit: new Date(invoiceDet.time_limit),
 		total: invoiceDet.total
 	};
-	console.log(invoiceData);
 
 	const { data } = await request({
 		method: 'POST',
