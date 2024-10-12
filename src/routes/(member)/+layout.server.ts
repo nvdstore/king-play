@@ -1,10 +1,10 @@
 import { error, redirect } from '@sveltejs/kit';
 
+import { getUserById } from '$lib/models/user';
 import { getStoreByMember } from '$lib/models/store';
 import type { Store, UserInfo } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
-import { getUserById } from '$lib/models/user';
 
 export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 	const { masterHost } = await parent();
@@ -16,9 +16,15 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 	const pathname = url.pathname;
 	let store: Store | null = null;
 
+	const user = await getUserById(session?.user?.id!);
+
 	if (pathname.startsWith('/dashboard') || pathname.startsWith('/onboarding')) {
-		if (!session?.user) {
+		if (!user) {
 			return redirect(307, '/auth/login');
+		}
+
+		if (!user.email_verified) {
+			return redirect(307, '/verify-email');
 		}
 
 		const store = await getStoreByMember(session?.user?.id!);
@@ -29,11 +35,18 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 		}
 	}
 
-	if (pathname.startsWith('/auth') && session?.user) {
-		return redirect(307, '/dashboard');
+	if (pathname.startsWith('/verify-email') && !user) {
+		return redirect(307, '/auth/login');
 	}
 
-	const user = await getUserById(session?.user?.id!);
+	if (pathname.startsWith('/auth') && user) {
+		if (!user.email_verified) {
+			return redirect(307, '/verify-email');
+		} else {
+			return redirect(307, '/dashboard');
+		}
+	}
+
 	if (user) {
 		const userInfo: UserInfo = {
 			idMember: user.id_member,
@@ -41,7 +54,8 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 			name: user.name,
 			email: user.email,
 			image: user.image,
-			balance: user.balance
+			balance: user.balance,
+			emailVerified: user.email_verified
 		};
 
 		return {

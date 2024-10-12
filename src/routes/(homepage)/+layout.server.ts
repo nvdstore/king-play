@@ -13,7 +13,9 @@ import { themes } from '$lib/themes';
 const ID_MASTER = '1000001';
 const UUID_KEY = 'uuid';
 
-export const load: LayoutServerLoad = async ({ fetch, url, cookies, request }) => {
+export const load: LayoutServerLoad = async ({ fetch, url, cookies, request, setHeaders }) => {
+	setHeaders({ 'cache-control': 'max-age=60' });
+
 	const host = url.hostname;
 	// const host = 'jelogaming.kingplay.id';
 

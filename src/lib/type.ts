@@ -5,6 +5,7 @@ export type UserInfo = {
 	name: string;
 	image: string;
 	balance: string;
+	emailVerified: Date;
 };
 
 export type Game = {

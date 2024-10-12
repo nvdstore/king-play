@@ -4,7 +4,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent }) => {
 	const { user } = await parent();
-	const check = await getUserById(user.idMember);
+	const check = await getUserById(user?.idMember!);
 
 	return {
 		haspass: check?.password != ''

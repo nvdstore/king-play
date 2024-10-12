@@ -127,6 +127,27 @@ export async function updatePassword(params: UpdatePasswordParams) {
 	}
 }
 
+export async function updateEmailVerified(idMember: string) {
+	try {
+		const res = await db.query(
+			`update mt_member set email_verified = 'now()' where id_member = $1 returning id_member`,
+			[idMember]
+		);
+
+		return {
+			error: null,
+			data: res?.rows[0] ?? null
+		};
+	} catch (error: any) {
+		console.log(error);
+
+		return {
+			error: error?.message,
+			data: null
+		};
+	}
+}
+
 export async function createSession(params: CreateSessionParams) {
 	try {
 		const res = await db.query(

@@ -7,7 +7,7 @@ import { request, generateMid } from '$lib/request';
 
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ cookies, params, url }) => {
+export const load: PageServerLoad = async ({ cookies, params, url, setHeaders }) => {
 	const productId = url.searchParams.get('product')?.toString() ?? '';
 
 	const group = await getGameGroupBySlug(params.game);
