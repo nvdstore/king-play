@@ -30,6 +30,10 @@
 				await applyAction(result);
 				if (form?.message) {
 					toast.push(form?.message);
+
+					if (form?.ok) {
+						window.location.href = '/auth/login';
+					}
 				}
 				invalidateAll();
 				loading = false;

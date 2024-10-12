@@ -52,8 +52,9 @@ export const actions: Actions = {
 		}
 
 		return {
-			errors: {},
+			errors: errorBag,
 			values: valueBag,
+			ok: true,
 			message: 'Link reset password akan dikirimkan ke Email'
 		};
 	}
