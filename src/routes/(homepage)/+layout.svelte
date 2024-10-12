@@ -147,13 +147,6 @@
 							<img src={data.store.logo} class="h-10" alt={data.store.name} />
 						</a>
 					{/if}
-					<ul>
-						{#if data.isMaster}
-							<li><a href="/about-us">Tentang Kami</a></li>
-						{/if}
-						<li><a href="/privacy-policy">Kebijakan Privasi</a></li>
-						<li><a href="/terms">Syarat & Ketentuan</a></li>
-					</ul>
 				</div>
 				<div></div>
 				<div class="space-y-4 flex-1">
@@ -161,7 +154,8 @@
 						<div class="text-{data.color}-500 font-medium">Sitemap</div>
 						<ul>
 							<li><a href="/">Topup Game</a></li>
-							<li><a href="/transactions">Cek Transaksi</a></li>
+							<li><a href="/privacy-policy">Kebijakan Privasi</a></li>
+							<li><a href="/terms">Syarat & Ketentuan</a></li>
 						</ul>
 					</div>
 					{#if data.isMaster}

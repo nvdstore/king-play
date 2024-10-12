@@ -40,7 +40,7 @@
 				<Store />
 			</div>
 			<div class="text-left">
-				<a href="/dashboard/store-setting" class="hover:underline">
+				<a href="/dashboard/store" class="hover:underline">
 					<h4 class="text-lg font-medium">{data.store.name}</h4>
 				</a>
 				<a
