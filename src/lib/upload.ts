@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { v2 as cloudinary, type UploadApiResponse } from 'cloudinary';
+import { env } from '$env/dynamic/private';
 
 export type UploadParams = {
 	file: File;
@@ -6,23 +8,24 @@ export type UploadParams = {
 	filename?: string;
 };
 
+export type CloudinaryUploadParams = {};
+
 export async function upload(params: UploadParams) {
-	try {
-		if (params.file.size > 0) {
-			const dirName = params.dirname ? `/upload/${params.dirname}` : '/upload';
-			if (!fs.existsSync(`static${dirName}`)) {
-				fs.mkdirSync(`static${dirName}`);
-			}
+	// Configuration
+	cloudinary.config({
+		cloud_name: env.CLOUDINARY_NAME,
+		api_key: env.CLOUDINARY_API_KEY,
+		api_secret: env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
+	});
 
-			const fileName = `${dirName}/${params.filename ?? params.file.name}`;
-			fs.writeFileSync(`static${fileName}`, Buffer.from(await params.file.arrayBuffer()));
+	const buff = await params.file.arrayBuffer();
+	const uploadResult: UploadApiResponse | undefined = await new Promise((resolve) => {
+		cloudinary.uploader
+			.upload_stream({ folder: `user-upload/${params.dirname}` }, (error, uploadResult) => {
+				return resolve(uploadResult);
+			})
+			.end(Buffer.from(buff));
+	});
 
-			return fileName;
-		}
-
-		return null;
-	} catch (error) {
-		console.log(error);
-		return null;
-	}
+	return uploadResult?.url ?? '';
 }

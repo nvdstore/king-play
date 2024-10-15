@@ -54,7 +54,7 @@
 				{/each}
 			{:else}
 				<tr>
-					<td colspan="6"><EmptyTable description="Belum ada data transaksi" /></td>
+					<td colspan="7"><EmptyTable description="Belum ada data transaksi" /></td>
 				</tr>
 			{/if}
 		</tbody>
