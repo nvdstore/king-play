@@ -9,9 +9,10 @@ import {
 	setFeeDefault,
 	setFeeGroup,
 	updateStore,
+	updateStoreDomain,
 	updateStoreInfo
 } from '$lib/models/store';
-import { validateEmail } from '$lib/utils/validator';
+import { checkDomain, validateEmail } from '$lib/utils/validator';
 import { upload } from '$lib/upload';
 import type { FeeMember } from '$lib/type';
 
@@ -50,6 +51,7 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 };
 
 export const actions = {
+	domain: domainAction,
 	store: storeAction,
 	setdefault: setfeeDefaultAction,
 	setfeeGroup: setfeeGroupAction,
@@ -57,6 +59,50 @@ export const actions = {
 	deletefee: deletefeeAction,
 	social: socialAction
 } satisfies Actions;
+
+async function domainAction(event: RequestEvent) {
+	const session = await event.locals.auth();
+	const frmData = await event.request.formData();
+
+	const domain = frmData.get('domain')?.toString() ?? '';
+	const domainType = frmData.get('domain-type')?.toString() ?? '';
+	const fullDOmain = domain + domainType;
+	const customDomain = frmData.get('custom-domain')?.toString() ?? '';
+
+	let errorBag: Record<string, string> = {};
+	let valueBag = { domain, domainType, customDomain };
+	if (!domain && !customDomain) {
+		errorBag.domain = 'Domain harus diisi';
+	} else if (!checkDomain(fullDOmain)) {
+		errorBag.domain = 'Format domain harus diisi';
+	}
+
+	if (customDomain && !checkDomain(customDomain)) {
+		errorBag.customDomain = 'Format domain harus diisi';
+	}
+
+	if (Object.keys(errorBag).length) {
+		return { domain: { errors: errorBag, values: valueBag, message: 'Input salah, periksa form' } };
+	}
+
+	const { data, error } = await updateStoreDomain({
+		memberId: session?.user?.id!,
+		domain: fullDOmain,
+		customDomain
+	});
+
+	if (error) {
+		return {
+			domain: {
+				errors: errorBag,
+				values: valueBag,
+				message: error ?? 'Terjadi kesalahan saat menyimpan data'
+			}
+		};
+	}
+
+	return { domain: { errors: errorBag, values: valueBag, message: 'Berhasil menyimpan data' } };
+}
 
 async function storeAction(event: RequestEvent) {
 	const session = await event.locals.auth();

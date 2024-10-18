@@ -51,6 +51,7 @@ export type Store = {
 	email: string;
 	phone: string;
 	domain: string;
+	customDomain?: string;
 	logo?: string;
 	theme?: string;
 	color?: string;

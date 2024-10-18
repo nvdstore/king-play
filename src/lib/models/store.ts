@@ -20,6 +20,12 @@ export type UpdateStoreParams = {
 	logo?: string;
 };
 
+export type UpdateStoreDomainParams = {
+	memberId: string;
+	domain: string;
+	customDomain: string;
+};
+
 export type UpdateStoreInfoParams = {
 	memberId: string;
 	tiktok?: string;
@@ -117,6 +123,30 @@ export async function updateStore(params: UpdateStoreParams) {
 		};
 	} catch (error) {
 		console.log(error);
+		return {
+			error: 'Terjadi kesalahan',
+			data: null
+		};
+	}
+}
+
+export async function updateStoreDomain(params: UpdateStoreDomainParams) {
+	try {
+		const query = `update mt_store set domain = $2, custom_domain = $3 where id_member = $1 returning id`;
+		const res = await db.query(query, [params.memberId, params.domain, params.customDomain]);
+		return {
+			error: null,
+			data: res?.rows[0] ?? null
+		};
+	} catch (error: any) {
+		console.log(error);
+		if (error.code == 23505) {
+			return {
+				error: 'Domain sudah terdaftar',
+				data: null
+			};
+		}
+
 		return {
 			error: 'Terjadi kesalahan',
 			data: null
@@ -260,7 +290,7 @@ export async function setFeeGroup(params: SetFeeGroupParams) {
 			'select id_produk from mt_produk where id_group_produk = $1',
 			[params.groupProduct]
 		);
-		const products = resProducts.rows ?? [];
+		const products = resProducts?.rows ?? [];
 
 		const resultAll = await Promise.all(
 			products.map(async (product: any) => {
@@ -276,7 +306,7 @@ export async function setFeeGroup(params: SetFeeGroupParams) {
 					);
 				}
 
-				return result?.rowCount > 0;
+				return result?.rowCount! > 0;
 			})
 		);
 
