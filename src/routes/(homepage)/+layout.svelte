@@ -144,7 +144,7 @@
 						</div>
 					{:else}
 						<a href="/" class="flex space-x-2">
-							<img src={data.store.logo} class="h-10" alt={data.store.name} />
+							<img src={data.store.logo} class="h-10 object-scale-down" alt={data.store.name} />
 						</a>
 					{/if}
 				</div>
