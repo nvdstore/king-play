@@ -41,14 +41,15 @@ export const actions: Actions = {
 				return null;
 			}
 
-			const body = `<p>Klik link dibawah untuk melakukan verifikasi.</p><br/><a href="https://kingplay.id/verify?token=${token}">Verifikasi Sekarang</a>`;
+			const body = `<p>Klik link dibawah untuk melakukan verifikasi.</p><br/><a>https://kingplay.id/verify?token=${token}</a>`;
 
 			await sendEmail({
 				name: session.user?.name!,
 				from: 'no-reply@kingplay.id',
 				to: email,
 				subject: 'Verifikasi Email',
-				body
+				body,
+				modul: 'verif'
 			});
 		}
 	}
