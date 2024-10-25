@@ -24,7 +24,7 @@ const SESSION_CONFIG = {
 export const { handle, signIn } = SvelteKitAuth(async ({ request, cookies }) => ({
 	adapter: CustomAdapter(db),
 	providers: [
-		Google,
+		Google({ allowDangerousEmailAccountLinking: true }),
 		Credentials({
 			credentials: {
 				email: { label: 'Email', type: 'email' },
