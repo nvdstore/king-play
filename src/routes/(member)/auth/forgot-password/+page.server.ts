@@ -45,7 +45,8 @@ export const actions: Actions = {
 			from: 'no-reply@kingplay.id',
 			to: email,
 			subject: 'Reset Password',
-			body: `<p>Klik link dibawah untuk merubah kata sandi Anda<p><br/><a href="${env.BASE_URL}/auth/reset-password?token=${token}">Ubah Kata Sandi</a>`
+			body: `<p>Klik link dibawah untuk merubah kata sandi Anda<p><br/><a>${env.BASE_URL}/auth/reset-password?token=${token}</a>`,
+			modul: 'reset'
 		});
 		if (!send) {
 			return { errors: errorBag, values: valueBag, message: 'Terjadi kesalahan' };

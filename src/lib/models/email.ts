@@ -7,12 +7,13 @@ export type SendEmailParams = {
 	to: string;
 	subject: string;
 	body: string;
+	modul?: string;
 };
 
 export async function sendEmail(params: SendEmailParams) {
 	const res = await db.query(
-		'insert into email_notify (name, email, recipient_email, subject, body) values ($1, $2, $3, $4, $5) returning sender_id',
-		[params.name, params.from, params.to, params.subject, params.body]
+		'insert into email_notify (name, email, recipient_email, subject, body, tipe_modul) values ($1, $2, $3, $4, $5, $6) returning sender_id',
+		[params.name, params.from, params.to, params.subject, params.body, params.modul]
 	);
 	return res?.rows[0] ?? null;
 }

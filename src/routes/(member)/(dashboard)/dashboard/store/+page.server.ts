@@ -144,7 +144,11 @@ async function storeAction(event: RequestEvent) {
 		return { store: { errors: errorBag, values: valueBag, message: 'Input salah, periksa form' } };
 	}
 
-	const filename = await upload({ file: logo, dirname: session?.user?.id });
+	let filename;
+	if (logo.size > 0) {
+		filename = await upload({ file: logo, dirname: session?.user?.id });
+	}
+
 	const { data, error } = await updateStore({
 		memberId: session?.user?.id!,
 		name: name!,

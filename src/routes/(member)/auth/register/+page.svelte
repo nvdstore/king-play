@@ -23,7 +23,8 @@
 			const errors = form?.errors;
 			const values = form?.values;
 
-			if (errors) {
+			if (errors?.message) {
+				toast.push(errors?.message);
 				loading = false;
 			} else {
 				toast.push('Berhasil melakukan pendaftaran');

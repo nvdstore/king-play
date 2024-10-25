@@ -178,17 +178,17 @@
 							<li><a href="mailto:{data.store.email}" target="_blank">Email</a></li>
 						{/if}
 						{#if data.store.info?.fb}
-							<li><a href={data.store.info?.fb} target="_blank">Facebook</a></li>
+							<li><a href="https://{data.store.info?.fb}" target="_blank">Facebook</a></li>
 						{/if}
 
 						{#if data.store.info?.tiktok}
-							<li><a href={data.store.info?.tiktok} target="_blank">Tiktok</a></li>
+							<li><a href="https://{data.store.info?.tiktok}" target="_blank">Tiktok</a></li>
 						{/if}
 						{#if data.store.info?.ig}
-							<li><a href={data.store.info?.ig} target="_blank">Instagram</a></li>
+							<li><a href="https://{data.store.info?.ig}" target="_blank">Instagram</a></li>
 						{/if}
 						{#if data.store.info?.twitter}
-							<li><a href={data.store.info?.twitter} target="_blank">x.com</a></li>
+							<li><a href="https://{data.store.info?.twitter}" target="_blank">x.com</a></li>
 						{/if}
 					</ul>
 				</div>
