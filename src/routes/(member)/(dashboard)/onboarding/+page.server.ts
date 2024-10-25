@@ -65,9 +65,13 @@ export const actions = {
 		}
 
 		if (data) {
-			await db.query('insert into mt_fee (id_member, fee_member) values ($1, 300)', [
-				session?.user?.id
-			]);
+			try {
+				await db.query('insert into mt_fee (id_member, fee_member) values ($1, 300)', [
+					session?.user?.id
+				]);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 
 		return redirect(307, '/dashboard');
