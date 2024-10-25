@@ -14,7 +14,6 @@ export const load: PageServerLoad = async ({ parent }) => {
 
 	let nextRetryAt: Date | null = null;
 	const checkToken = await getCurrentToken(user?.idMember!);
-	console.log(checkToken);
 	if (checkToken?.token) {
 		const createdAt = checkToken?.created_at;
 		if (createdAt > new Date()) {
