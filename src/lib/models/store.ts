@@ -73,12 +73,6 @@ export async function createStore(data: CreateStoreParams) {
 			[data.memberId, data.name, data.description, data.email, data.phone, data.domain]
 		);
 
-		if (res && res?.rows.length > 0) {
-			await db.query('insert into mt_fee (id_member, fee_member) values ($1, 300)', [
-				data.memberId
-			]);
-		}
-
 		return {
 			error: null,
 			data: res?.rows[0] ?? null
