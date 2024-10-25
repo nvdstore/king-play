@@ -74,7 +74,9 @@ export async function createStore(data: CreateStoreParams) {
 		);
 
 		if (res && res?.rows.length > 0) {
-			await db.query('insert into mt_fee set id_member = $1, fee_member = 300', [data.memberId]);
+			await db.query('insert into mt_fee (id_member, fee_member) values ($1, 300)', [
+				data.memberId
+			]);
 		}
 
 		return {

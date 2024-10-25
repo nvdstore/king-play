@@ -11,8 +11,8 @@
 	export let form: ActionData;
 	export let data: PageData;
 
-	let name = form?.user?.values.name ?? data.user.name;
-	let email = form?.user?.values.email ?? data.user.email;
+	let name = form?.user?.values.name ?? data.user?.name;
+	let email = form?.user?.values.email ?? data.user?.email;
 
 	let loadingForm = false;
 </script>
