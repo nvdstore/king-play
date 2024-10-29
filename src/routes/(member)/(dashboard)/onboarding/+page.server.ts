@@ -3,6 +3,7 @@ import type { Actions } from './$types';
 
 import { checkDomain, validateEmail } from '$lib/utils/validator';
 import { createStore, type CreateStoreParams } from '$lib/models/store';
+import { db } from '$lib/db';
 
 export const actions = {
 	default: async ({ request, locals }) => {
@@ -57,10 +58,20 @@ export const actions = {
 			phone: phone!,
 			domain: subdomain
 		};
-		const { error } = await createStore(storeData);
+		const { error, data } = await createStore(storeData);
 		if (error) {
 			errorBag.message = error ?? 'Terjadi kesalahan';
 			return { errors: errorBag, values: valueBag };
+		}
+
+		if (data) {
+			try {
+				await db.query('insert into mt_fee (id_member, fee_member) values ($1, 300)', [
+					session?.user?.id
+				]);
+			} catch (error) {
+				console.log(error);
+			}
 		}
 
 		return redirect(307, '/dashboard');
