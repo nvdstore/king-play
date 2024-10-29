@@ -15,6 +15,9 @@ import {
 import { checkDomain, validateEmail } from '$lib/utils/validator';
 import { upload } from '$lib/upload';
 import type { FeeMember } from '$lib/type';
+import { currency } from '$lib/utils/formatter';
+
+const MAX_FEE = 100_000;
 
 export const load: PageServerLoad = async ({ parent, url }) => {
 	const { user } = await parent();
@@ -179,6 +182,8 @@ async function setfeeDefaultAction(event: RequestEvent) {
 	let valueBag = { fee };
 	if (!fee || Number(fee) <= 0) {
 		errorBag.fee = 'Nominal harus diisi';
+	} else if (Number(fee) > MAX_FEE) {
+		errorBag.fee = `Maksimal nominal fee: ${currency(MAX_FEE)}`;
 	}
 
 	if (Object.keys(errorBag).length) {
@@ -215,6 +220,8 @@ async function setfeeGroupAction(event: RequestEvent) {
 	}
 	if (!fee || Number(fee) <= 0) {
 		errorBag.fee = 'Nominal harus diisi';
+	} else if (Number(fee) > MAX_FEE) {
+		errorBag.fee = `Maksimal nominal fee: ${currency(MAX_FEE)}`;
 	}
 
 	if (Object.keys(errorBag).length) {
@@ -260,6 +267,8 @@ async function setfeeAction(event: RequestEvent) {
 	}
 	if (!fee || Number(fee) <= 0) {
 		errorBag.fee = 'Nominal harus diisi';
+	} else if (Number(fee) > MAX_FEE) {
+		errorBag.fee = `Maksimal nominal fee: ${currency(MAX_FEE)}`;
 	}
 
 	if (Object.keys(errorBag).length) {

@@ -129,11 +129,15 @@
 						name="custom-domain"
 						value={customDomain}
 						class="input {form?.domain?.errors.customDomain ? 'input-error' : ''}"
-						placeholder="kinggaming.com"
+						placeholder="Contoh: www.kinggaming.com"
 					/>
 					{#if form?.domain?.errors.customDomain}
 						<p class="text-xs text-red-500" transition:slide={{ duration: 200 }}>
 							{form.domain?.errors.customDomain}
+						</p>
+					{:else}
+						<p class="text-xs" transition:slide={{ duration: 200 }}>
+							Untuk domain jangan lupa gunakan <span class="text-red-500">www</span> didepan
 						</p>
 					{/if}
 				</div>
