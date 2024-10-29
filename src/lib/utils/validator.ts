@@ -3,9 +3,7 @@ export function validateEmail(email: string) {
 }
 
 export function checkDomain(domain: string) {
-	return /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?!-)[A-Za-z0-9-]{2,63}(?<!-)$/.test(
-		domain
-	);
+	return /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(domain);
 }
 
 export function validatePassword(password: string) {
