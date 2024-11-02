@@ -5,7 +5,7 @@ import { addDays } from 'date-fns';
 import { createSession } from '$lib/models/user';
 import { getStoreByDomain } from '$lib/models/store';
 import { getClientIp } from '$lib/request';
-import type { Game, GameResponse, Store } from '$lib/type';
+import type { Game, GameResponse, Voucher, VoucherField, Store, VoucherResponse } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
 import { themes } from '$lib/themes';
@@ -85,6 +85,7 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request, set
 	const theme = themes[dataTheme ?? 'light'];
 
 	let games: Game[] = [];
+	let voucher: Voucher[] = [];
 
 	const response = await fetch(new URL('/v1.0/api/produk/list-group-produk', BASE_API_URL).href);
 	if (!response.ok) {
@@ -96,17 +97,32 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request, set
 	}
 	const item = data.response_data;
 	if (item.length > 0) {
-		games = item.map(
-			(game: GameResponse) =>
-				({
-					id: game.id_group_produk,
-					name: game.nama_group_produk,
-					image: game.img,
-					slug: game.slug
-				}) as Game
-		);
+		games = item
+			.filter((game: GameResponse) => game.tipe_group === "Game")
+			.map(
+				(game: GameResponse) =>
+					({
+						id: game.id_group_produk,
+						name: game.nama_group_produk,
+						image: game.img,
+						slug: game.slug
+					}) as Game
+			);
+
+		voucher = item
+			.filter((voucher: VoucherResponse) => voucher.tipe_group === "Voucher")
+			.map(
+				(voucher: VoucherResponse) =>
+					({
+						id: voucher.id_group_produk,
+						name: voucher.nama_group_produk,
+						image: voucher.img,
+						slug: voucher.slug
+					}) as Voucher
+			);
 	} else {
 		games = [];
+		voucher = [];
 	}
 
 	const popularGames: Game[] = games.slice(0, 3);
@@ -116,6 +132,7 @@ export const load: LayoutServerLoad = async ({ fetch, url, cookies, request, set
 		theme,
 		store,
 		games,
+		voucher,
 		popularGames,
 		isMaster: idMember == ID_MASTER
 	};

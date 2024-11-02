@@ -88,7 +88,10 @@ export const actions: Actions = {
 		const product = formData.get('product');
 		const idpel1 = formData.get('id_pelanggan_1');
 		const idpel2 = formData.get('id_pelanggan_2');
+		const email = formData.get('email');
 		const channel = formData.get('channel');
+
+		console.log(`email ${email}`)
 
 		const mid = generateMid();
 		const userId = cookies.get('uuid') ?? '';
@@ -105,7 +108,7 @@ export const actions: Actions = {
 					id_pelanggan1: idpel1 ?? '',
 					id_pelanggan2: idpel2 ?? '',
 					id_pelanggan3: '',
-					email: ''
+					email: email
 				}
 			},
 			uuid: userId
@@ -131,7 +134,7 @@ export const actions: Actions = {
 					id_pelanggan1: idpel1 ?? '',
 					id_pelanggan2: idpel2 ?? '',
 					id_pelanggan3: '',
-					email: '',
+					email: email,
 					phone: ''
 				},
 				invoice_detail: {

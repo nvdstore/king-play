@@ -35,6 +35,7 @@
 	let selectedGroupChannel: PaymentChannelGroup | null = null;
 	let selectedChannel: PaymentChannel | null = null;
 	let showAll = false;
+	let email = '';
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const formData = new FormData(event.currentTarget);
@@ -58,6 +59,9 @@
 
 		formData.append('product', product);
 		formData.append('channel', channel);
+
+		// get Email input outside the form
+		formData.append('email', email);
 
 		$showLoader = true;
 
@@ -388,6 +392,26 @@
 	<aside class="w-full md:w-[600px] sticky top-24 space-y-6">
 		<div class="{data.theme.cardButton} p-4 space-y-2">
 			<div>
+				<div>
+					<h4 class="font-medium">
+						<span class="md:hidden"></span>Alamat Email
+					</h4>
+					<p class="text-sm opacity-50">
+						Masukan alamat email yang valid untuk mendapatkan notifikasi dan informasi pembayaran
+					</p>
+				</div>
+				<div class="flex items-center gap-4 mt-4">
+					<input
+						name="email"
+						bind:value={email}
+						class="{data.theme.input} flex-1"
+						placeholder="Masukkan Email Anda"
+					/>
+				</div>
+			</div>
+		</div>
+		<div class="{data.theme.cardButton} p-4 space-y-2">
+			<div>
 				<div class="py-2">
 					<span class="text-sm bg-opacity-50">Game:</span>
 					<p class="font-medium">{data.game.name}</p>
@@ -420,9 +444,18 @@
 					</div>
 				{/if}
 			</div>
+
 			<button class="btn btn-red w-full" on:click={() => submitForm.requestSubmit()}>
 				Bayar Sekarang
 			</button>
+
+			<div class="py-2">
+				<p class="font-extralight">
+					Dengan menekan tombol diatas anda telah setuju dengan <a href="/terms"
+						>Syarat & Ketentuan</a
+					> yang berlaku
+				</p>
+			</div>
 		</div>
 
 		{#if selectedChannel}

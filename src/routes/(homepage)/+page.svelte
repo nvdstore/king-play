@@ -33,18 +33,14 @@
 	{/if}
 
 	{#if data.isMaster}
-		<section
-			class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
-			style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
-		>
-			<div class="bg-neutral-800/60 py-8 flex flex-col items-center">
-				<h1 class="text-2xl font-bold mb-4 text-center shadown drop-shadow-lg">
-					Join Sekarang<br />buat <span class="text-{data.color}-500">Website Topup Game</span><br
-					/>kamu sendiri!
-				</h1>
-				<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
-			</div>
-		</section>
+		<a href="/auth/register">
+			<section
+				class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover text-neutral-50 h-80"
+				style="
+					background-image: url(https://res.cloudinary.com/dwfrvuyh6/image/upload/v1730539508/Screenshot_from_2024-11-02_16-24-02_nlg6mt.png);
+				"
+			></section>
+		</a>
 	{/if}
 
 	<section class="space-y-4">
@@ -64,8 +60,25 @@
 		</div>
 	</section>
 
+	<section class="space-y-4">
+		<h4 class="text-xl font-medium">Voucher</h4>
+
+		<div class="grid grid-cols-3 gap-4 md:gap-10 md:grid-cols-6">
+			{#each data.voucher as voucher}
+				<a href={voucher.slug} class="card-link">
+					<div class="space-y-2 md:space-y-4">
+						<div class="card">
+							<img src={voucher.image} class="card-image" alt={voucher.image} />
+						</div>
+						<div class="card-text {data.theme.color}">{voucher.name}</div>
+					</div>
+				</a>
+			{/each}
+		</div>
+	</section>
+
 	{#if data.isMaster}
-		<section
+		<!-- <section
 			class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover overflow-hidden text-neutral-50"
 			style="background-image: url(https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/74/2024/06/24/zilong-empyrean-paladin-skin-mobile-legends-mlbb-hd-wallpaper-uhdpaper-859023630.jpg);"
 		>
@@ -76,7 +89,7 @@
 				</h1>
 				<a href="/auth/register" class="btn btn-{data.color}">Daftar Sekarang</a>
 			</div>
-		</section>
+		</section> -->
 	{/if}
 </div>
 

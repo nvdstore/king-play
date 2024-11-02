@@ -27,10 +27,11 @@
 		<nav class="flex items-center justify-between p-4 mx-auto md:max-w-[1024px] space-x-2">
 			<a href="/" class="flex items-center space-x-2 flex-1">
 				{#if data.isMaster}
-					<Crown size={30} />
-					<span class="font-semibold text-lg">
-						King<span class="text-{data.color}-500">Play</span>
-					</span>
+					<img
+						src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1729241327/user-upload/12000070/klb2jnl6hydlk5q1npuy.png"
+						class="h-10"
+						alt="Kingplay"
+					/>
 				{:else if data.store.logo}
 					<img src={data.store.logo} class="h-10" alt={data.store.name} />
 				{:else}
@@ -134,10 +135,11 @@
 				<div class="space-y-4 flex-1">
 					{#if data.isMaster}
 						<a href="/" class="flex space-x-2">
-							<Crown size={30} />
-							<span class="font-semibold text-lg">
-								King<span class="text-{data.color}-500">Play</span>
-							</span>
+							<img
+								src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1729241327/user-upload/12000070/klb2jnl6hydlk5q1npuy.png"
+								class="h-10"
+								alt="Kingplay"
+							/>
 						</a>
 						<div>
 							<div>&copy; 2024 - KingPlay Teams, All rights reserved.</div>

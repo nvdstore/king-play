@@ -38,6 +38,36 @@ export type GameResponse = {
 	form_fields: [];
 };
 
+export type Voucher = {
+	id: number;
+	slug: string;
+	name: string;
+	image: string;
+	fields?: VoucherField[];
+	itemImg?: string;
+	itemName?: string;
+};
+
+export type VoucherField = {
+	key: string;
+	title: string;
+	placeholder: string;
+	type: string;
+	options: string;
+	target: string;
+	required: boolean;
+};
+
+export type VoucherResponse = {
+	id_group_produk: number;
+	nama_group_produk: string;
+	slug: string;
+	img: string;
+	status: number;
+	tipe_group: string;
+	form_fields: [];
+};
+
 export type StorePromo = {
 	imageUrl: string;
 	desc?: string;
