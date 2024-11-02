@@ -33,7 +33,7 @@
 	{/if}
 
 	{#if data.isMaster}
-		<a href="/auth/register">
+		<a href="https://reseller.kingplay.id/">
 			<section
 				class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover text-neutral-50 h-80"
 				style="
