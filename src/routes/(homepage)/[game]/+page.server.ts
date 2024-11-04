@@ -2,7 +2,7 @@ import { error, type Actions } from '@sveltejs/kit';
 
 import type { Game, PaymentChannel, PaymentChannelGroup, Product } from '$lib/type';
 import { getGameField, getGameGroupBySlug, getPaymentChannels } from '$lib/models/game';
-import { MappingGroupChannel } from '$lib/constant';
+import { groupingPaymentChannel } from '$lib/utils/helper';
 import { request, generateMid } from '$lib/request';
 
 import type { PageServerLoad } from './$types';
@@ -58,10 +58,11 @@ export const load: PageServerLoad = async ({ cookies, params, url, setHeaders })
 
 	let dataChannels = [];
 	if (productId) {
+		const mid = generateMid();
 		const { data: resChannels } = await request({
 			method: 'POST',
 			endpoint: '/v1.0/api/invoices/channel',
-			payload: { mid: crypto.randomUUID(), id_produk: productId, id_user: userId },
+			payload: { mid, id_produk: productId, id_user: userId },
 			uuid: userId
 		});
 
@@ -91,7 +92,7 @@ export const actions: Actions = {
 		const email = formData.get('email');
 		const channel = formData.get('channel');
 
-		console.log(`email ${email}`)
+		console.log(`email ${email}`);
 
 		const mid = generateMid();
 		const userId = cookies.get('uuid') ?? '';
@@ -147,36 +148,4 @@ export const actions: Actions = {
 
 		return invoice;
 	}
-};
-
-const groupingPaymentChannel = (data: any[]) => {
-	const groupMapping: Record<any, PaymentChannelGroup> = {};
-
-	data.forEach((item: any, idx) => {
-		if (!groupMapping[item.nama_group_channel]) {
-			const group = MappingGroupChannel.find((ch) => ch.group == item.nama_group_channel);
-
-			groupMapping[item.nama_group_channel] = {
-				id: Object.keys(groupMapping).length + 1,
-				label: group?.name ?? '',
-				type: group?.group ?? '',
-				channels: [],
-				images: []
-			};
-		}
-
-		const channel: PaymentChannel = {
-			id: item.id_channel_pembayaran,
-			code: item.via,
-			image: item.img,
-			name: item.via,
-			price: item.nominal_up_pg ?? '',
-			helper: '<ul><li>Step 1</li><li>Step 2</li></ul>'
-		};
-
-		groupMapping[item.nama_group_channel].channels.push(channel);
-		groupMapping[item.nama_group_channel].images.push(item.img);
-	});
-
-	return Object.values(groupMapping);
 };

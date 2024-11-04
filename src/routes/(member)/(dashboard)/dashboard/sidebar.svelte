@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import {
-		BadgePercent,
+		HandCoins,
 		Bell,
 		Clock,
 		Crown,
@@ -88,6 +88,14 @@
 		>
 			<FileBarChart size={20} />
 			<span class="ml-3 text-sm">Laporan</span>
+		</a>
+		<a
+			href="/dashboard/cashout"
+			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"
+			class:active={isActive('/dashboard/cashout')}
+		>
+			<HandCoins size={20} />
+			<span class="ml-3 text-sm">Penarikan Dana</span>
 		</a>
 		<a
 			href="/dashboard/settings"

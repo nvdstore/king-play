@@ -183,3 +183,10 @@ export async function getAccountByProvider(providerAccountId: string, provider: 
 	);
 	return res?.rows[0] ?? null;
 }
+
+export async function getBalance(memberId: string) {
+	const res = await db.query('select balance from mt_member where id_member = $1 limit 1', [
+		memberId
+	]);
+	return res?.rows[0]?.balance ?? 0;
+}
