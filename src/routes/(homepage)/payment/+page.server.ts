@@ -13,46 +13,50 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		redirect(307, '/');
 	}
 
-	const checkoutUserId = checkoutData.data.id_user;
+	const checkoutUserId = checkoutData.id_user;
 	if (checkoutUserId != userId) {
 		console.log('Invalid user');
 		redirect(307, '/');
 	}
 
-	const invoiceDet = checkoutData.additional.response_invoice_detail;
-	if (!invoiceDet) {
+	const idInvoice = checkoutData.id_invoice;
+	if (!idInvoice) {
 		console.log('Invoice data not found');
 		redirect(307, '/');
 	}
-
-	const invoiceData: InvoiceDataTyoe = {
-		channel: invoiceDet.channel,
-		checkoutUrl: invoiceDet.checkout_url,
-		idChannel: invoiceDet.id_channel_pembayaran,
-		idInquiry: invoiceDet.id_transaksi_inquiry,
-		idInvoice: invoiceDet.id_invoice,
-		panduan: invoiceDet.panduan,
-		payUrl: invoiceDet.pay_url,
-		reffIdBiller: invoiceDet.reff_id_biller,
-		timeLimit: new Date(invoiceDet.time_limit),
-		total: invoiceDet.total
-	};
 
 	const { data } = await request({
 		method: 'POST',
 		endpoint: '/v1.0/api/invoices/check/',
 		payload: {
-			id_invoice: invoiceData.idInvoice,
+			id_invoice: idInvoice,
 			id_user: userId!
 		},
 		uuid: userId!
 	});
-	let flag = data?.flag ?? 'Selesaikan Pembayaran';
-	let status: number = data?.status ?? 1;
+	// console.log(data);
+
+	const invoiceData = JSON.parse(data.data);
+	const invoiceDetail = invoiceData.invoice_detail;
+	const invoice: InvoiceDataTyoe = {
+		channel: invoiceDetail.channel,
+		checkoutUrl: invoiceDetail.checkout_url,
+		idChannel: invoiceDetail.id_channel_pembayaran,
+		idInquiry: invoiceDetail.id_transaksi_inquiry,
+		idInvoice: invoiceDetail.id_invoice,
+		panduan: invoiceDetail.panduan,
+		payUrl: invoiceDetail.pay_url,
+		reffIdBiller: invoiceDetail.reff_id_biller,
+		timeLimit: new Date(invoiceDetail.time_limit),
+		total: invoiceDetail.total
+	};
+
+	const flag = data?.flag ?? 'Selesaikan Pembayaran';
+	const status: number = data?.status ?? 1;
 
 	return {
 		flag,
 		status,
-		invoice: invoiceData
+		invoice
 	};
 };

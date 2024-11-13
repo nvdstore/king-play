@@ -79,3 +79,9 @@ select.input {
 	list-style: decimal;
 	@apply px-4;
 }
+
+.panduan ol {
+	list-style: decimal;
+	margin-left: 25px;
+	margin-top: 10px;
+}

@@ -84,10 +84,11 @@
 
 				$showLoader = false;
 			} else {
-				const invoiceAdditional = resData?.additional;
-				const checkoutUrl = invoiceAdditional?.response_invoice_detail?.checkout_url;
-				if (checkoutUrl) {
-					const base64Data = btoa(JSON.stringify(resData));
+				const invoiceDetail = resData?.additional?.response_invoice_detail;
+				if (invoiceDetail.id_invoice && invoiceDetail?.checkout_url) {
+					const base64Data = btoa(
+						JSON.stringify({ id_user: resData?.data.id_user, id_invoice: invoiceDetail.id_invoice })
+					);
 					const url = new URLSearchParams();
 					url.append('d', base64Data);
 					window.location.href = '/payment' + '?' + url.toString();
@@ -457,15 +458,5 @@
 				</p>
 			</div>
 		</div>
-
-		{#if selectedChannel}
-			<div class="{data.theme.card} p-4 space-y-4">
-				<div class="flex items-center gap-2 font-medium">
-					<CircleHelp />
-					<span>Cara Pembayaran {selectedChannel.name}</span>
-				</div>
-				<div class="helper">{@html selectedChannel.helper}</div>
-			</div>
-		{/if}
 	</aside>
 </div>
