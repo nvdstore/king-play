@@ -35,7 +35,7 @@
 	{#if data.isMaster}
 		<a href="https://reseller.kingplay.id/">
 			<section
-				class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover text-neutral-50 h-80"
+				class="border border-slate-800/50 rounded-xl bg-no-repeat bg-cover text-neutral-50 h-[150px] md:h-80"
 				style="
 					background-image: url(https://res.cloudinary.com/dwfrvuyh6/image/upload/v1730539508/Screenshot_from_2024-11-02_16-24-02_nlg6mt.png);
 				"

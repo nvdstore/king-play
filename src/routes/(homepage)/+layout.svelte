@@ -142,7 +142,7 @@
 							/>
 						</a>
 						<div>
-							<div>&copy; 2024 - KingPlay Teams, All rights reserved.</div>
+							<div>&copy; {new Date().getFullYear()} - KingPlay Teams, All rights reserved.</div>
 						</div>
 					{:else}
 						<a href="/" class="flex space-x-2">
@@ -150,16 +150,7 @@
 						</a>
 					{/if}
 				</div>
-				<div></div>
-				<div class="space-y-4 flex-1">
-					<div class="space-y-2">
-						<div class="text-{data.color}-500 font-medium">Sitemap</div>
-						<ul>
-							<li><a href="/">Topup Game</a></li>
-							<li><a href="/privacy-policy">Kebijakan Privasi</a></li>
-							<li><a href="/terms">Syarat & Ketentuan</a></li>
-						</ul>
-					</div>
+				<div>
 					{#if data.isMaster}
 						<div class="space-y-2">
 							<div class="text-{data.color}-500 font-medium">Member</div>
@@ -169,6 +160,16 @@
 							</ul>
 						</div>
 					{/if}
+				</div>
+				<div class="space-y-4 flex-1">
+					<div class="space-y-2">
+						<div class="text-{data.color}-500 font-medium">Sitemap</div>
+						<ul>
+							<li><a href="/">Topup Game</a></li>
+							<li><a href="/privacy-policy">Kebijakan Privasi</a></li>
+							<li><a href="/terms">Syarat & Ketentuan</a></li>
+						</ul>
+					</div>
 				</div>
 				<div class="space-y-2 flex-1">
 					<div class="text-{data.color}-500 font-medium">Kontak Kami</div>
