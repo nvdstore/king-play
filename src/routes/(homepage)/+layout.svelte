@@ -137,7 +137,7 @@
 						<a href="/" class="flex space-x-2">
 							<img
 								src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1729241327/user-upload/12000070/klb2jnl6hydlk5q1npuy.png"
-								class="h-10"
+								class="h-10 object-scale-down"
 								alt="Kingplay"
 							/>
 						</a>
@@ -152,7 +152,7 @@
 				</div>
 				<div>
 					{#if data.isMaster}
-						<div class="space-y-2">
+						<div class="hidden md:block space-y-2">
 							<div class="text-{data.color}-500 font-medium">Member</div>
 							<ul>
 								<li><a href="/auth/register">Daftar Member</a></li>
@@ -170,6 +170,15 @@
 							<li><a href="/terms">Syarat & Ketentuan</a></li>
 						</ul>
 					</div>
+					{#if data.isMaster}
+						<div class="block md:hidden space-y-2">
+							<div class="text-{data.color}-500 font-medium">Member</div>
+							<ul>
+								<li><a href="/auth/register">Daftar Member</a></li>
+								<li><a href="/dashboard">Dashboard</a></li>
+							</ul>
+						</div>
+					{/if}
 				</div>
 				<div class="space-y-2 flex-1">
 					<div class="text-{data.color}-500 font-medium">Kontak Kami</div>
