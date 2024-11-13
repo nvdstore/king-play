@@ -190,3 +190,11 @@ export async function getBalance(memberId: string) {
 	]);
 	return res?.rows[0]?.balance ?? 0;
 }
+
+export async function getHistoryCashout(memberId: string) {
+	const res = await db.query(
+		'select * from request_withdrawl where id_member = $1 order by tanggal_request desc limit 10',
+		[memberId]
+	);
+	return res?.rows ?? [];
+}

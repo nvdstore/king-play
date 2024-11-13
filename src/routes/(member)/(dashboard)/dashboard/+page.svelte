@@ -84,22 +84,7 @@
 		limit={data.limit}
 		total={data.total}
 		{pageNum}
-		on:prev={async () => {
-			if (pageNum > 1) {
-				pageNum -= 1;
-
-				await tick();
-				form.requestSubmit();
-			}
-		}}
-		on:next={async () => {
-			if (pageNum < 10) {
-				pageNum += 1;
-
-				await tick();
-				form.requestSubmit();
-			}
-		}}
+		showNav={false}
 	/>
 </section>
 

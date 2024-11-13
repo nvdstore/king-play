@@ -4,8 +4,8 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.auth();
 
-	const limit = 10;
-	const page = url.searchParams.get('page') ? Number(url.searchParams.get('page')) : 1;
+	const limit = 25;
+	const page = 0;
 
 	const { count, data: transactions } = await getTransactions({
 		idMember: session?.user?.id?.toString()!,

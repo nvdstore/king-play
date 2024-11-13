@@ -3,7 +3,7 @@ import type { Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 import { getPaymentChannels } from '$lib/models/game';
-import { getBalance } from '$lib/models/user';
+import { getBalance, getHistoryCashout } from '$lib/models/user';
 import { groupingPaymentChannel } from '$lib/utils/helper';
 import { request, generateMid } from '$lib/request';
 
@@ -15,15 +15,19 @@ export const load: PageServerLoad = async ({ parent }) => {
 	const dataChannels = await getPaymentChannels('cashout');
 	const channels = groupingPaymentChannel(dataChannels);
 
+	const historyCashout = await getHistoryCashout(user?.idMember!);
+
 	return {
 		balance,
-		channels
+		channels,
+		historyCashout
 	};
 };
 
 export const actions: Actions = {
 	default: async ({ locals, request: req, cookies }) => {
 		const session = await locals.auth();
+		console.log(session);
 		const user = session?.user;
 
 		const frmData = await req.formData();
@@ -53,17 +57,16 @@ export const actions: Actions = {
 			return { errors: errorBag, values: valueBag, message: 'Pilih channel pembayaran' };
 		}
 
-		const userId = cookies.get('uuid') ?? '';
 		const mid = generateMid();
 
-		const { data, message, ok } = await request({
+		const { code, message, ok } = await request({
 			method: 'POST',
 			endpoint: '/v1.0/api/cashout',
 			payload: {
 				mid,
 				data: {
 					id_produk: '',
-					id_user: '',
+					id_user: session?.sessionToken ?? '',
 					id_pelanggan1: '',
 					id_pelanggan2: '',
 					id_pelanggan3: '',
@@ -77,10 +80,9 @@ export const actions: Actions = {
 					channel_id: channel
 				}
 			},
-			uuid: userId
+			uuid: session?.sessionToken ?? ''
 		});
-		console.log(data);
 
-		return { errors: {}, values: valueBag, message: 'Berhasil menyimpan data' };
+		return { errors: errorBag, values: valueBag, message, code };
 	}
 };

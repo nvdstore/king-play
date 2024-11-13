@@ -51,9 +51,9 @@
 				<LucideLink2 size={14} /> Kunjungi
 			</a>
 		</div>
-		<a href="/dashboard/notif" class="ml-auto mr-2">
+		<!-- <a href="/dashboard/notif" class="ml-auto mr-2">
 			<Bell size={18} />
-		</a>
+		</a> -->
 	</div>
 
 	<nav class="space-y-2 p-2">

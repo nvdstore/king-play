@@ -8,6 +8,8 @@
 
 	import type { ActionData, PageData } from './$types';
 	import { invalidateAll } from '$app/navigation';
+	import EmptyTable from '$lib/components/empty-table.svelte';
+	import { format } from 'date-fns';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -35,13 +37,18 @@
 		use:enhance={() => {
 			loadingForm = true;
 
-			return async ({ result }) => {
+			return async ({ result, update }) => {
 				await applyAction(result);
 				if (form?.message) {
 					toast.push(form?.message);
 				}
+
 				invalidateAll();
 				loadingForm = false;
+
+				if (form?.code == '00') {
+					update({ reset: true });
+				}
 			};
 		}}
 		class="space-y-4 p-4 border border-neutral-700 rounded-md bg-neutral-800"
@@ -85,7 +92,7 @@
 
 		<div class="flex flex-col space-y-4">
 			<div class="input-group">
-				<label for="idpel" class="input-label">Nomor Rekening</label>
+				<label for="idpel" class="input-label">No. Rekening/Handphone/VA</label>
 				<input
 					type="number"
 					name="idpel"
@@ -119,4 +126,31 @@
 			<button type="submit" class="btn btn-red">Tarik Dana</button>
 		</div>
 	</form>
+
+	<div class="overflow-x-auto border border-neutral-700 rounded-lg">
+		<table class="min-w-full">
+			<thead>
+				<th>Tanggal</th>
+				<th>No. Rekening/Handphone/VA</th>
+				<th>Nominal</th>
+				<th>Status</th>
+			</thead>
+			<tbody>
+				{#if data.historyCashout.length > 0}
+					{#each data.historyCashout as item}
+						<tr>
+							<td>{format(item.tanggal_request, 'd/MM/yyyy')}</td>
+							<td>{item.id_pel}</td>
+							<td>{currency(item.uang_keluar)}</td>
+							<td>{item.status == '0' ? 'Diproses' : 'Ditransfer'}</td>
+						</tr>
+					{/each}
+				{:else}
+					<tr>
+						<td colspan="7"><EmptyTable description="Belum ada data penarikan" /></td>
+					</tr>
+				{/if}
+			</tbody>
+		</table>
+	</div>
 </section>

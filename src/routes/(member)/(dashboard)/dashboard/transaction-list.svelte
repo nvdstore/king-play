@@ -14,6 +14,7 @@
 	export let limit: number = 25;
 	export let total: number = 0;
 	export let pageNum: number = 1;
+	export let showNav = true;
 
 	export function getTrxStatus(key: string) {
 		const status = TransactionStatus.find((val) => val.key == key) ?? null;
@@ -60,7 +61,7 @@
 		</tbody>
 	</table>
 
-	{#if data.length > 0}
+	{#if data.length > 0 && showNav}
 		<div class="flex items-center justify-between px-6 py-2 border-t border-t-neutral-700">
 			<span class="text-xs text-neutral-400">Menampilkan data {limit} dari {total}</span>
 			<div class="flex items-center space-x-2">
