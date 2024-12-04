@@ -22,7 +22,7 @@ export async function getGameField(groupId: string) {
 
 export async function getPaymentChannels(type: 'all' | 'cashout' = 'all') {
 	const res = await db.query(
-		`select * from mt_channel_pembayaran ${type == 'cashout' ? ' where is_wd = 1' : ''}`,
+		`select * from mt_channel_pembayaran ${type == 'cashout' ? ' where is_wd = 1 and is_active = 1' : ' where is_active = 1'}`,
 		[]
 	);
 	return res?.rows ?? [];

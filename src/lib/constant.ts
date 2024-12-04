@@ -18,6 +18,10 @@ export const TransactionStatus = [
 
 export const MappingGroupChannel = [
 	{
+		group: 'VA',
+		name: 'Virtual Account'
+	},
+	{
 		group: 'EWALLET',
 		name: 'E-Wallet'
 	},

@@ -9,7 +9,6 @@
 		Wallet,
 		X,
 		Landmark,
-		CircleHelp,
 		ScanQrCode,
 		Store
 	} from 'lucide-svelte';
@@ -152,7 +151,7 @@
 	<main class="md:{data.theme.card} w-full">
 		<div
 			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} md:border-b {data.theme
-				.border} rounded-t-lg md:sticky top-[4.5rem] z-10 bg-opacity-75 backdrop-blur-md"
+				.border} rounded-t-lg overflow-hidden"
 		>
 			<img src={data.game.image} class="w-[72px] aspect-square rounded-lg" alt="" />
 			<div>
@@ -316,6 +315,8 @@
 									<div class="flex items-center gap-2">
 										{#if group.type == 'EWALLET'}
 											<Wallet size={20} />
+										{:else if group.type == 'VA'}
+											<Landmark size={20} />
 										{:else if group.type == 'BANK'}
 											<Landmark size={20} />
 										{:else if group.type == 'QRIS'}
@@ -364,20 +365,22 @@
 									</div>
 								{/if}
 
-								<button
-									type="button"
-									on:click={() => handleSelectGroupChannel(group)}
-									class="flex items-center justify-end border-t {data.theme
-										.border} px-4 py-2 w-full"
-								>
-									<div class="flex items-center justify-end gap-1 flex-wrap">
-										{#each group.images as img}
-											<div class="bg-neutral-50 rounded-md p-1">
-												<img src={img} class="w-20 h-4 object-scale-down" alt="payment-channel" />
-											</div>
-										{/each}
-									</div>
-								</button>
+								{#if selectedGroupChannel?.id !== group.id}
+									<button
+										type="button"
+										on:click={() => handleSelectGroupChannel(group)}
+										class="flex items-center justify-end border-t {data.theme
+											.border} px-4 py-2 w-full"
+									>
+										<div class="flex items-center justify-end gap-1 flex-wrap">
+											{#each group.images as img}
+												<div class="bg-neutral-50 rounded-md p-1">
+													<img src={img} class="w-20 h-4 object-scale-down" alt="payment-channel" />
+												</div>
+											{/each}
+										</div>
+									</button>
+								{/if}
 							</div>
 						{/each}
 					</div>
