@@ -28,7 +28,7 @@
 			<a href="/" class="flex items-center space-x-2 flex-1">
 				{#if data.isMaster}
 					<img
-						src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1729241327/user-upload/12000070/klb2jnl6hydlk5q1npuy.png"
+						src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1733492336/Logo_White_BG_xzlux0.png"
 						class="h-10"
 						alt="Kingplay"
 					/>
