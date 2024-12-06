@@ -42,7 +42,7 @@
 						Selesaikan Pembayaran
 					</a>
 					<div>
-						<p class="text-sm opacity-75">Selesaikan pemabayaran sebelum:</p>
+						<p class="text-sm opacity-75">Selesaikan pembayaran sebelum:</p>
 						<p class="font-medium">{format(invoice.timeLimit, 'dd LLL yyyy hh:mm:ss ')}</p>
 					</div>
 					<p class="text-xs">ID Invoice: {invoice.idInvoice} &bull; Reff: {invoice.idInquiry}</p>
