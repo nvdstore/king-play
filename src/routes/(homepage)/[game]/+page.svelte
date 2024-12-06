@@ -155,7 +155,9 @@
 		>
 			<img src={data.game.image} class="w-[72px] aspect-square rounded-lg" alt="" />
 			<div>
-				<p class="text-sm opacity-50">Topup Games</p>
+				<p class="text-sm opacity-50">
+					{data.game.tipeGroup.toLowerCase() === 'game' ? 'Topup Games' : 'Voucher'}
+				</p>
 				<h4 class="text-3xl font-bold">{data.game.name}</h4>
 			</div>
 		</div>
@@ -173,7 +175,11 @@
 				<div class="space-y-4 w-full">
 					<div>
 						<h4 class="font-medium">
-							<span class="md:hidden">1. </span>Masukkan Game ID {data.game.name} Anda
+							<span class="md:hidden">1. </span>Masukkan {data.game.tipeGroup.toLowerCase() ==
+							'game'
+								? 'Game'
+								: ''}
+							{data.game.name} Anda
 						</h4>
 						<p class="text-sm opacity-50">
 							Silahkan anda mengisi dengan game ID anda, contoh : 213123123

@@ -19,6 +19,8 @@
 </script>
 
 <svelte:head>
+	<meta charset="utf-8" />
+	<meta name="description" content="Topup game termudah dan termurah" />
 	<title>{data.store.name} - Topup Game</title>
 </svelte:head>
 
@@ -136,7 +138,7 @@
 					{#if data.isMaster}
 						<a href="/" class="flex space-x-2">
 							<img
-								src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1729241327/user-upload/12000070/klb2jnl6hydlk5q1npuy.png"
+								src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1733492336/Logo_White_BG_xzlux0.png"
 								class="h-10 object-scale-down"
 								alt="Kingplay"
 							/>

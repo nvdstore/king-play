@@ -38,9 +38,16 @@
 				</div>
 
 				<div class="space-y-4">
-					<a href={invoice.checkoutUrl} target="_blank" class="btn btn-red uppercase">
-						Selesaikan Pembayaran
-					</a>
+					{#if data.isQr}
+						<div class="p-2 border rounded-md inline-flex">
+							<img src={data.qrData} alt="qr" class="w-200" />
+						</div>
+						<p class="font-medium">Pindai kode QR diatas untuk melakukan pembayaran</p>
+					{:else}
+						<a href={invoice.checkoutUrl} target="_blank" class="btn btn-red uppercase">
+							Selesaikan Pembayaran
+						</a>
+					{/if}
 					<div>
 						<p class="text-sm opacity-75">Selesaikan pembayaran sebelum:</p>
 						<p class="font-medium">{format(invoice.timeLimit, 'dd LLL yyyy hh:mm:ss ')}</p>

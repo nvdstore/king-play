@@ -22,7 +22,8 @@ export const load: PageServerLoad = async ({ cookies, params, url, setHeaders })
 		image: group.img,
 		fields: [],
 		itemImg: group.item_img,
-		itemName: group.item_name
+		itemName: group.item_name,
+		tipeGroup: group.tipe_group
 	};
 
 	const fields = await getGameField(group.id_group_produk);

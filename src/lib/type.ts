@@ -16,6 +16,7 @@ export type Game = {
 	fields?: GameField[];
 	itemImg?: string;
 	itemName?: string;
+	tipeGroup: String;
 };
 
 export type GameField = {

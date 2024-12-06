@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { InvoiceDataTyoe } from '$lib/type';
 import { request } from '$lib/request';
+import { BASE_API_URL } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ url, cookies }) => {
 	const userId = cookies.get('uuid');
@@ -51,12 +52,22 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		total: invoiceDetail.total
 	};
 
+	const customQrPath = invoiceDetail.custom_qr;
+	const isQr = customQrPath && customQrPath != 'undefined';
+	const customQrUrl = new URL(customQrPath, BASE_API_URL).toString();
+	const qrData = await fetch(customQrUrl)
+		.then((response) => response.arrayBuffer())
+		.then((buffer) => Buffer.from(buffer).toString('base64'));
+	console.log(qrData);
+
 	const flag = data?.flag ?? 'Selesaikan Pembayaran';
 	const status: number = data?.status ?? 1;
 
 	return {
 		flag,
 		status,
-		invoice
+		invoice,
+		isQr,
+		qrData: `data:image/png;base64, ${qrData}`
 	};
 };
