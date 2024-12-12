@@ -83,6 +83,8 @@
 
 				$showLoader = false;
 			} else {
+				$showLoader = false;
+
 				const invoiceDetail = resData?.additional?.response_invoice_detail;
 				if (invoiceDetail.id_invoice && invoiceDetail?.checkout_url) {
 					const base64Data = btoa(
