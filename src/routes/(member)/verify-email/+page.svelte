@@ -8,6 +8,10 @@
 	let form: HTMLFormElement;
 </script>
 
+<svelte:head>
+	<title>Verifikasi Email | King Play</title>
+</svelte:head>
+
 <nav class="p-4 text-right">
 	<span>{data?.user?.name}</span>
 	<span class="mx-2">|</span>

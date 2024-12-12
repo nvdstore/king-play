@@ -40,6 +40,8 @@ export const { handle, signIn } = SvelteKitAuth(async ({ request, cookies }) => 
 					throw new InvalidInput();
 				}
 
+				console.log(credentials);
+
 				const user = await getUserByEmail(credentials.email as string);
 
 				if (!user || !bcrypt.compareSync(`${credentials.password}`, user.password)) {

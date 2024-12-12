@@ -5,6 +5,10 @@
 	export let data: LayoutData;
 </script>
 
+<svelte:head>
+	<title>King Play</title>
+</svelte:head>
+
 <div class="flex flex-col items-center justify-center py-16 mx-auto space-y-6 overflow-y-auto">
 	<a href="/">
 		<Crown size={38} />
