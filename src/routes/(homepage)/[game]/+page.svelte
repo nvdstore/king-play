@@ -177,12 +177,13 @@
 						<h4 class="font-medium">
 							<span class="md:hidden">1. </span>Masukkan {data.game.tipeGroup.toLowerCase() ==
 							'game'
-								? 'Game'
-								: ''}
-							{data.game.name} Anda
+								? `ID Game ${data.game.name} Anda`
+								: 'Data Tujuan'}
 						</h4>
 						<p class="text-sm opacity-50">
-							Silahkan anda mengisi dengan game ID anda, contoh : 213123123
+							{data.game.tipeGroup.toLowerCase() == 'game'
+								? 'Silahkan anda mengisi dengan ID anda, contoh : 213123123'
+								: 'Silahkan masukkan Nomor HP/Email'}
 						</p>
 					</div>
 					{#if data.game.fields && data.game.fields?.length > 0}
