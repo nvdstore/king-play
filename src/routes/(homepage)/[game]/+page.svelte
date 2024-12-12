@@ -257,7 +257,7 @@
 								<h4 class="text-sm opacity-50">
 									{searchValue.length > 0
 										? `Pencarian produk: ${searchValue}`
-										: `Semua Produk (${filteredProducts?.length})`}
+										: `Semua Produk (${data.products?.length})`}
 								</h4>
 								<div class="grid grid-cols-3 gap-2">
 									{#each showAll || searchValue ? filteredProducts : filteredProducts ?? [] as product}

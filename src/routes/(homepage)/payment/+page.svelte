@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { currency } from '$lib/utils/formatter';
 	import { format } from 'date-fns';
+	import { id } from 'date-fns/locale';
+	import { Copy, HelpCircle } from 'lucide-svelte';
+
+	import { currency } from '$lib/utils/formatter';
 	import type { PageData } from './$types';
-	import { Check, CheckCircle, Clock, HelpCircle } from 'lucide-svelte';
+	import { copyText } from '$lib/utils/clipboard';
 
 	export let data: PageData;
 	const invoice = data.invoice;
@@ -11,7 +14,11 @@
 {#if data.status == 4}
 	<div class={data.theme.card}>
 		<div class="flex flex-col items-center justify-center space-y-6 px-5 py-10 text-center">
-			<CheckCircle size={48} />
+			<img
+				src="https://img.icons8.com/?size=100&id=RifiHoZHwbPM&format=png&color=000000"
+				alt="success"
+			/>
+
 			<div class="md:w-[500px]">
 				<h4 class="text-2xl font-medium text-{data.color}-500">Pembayaran Berhasil</h4>
 				<p>Terima kasih! Pembayaran Anda telah berhasil diproses.</p>
@@ -27,22 +34,59 @@
 	</div>
 {:else}
 	<div class="grid md:grid-cols-[1fr_350px] gap-6 items-stretch">
-		<div class={data.theme.card}>
+		<divx>
 			<div class="flex flex-col items-center justify-center space-y-6 px-5 py-10 text-center">
-				<Clock size={48} />
-				<h4 class="text-2xl font-medium">{data.flag}</h4>
+				<div class="flex flex-col items-center space-y-2">
+					<img
+						src="https://img.icons8.com/?size=100&id=n7FpOs5tCs7E&format=png&color=000000"
+						alt="waiting"
+					/>
+					<h4 class="text-2xl font-medium">{data.flag}</h4>
+				</div>
 
 				<div>
-					<h4 class="font-bold text-4xl text-{data.color}-500">{currency(invoice.total)}</h4>
+					<div class="flex items-center gap-4">
+						<h4 class="font-bold text-4xl text-{data.color}-500">{currency(invoice.total)}</h4>
+						<button on:click={() => copyText(invoice.total)}><Copy size={20} /></button>
+					</div>
+
 					<p class="text-sm opacity-75">Total Bayar</p>
 				</div>
 
 				<div class="space-y-4">
-					{#if data.isQr}
-						<div class="p-2 border rounded-md inline-flex">
-							<img src={data.qrData} alt="qr" class="w-200" />
+					{#if data.typeInvoice == 'QR'}
+						<div>
+							<div class="p-2 border rounded-lg inline-flex bg-white">
+								<img src={data.qrData} alt="qr" class="w-200" />
+							</div>
+							<p class="text-sm font-medium mt-2">
+								Pindai kode QR diatas dengan Aplikasi Pembayaran
+							</p>
 						</div>
-						<p class="font-medium">Pindai kode QR diatas untuk melakukan pembayaran</p>
+					{:else if data.typeInvoice == 'VA'}
+						<div class="p-4 border rounded-lg inline-flex flex-col bg-white">
+							<div class="mb-2 text-left">
+								<img src={data.logoChannel} class="w-20" alt={data.namaChannel} />
+								<p class="text-xs mt-1">Nomor Virtual Account</p>
+							</div>
+
+							<div class="flex items-center gap-2">
+								<h4 class="text-2xl font-medium text-{data.color}-500">{data.virtualAccount}</h4>
+								<button on:click={() => copyText(data.virtualAccount)}><Copy size={16} /></button>
+							</div>
+						</div>
+					{:else if data.typeInvoice == 'RETAIL'}
+						<div class="p-4 border rounded-lg inline-flex flex-col bg-white">
+							<div class="mb-2 text-left">
+								<img src={data.logoChannel} class="w-20" alt={data.namaChannel} />
+								<p class="text-xs mt-1">Kode Pembayaran</p>
+							</div>
+
+							<div class="flex items-center gap-2">
+								<h4 class="text-2xl font-medium text-{data.color}-500">{data.paymentCode}</h4>
+								<button on:click={() => copyText(data.paymentCode)}><Copy size={16} /></button>
+							</div>
+						</div>
 					{:else}
 						<a href={invoice.checkoutUrl} target="_blank" class="btn btn-red uppercase">
 							Selesaikan Pembayaran
@@ -50,18 +94,20 @@
 					{/if}
 					<div>
 						<p class="text-sm opacity-75">Selesaikan pembayaran sebelum:</p>
-						<p class="font-medium">{format(invoice.timeLimit, 'dd LLL yyyy hh:mm:ss ')}</p>
+						<p class="font-medium">
+							{format(invoice.timeLimit, 'dd LLLL yyyy hh:mm:ss ', { locale: id })}
+						</p>
 					</div>
 					<p class="text-xs">ID Invoice: {invoice.idInvoice} &bull; Reff: {invoice.idInquiry}</p>
 				</div>
 			</div>
-		</div>
+		</divx>
 
 		<div class="{data.theme.card} p-4 w-full text-left panduan">
 			<h4 class="inline-flex items-center text-lg font-medium">
 				<HelpCircle class="mr-2" /><span>Panduan Pembayaran</span>
 			</h4>
-			<div>
+			<div class="mt-2">
 				{@html invoice.panduan}
 			</div>
 		</div>

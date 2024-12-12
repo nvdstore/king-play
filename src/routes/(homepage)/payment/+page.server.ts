@@ -35,7 +35,6 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		},
 		uuid: userId!
 	});
-	// console.log(data);
 
 	const invoiceData = JSON.parse(data.data);
 	const invoiceDetail = invoiceData.invoice_detail;
@@ -52,22 +51,42 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		total: invoiceDetail.total
 	};
 
-	const customQrPath = invoiceDetail.custom_qr;
-	const isQr = customQrPath && customQrPath != 'undefined';
-	const customQrUrl = new URL(customQrPath, BASE_API_URL).toString();
-	const qrData = await fetch(customQrUrl)
-		.then((response) => response.arrayBuffer())
-		.then((buffer) => Buffer.from(buffer).toString('base64'));
-	console.log(qrData);
+	console.log(invoiceDetail);
 
 	const flag = data?.flag ?? 'Selesaikan Pembayaran';
 	const status: number = data?.status ?? 1;
 
-	return {
+	let typeInvoice: 'QR' | 'VA' | 'RETAIL' | 'OTHER' = 'OTHER';
+	if ('virtual_account' in invoiceDetail) {
+		typeInvoice = 'VA';
+	} else if ('payment_code' in invoiceDetail) {
+		typeInvoice = 'RETAIL';
+	} else if ('custom_qr' in invoiceDetail) {
+		typeInvoice = 'QR';
+	}
+
+	let resData: Record<string, any> = {
 		flag,
 		status,
 		invoice,
-		isQr,
-		qrData: `data:image/png;base64, ${qrData}`
+		typeInvoice,
+		namaChannel: invoiceDetail.nama_channel,
+		logoChannel: invoiceDetail.logo
 	};
+
+	if (typeInvoice == 'QR') {
+		const customQrPath = invoiceDetail.custom_qr;
+		const customQrUrl = new URL(customQrPath, BASE_API_URL).toString();
+		const qrData = await fetch(customQrUrl)
+			.then((response) => response.arrayBuffer())
+			.then((buffer) => Buffer.from(buffer).toString('base64'));
+
+		resData = { ...resData, qrData: `data:image/png;base64, ${qrData}` };
+	} else if (typeInvoice == 'RETAIL') {
+		resData = { ...resData, paymentCode: invoiceDetail.payment_code };
+	} else if (typeInvoice == 'VA') {
+		resData = { ...resData, virtualAccount: invoiceDetail.virtual_account };
+	}
+
+	return resData;
 };
