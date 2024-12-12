@@ -6,7 +6,8 @@ import { themes } from '$lib/themes';
 
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ parent }) => {
+export const load: PageServerLoad = async ({ locals, parent }) => {
+	const session = await locals.auth();
 	const { user } = await parent();
 
 	const color = 'blue';
@@ -21,6 +22,11 @@ export const load: PageServerLoad = async ({ parent }) => {
 		}
 	}
 
+	if (nextRetryAt == null) {
+		requestSendEmail(session);
+		nextRetryAt = addMinutes(new Date(), 1);
+	}
+
 	return {
 		color,
 		theme,
@@ -33,23 +39,27 @@ export const actions: Actions = {
 	default: async ({ locals }) => {
 		const session = await locals.auth();
 
-		const email = session?.user?.email;
-		if (email) {
-			const token = await createEmailToken(session.user?.id!);
-			if (!token) {
-				return null;
-			}
-
-			const body = `<p>Klik link dibawah untuk melakukan verifikasi.</p><br/><a>https://kingplay.id/verify?token=${token}</a>`;
-
-			await sendEmail({
-				name: session.user?.name!,
-				from: 'no-reply@kingplay.id',
-				to: email,
-				subject: 'Verifikasi Email',
-				body,
-				modul: 'verif'
-			});
-		}
+		requestSendEmail(session);
 	}
 };
+
+async function requestSendEmail(session: any) {
+	const email = session?.user?.email;
+	if (email) {
+		const token = await createEmailToken(session.user?.id!);
+		if (!token) {
+			return null;
+		}
+
+		const body = `<p>Klik link dibawah untuk melakukan verifikasi.</p><br/><a>https://kingplay.id/verify?token=${token}</a>`;
+
+		await sendEmail({
+			name: session.user?.name!,
+			from: 'no-reply@kingplay.id',
+			to: email,
+			subject: 'Verifikasi Email',
+			body,
+			modul: 'verif'
+		});
+	}
+}
