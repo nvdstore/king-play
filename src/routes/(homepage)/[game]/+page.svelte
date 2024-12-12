@@ -64,42 +64,49 @@
 
 		$showLoader = true;
 
-		const response = await fetch(event.currentTarget.action, {
-			method: 'POST',
-			body: formData
-		});
+		try {
+			const response = await fetch(event.currentTarget.action, {
+				method: 'POST',
+				body: formData
+			});
 
-		const result: ActionResult = deserialize(await response.text());
+			const result: ActionResult = deserialize(await response.text());
 
-		if (result.type === 'success') {
-			const resData = result.data as ActionData;
-			if (resData && resData.code != '00') {
-				Swal.fire({
-					title: 'Whoops!',
-					icon: 'warning',
-					text: resData.message ?? 'Terjadi kesalahan pada sistem',
-					customClass: { confirmButton: `bg-${data.color}-500` }
-				});
+			if (result.type === 'success') {
+				const resData = result.data as ActionData;
+				if (resData && resData.code != '00') {
+					Swal.fire({
+						title: 'Whoops!',
+						icon: 'warning',
+						text: resData.message ?? 'Terjadi kesalahan pada sistem',
+						customClass: { confirmButton: `bg-${data.color}-500` }
+					});
 
-				$showLoader = false;
+					$showLoader = false;
+				} else {
+					$showLoader = false;
+
+					const invoiceDetail = resData?.additional?.response_invoice_detail;
+					if (invoiceDetail.id_invoice && invoiceDetail?.checkout_url) {
+						const base64Data = btoa(
+							JSON.stringify({
+								id_user: resData?.data.id_user,
+								id_invoice: invoiceDetail.id_invoice
+							})
+						);
+						const url = new URLSearchParams();
+						url.append('d', base64Data);
+						window.location.href = '/payment' + '?' + url.toString();
+					}
+				}
 			} else {
 				$showLoader = false;
-
-				const invoiceDetail = resData?.additional?.response_invoice_detail;
-				if (invoiceDetail.id_invoice && invoiceDetail?.checkout_url) {
-					const base64Data = btoa(
-						JSON.stringify({ id_user: resData?.data.id_user, id_invoice: invoiceDetail.id_invoice })
-					);
-					const url = new URLSearchParams();
-					url.append('d', base64Data);
-					window.location.href = '/payment' + '?' + url.toString();
-				}
 			}
-		} else {
+
+			applyAction(result);
+		} finally {
 			$showLoader = false;
 		}
-
-		applyAction(result);
 	}
 
 	async function handleSelectProduct(product: Product) {
