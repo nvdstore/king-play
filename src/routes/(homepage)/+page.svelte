@@ -104,6 +104,6 @@
 		@apply h-full w-full;
 	}
 	.card-text {
-		@apply line-clamp-1 text-sm md:text-base text-center font-medium  transition-colors;
+		@apply line-clamp-2 text-sm md:text-base text-center font-medium transition-colors;
 	}
 </style>
