@@ -51,8 +51,6 @@ export const load: PageServerLoad = async ({ url, cookies }) => {
 		total: invoiceDetail.total
 	};
 
-	console.log(invoiceDetail);
-
 	const flag = data?.flag ?? 'Selesaikan Pembayaran';
 	const status: number = data?.status ?? 1;
 
