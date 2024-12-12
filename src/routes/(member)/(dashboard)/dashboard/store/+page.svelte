@@ -233,7 +233,9 @@
 							{form.store?.errors.logo}
 						</p>
 					{/if}
-					<img src={logo} alt="logo" class="w-40" />
+					{#if logo}
+						<img src={logo} alt="logo" class="w-40" />
+					{/if}
 				</div>
 
 				<div class="input-group">
