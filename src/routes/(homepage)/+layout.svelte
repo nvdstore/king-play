@@ -146,9 +146,13 @@
 						<div>
 							<div>&copy; {new Date().getFullYear()} - KingPlay Teams, All rights reserved.</div>
 						</div>
-					{:else}
-						<a href="/" class="flex space-x-2">
+					{:else if data.store.logo}
+						<a href="/">
 							<img src={data.store.logo} class="h-10 object-scale-down" alt={data.store.name} />
+						</a>
+					{:else}
+						<a href="/">
+							<span class="font-semibold text-lg">{data.store.name}</span>
 						</a>
 					{/if}
 				</div>
