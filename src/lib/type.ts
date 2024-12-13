@@ -111,6 +111,8 @@ export type PaymentChannel = {
 	image: string;
 	price?: number;
 	helper?: string;
+	isDisabled?: boolean;
+	keterangan?: string;
 };
 
 export type PaymentChannelGroup = {

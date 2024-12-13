@@ -24,6 +24,7 @@
 
 	import type { ActionData, PageData } from './$types';
 	import { showLoader } from '$lib/stores/general';
+	import { validateEmail } from '$lib/utils/validator';
 
 	export let data: PageData;
 
@@ -35,6 +36,7 @@
 	let selectedChannel: PaymentChannel | null = null;
 	let showAll = false;
 	let email = '';
+	let errorEmail = '';
 
 	async function handleSubmit(event: { currentTarget: EventTarget & HTMLFormElement }) {
 		const formData = new FormData(event.currentTarget);
@@ -54,6 +56,14 @@
 		if (!channel) {
 			scrollToTargetAdjusted('payMethod');
 			return toast.push('Pilih metode pembayaran Anda');
+		}
+
+		if (!email) {
+			errorEmail = 'Email harus diisi';
+			return toast.push('Masukkan Email Anda terlebih dahulu');
+		} else if (!validateEmail(email)) {
+			errorEmail = 'Format email salah harus diisi';
+			return toast.push('Periksa Email Anda');
 		}
 
 		formData.append('product', product);
@@ -123,6 +133,7 @@
 
 	function handleSelectGroupChannel(group: PaymentChannelGroup) {
 		if (!selectedProduct) {
+			scrollToTargetAdjusted('listProduct');
 			return toast.push('Pilih produk terlebih dahulu');
 		}
 
@@ -138,14 +149,7 @@
 	}
 
 	function scrollToTargetAdjusted(targetId: string, offset = 10) {
-		const element: HTMLElement | null = document.getElementById(targetId);
-		const elementPosition = element?.getBoundingClientRect().top;
-		const offsetPosition = elementPosition ?? 0 + window.pageYOffset - offset;
-
-		window.scrollTo({
-			top: offsetPosition,
-			behavior: 'smooth'
-		});
+		location.href = '#' + targetId;
 	}
 
 	$: filteredProducts =
@@ -356,25 +360,35 @@
 									>
 										{#each group.channels as channel}
 											<button
+												disabled={channel.isDisabled}
 												type="button"
-												class="flex items-center justify-between w-full p-2 rounded-md
+												class="text-left w-full p-2 rounded-md
 												{selectedChannel?.id != channel.id
 													? data.theme.cardButton
 													: `${data.theme.cardButtonActive} border border-${data.color}-500`}"
 												on:click={() => handleSelectChannel(channel)}
 											>
-												<div class="flex items-center gap-3">
-													<div class="bg-white p-1 rounded-md">
-														<img
-															src={channel.image}
-															class="w-20 h-5 object-scale-down"
-															alt={channel.name}
-														/>
+												{#if channel.keterangan}
+													<p class="mb-2 text-red-400 text-sm">{channel.keterangan}</p>
+												{/if}
+
+												<div
+													class="flex items-center justify-between"
+													class:opacity-50={channel.isDisabled}
+												>
+													<div class="flex items-center gap-3">
+														<div class="bg-white p-1 rounded-md">
+															<img
+																src={channel.image}
+																class="w-20 h-5 object-scale-down"
+																alt={channel.name}
+															/>
+														</div>
+														<p class="text-sm">{channel.name}</p>
 													</div>
-													<p class="text-sm">{channel.name}</p>
-												</div>
-												<div class="font-semibold text-{data.color}-500">
-													{channel.price ? currency(channel.price) : ''}
+													<div class="font-semibold text-{data.color}-500">
+														{channel.price ? currency(channel.price) : ''}
+													</div>
 												</div>
 											</button>
 										{/each}
@@ -420,13 +434,20 @@
 						Masukan alamat email yang valid untuk mendapatkan notifikasi dan informasi pembayaran
 					</p>
 				</div>
-				<div class="flex items-center gap-4 mt-4">
+				<div class="mt-4">
 					<input
+						type="email"
 						name="email"
 						bind:value={email}
-						class="{data.theme.input} flex-1"
+						on:input={() => (errorEmail = '')}
+						class="{data.theme.input} {errorEmail ? 'border-red-500' : ''} w-full"
 						placeholder="Masukkan Email Anda"
 					/>
+					{#if errorEmail}
+						<p transition:slide={{ duration: 200 }} class="text-xs text-red-500 mt-1">
+							{errorEmail}
+						</p>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -479,3 +500,9 @@
 		</div>
 	</aside>
 </div>
+
+<style>
+	html {
+		scroll-behavior: smooth;
+	}
+</style>

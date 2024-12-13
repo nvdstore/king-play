@@ -69,7 +69,7 @@ export const load: PageServerLoad = async ({ cookies, params, url, setHeaders })
 
 		dataChannels = resChannels ?? [];
 
-		selectedProduct = products.find((val) => val.id == productId) ?? null;
+		selectedProduct = (products ?? []).find((val) => val.id == productId) ?? null;
 	} else {
 		dataChannels = await getPaymentChannels();
 	}

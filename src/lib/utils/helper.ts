@@ -22,7 +22,9 @@ export const groupingPaymentChannel = (data: any[]) => {
 			code: item.via,
 			image: item.img,
 			name: item.via,
-			price: item.nominal_up_pg ?? ''
+			price: item.nominal_up_pg ?? '',
+			isDisabled: item.is_disabled == '1',
+			keterangan: item.keterangan ?? ''
 		};
 
 		groupMapping[item.nama_group_channel].channels.push(channel);
