@@ -31,6 +31,7 @@
 	let form: HTMLFormElement;
 	let submitForm: HTMLFormElement;
 	let selectedProduct: Product | null = data.selectedProduct;
+	$: console.log(selectedProduct);
 	let searchValue: string = '';
 	let selectedGroupChannel: PaymentChannelGroup | null = null;
 	let selectedChannel: PaymentChannel | null = null;
@@ -427,7 +428,13 @@
 			</div>
 		</form>
 
-		<form bind:this={form} class="hidden" data-sveltekit-noscroll data-sveltekit-keepfocus>
+		<form
+			bind:this={form}
+			class="hidden"
+			data-sveltekit-noscroll
+			data-sveltekit-keepfocus
+			data-sveltekit-replacestate
+		>
 			<input type="hidden" name="product" value={selectedProduct?.id} />
 		</form>
 	</main>
