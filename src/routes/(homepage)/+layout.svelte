@@ -3,6 +3,7 @@
 	import { fade, slide } from 'svelte/transition';
 	import { register } from 'swiper/element/bundle';
 
+	import { onNavigate } from '$app/navigation';
 	import type { LayoutData } from './$types';
 	import { showLoader, userAgent } from '$lib/stores/general';
 
@@ -11,6 +12,10 @@
 	let showSearchBox: boolean = false;
 
 	register();
+
+	onNavigate(() => {
+		showSearchBox = false;
+	});
 
 	$: filteredGames =
 		searchValue.length > 0
@@ -88,7 +93,7 @@
 										</h4>
 										<div class="grid grid-cols-2 gap-2">
 											{#each filteredGames as game}
-												<a href="/{game.slug}" on:click={() => (showSearchBox = false)}>
+												<a href="/{game.slug}">
 													<div
 														class="flex items-center space-x-2 p-2 rounded-lg {data.theme.bgColor}"
 													>

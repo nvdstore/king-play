@@ -77,6 +77,7 @@ export const load: PageServerLoad = async ({ cookies, params, url, setHeaders })
 	channels = groupingPaymentChannel(dataChannels);
 
 	return {
+		slug: params.game,
 		game,
 		products,
 		selectedProduct,

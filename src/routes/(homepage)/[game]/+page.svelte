@@ -42,7 +42,7 @@
 		const formData = new FormData(event.currentTarget);
 
 		if (!formData.get('id_pelanggan_1')) {
-			scrollToTargetAdjusted('inputIdpel');
+			scrollToTargetAdjusted('mainForm');
 			return toast.push('Masukkan ID Anda');
 		}
 
@@ -106,7 +106,8 @@
 						);
 						const url = new URLSearchParams();
 						url.append('d', base64Data);
-						goto('/payment' + '?' + url.toString());
+						window.open('/payment' + '?' + url.toString(), '_blank');
+						window.location.replace(`/${data.slug}`);
 					}
 				}
 			} else {
@@ -149,7 +150,15 @@
 	}
 
 	function scrollToTargetAdjusted(targetId: string, offset = 10) {
-		location.href = '#' + targetId;
+		const element = document.getElementById(targetId);
+		if (element) {
+			setTimeout(() => {
+				element.scrollIntoView({
+					block: 'start',
+					behavior: 'smooth'
+				});
+			}, 500);
+		}
 	}
 
 	$: filteredProducts =
@@ -161,7 +170,7 @@
 </script>
 
 <div class="flex flex-col md:flex-row items-start gap-2 md:gap-6">
-	<main class="md:{data.theme.card} w-full">
+	<main class="md:{data.theme.card} w-full" id="mainForm">
 		<div
 			class="flex items-start md:p-4 gap-6 {data.theme.bgColor} md:border-b {data.theme
 				.border} rounded-t-lg overflow-hidden"
@@ -183,7 +192,7 @@
 			data-sveltekit-noscroll
 			class="space-y-8 md:p-4 py-6"
 		>
-			<div class="w-full flex items-start gap-6" id="inputIdpel">
+			<div class="w-full flex items-start gap-6">
 				<h1 class="font-bold text-4xl opacity-75 w-[40px] text-right hidden md:block">1.</h1>
 				<div class="space-y-4 w-full">
 					<div>
