@@ -33,7 +33,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="grid md:grid-cols-[1fr_350px] gap-6 items-stretch">
+	<div class="grid md:grid-cols-[1fr_350px] gap-6 items-start">
 		<div class="flex flex-col items-center justify-center space-y-6 md:px-5 text-center">
 			<div class="flex flex-col items-center space-y-2">
 				<img
@@ -58,7 +58,12 @@
 						<div class="p-2 border rounded-lg inline-flex bg-white">
 							<img src={data.qrData} alt="qr" class="w-200" />
 						</div>
-						<p class="text-sm font-medium mt-2">Pindai kode QR diatas dengan Aplikasi Pembayaran</p>
+						<div class="flex flex-col items-center mt-2 space-y-4">
+							<p class="text-sm font-medium mt-2">
+								Pindai kode QR diatas dengan Aplikasi Pembayaran
+							</p>
+							<a href={data.qrData} class="btn btn-{data.color}" download>Download Kode QR</a>
+						</div>
 					</div>
 				{:else if data.typeInvoice == 'VA'}
 					<div class="p-4 border rounded-lg inline-flex flex-col bg-white">
@@ -101,11 +106,18 @@
 
 			<div class="border border-{data.color}-500 bg-{data.color}-500/10 rounded-lg p-4 text-sm">
 				<p>
-					Harap Simpan Invoice Anda. Pastikan Anda menyimpan ID Invoice {invoice.idInvoice} di atas sebagai
-					bukti pembayaran. Invoice ini juga telah kami kirimkan ke email yang Anda daftarkan. (Jika
-					email tidak ditemukan, harap cek folder *Spam*).<br /><br />Jika Anda mengalami kendala
-					dalam transaksi, silakan hubungi CS/Admin melalui tombol di bawah ini: Hubungi Admin via
-					Telegram.<br /><br />Kami siap membantu Anda! 😊
+					Harap Simpan Invoice Anda. Pastikan Anda menyimpan ID Invoice <b>{invoice.idInvoice}</b>
+					di atas sebagai bukti pembayaran. Invoice ini juga telah kami kirimkan ke email yang Anda
+					daftarkan. (Jika email tidak ditemukan, harap cek folder <b>Spam</b>).<br /><br />Jika
+					Anda mengalami kendala dalam transaksi, silakan hubungi CS/Admin melalui tombol di bawah
+					ini:<br />
+					<a
+						href="https://t.me/kingplay.id"
+						target="_blank"
+						class="text-{data.color}-500 hover:underline"
+					>
+						Hubungi Admin via Telegram.
+					</a><br /><br />Kami siap membantu Anda! 😊
 				</p>
 			</div>
 		</div>
