@@ -31,7 +31,6 @@
 	let form: HTMLFormElement;
 	let submitForm: HTMLFormElement;
 	let selectedProduct: Product | null = data.selectedProduct;
-	$: console.log(selectedProduct);
 	let searchValue: string = '';
 	let selectedGroupChannel: PaymentChannelGroup | null = null;
 	let selectedChannel: PaymentChannel | null = null;
