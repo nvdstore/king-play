@@ -108,7 +108,7 @@ export async function getResumeTrx(idMember: string) {
 
 		const query = `select count(*) as total, sum(nominal) as total_nominal from transaksi t
 		left join invoice i on i.id_invoice = t.id_invoice 
-    where t.id_member = $1 and transaction_date = $2 ${where}`;
+    where t.id_member = $1 and transaction_date = $2 ${where} and jenis_transaksi = 1`;
 
 		const result = await db.query(query, [idMember, now]);
 		Object.assign(data, { total: result?.rows[0]?.total ?? 0 });
