@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Bell, LucideLink2, Menu, Store } from 'lucide-svelte';
+	import { Bell, LucideLink2, Menu, Store, X } from 'lucide-svelte';
+	import { fade } from 'svelte/transition';
 	import { goto, onNavigate } from '$app/navigation';
 
 	import { openSidebar } from '$lib/stores/general';
@@ -12,6 +13,8 @@
 	});
 
 	export let data: LayoutData;
+
+	let showPopup = data.showPopup ?? true;
 </script>
 
 <div>
@@ -60,3 +63,36 @@
 		</div>
 	</main>
 </div>
+
+{#if showPopup}
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div transition:fade={{ duration: 300 }} class="popup show" on:click={() => (showPopup = false)}>
+		<div class="relative m:w-[500px]">
+			<a href="https://t.me/kingplayid" target="_blank">
+				<img
+					src="https://res.cloudinary.com/dwfrvuyh6/image/upload/v1735103492/telegram_promo_x3u5uw.png"
+					alt="popup"
+				/>
+			</a>
+			<div class="absolute top-0 right-0 p-2 cursor-pointer">
+				<X class="text-slate-800" on:click={() => (showPopup = false)} />
+			</div>
+		</div>
+	</div>
+{/if}
+
+<style>
+	.popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: #000000a1;
+		z-index: 99;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+</style>

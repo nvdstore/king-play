@@ -1,7 +1,7 @@
 import { getResumeTrx, getTransactions } from '$lib/models/transactions';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals, url }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth();
 
 	const limit = 25;

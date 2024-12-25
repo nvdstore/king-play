@@ -1,3 +1,4 @@
+import { addMinutes } from 'date-fns';
 import { getStoreByMember } from '$lib/models/store';
 import type { Store } from '$lib/type';
 
@@ -29,7 +30,17 @@ export const load: LayoutServerLoad = async (events) => {
 		}
 	};
 
+	let showPopup = true;
+	if (!events.cookies.get('popup')) {
+		events.cookies.set('popup', '1', { path: '/', expires: addMinutes(new Date(), 15) });
+	} else {
+		events.cookies.set('popup', '0', { path: '/', expires: addMinutes(new Date(), 15) });
+	}
+
+	showPopup = events.cookies.get('popup') == '1';
+
 	return {
-		store
+		store,
+		showPopup
 	};
 };
