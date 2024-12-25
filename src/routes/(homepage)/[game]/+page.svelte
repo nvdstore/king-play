@@ -106,7 +106,7 @@
 						);
 						const url = new URLSearchParams();
 						url.append('d', base64Data);
-						window.location.replace('/payment' + '?' + url.toString());
+						goto('/payment' + '?' + url.toString());
 					}
 				}
 			} else {
