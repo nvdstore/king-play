@@ -142,7 +142,7 @@ export async function getReportTransactions(params: GetReportTransactionMemberTy
 			left join invoice i on i.id_invoice = t.id_invoice 
 			left join mt_produk mp on mp.id_produk = t.id_produk 
 			left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
-    where t.id_member = $1 and transaction_date between $2 and $3 
+    where t.id_member = $1 and jenis_transaksi = 1 and transaction_date between $2 and $3 
 		and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code = '00') ${where} 
 		group by t.transaction_date, t.id_member 
     order by transaction_date desc limit $4 offset $5`;
