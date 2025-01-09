@@ -195,7 +195,11 @@
 					<div class="text-{data.color}-500 font-medium">Kontak Kami</div>
 					<ul>
 						{#if data.store.phone}
-							<li><a href="https://wa.me/{data.store.phone}" target="_blank">WhatsApp</a></li>
+							<li>
+								<a href="https://wa.me/+62{data.store.phone.substring(1)}" target="_blank"
+									>WhatsApp</a
+								>
+							</li>
 						{/if}
 						{#if data.store.email}
 							<li><a href="mailto:{data.store.email}" target="_blank">Email</a></li>

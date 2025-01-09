@@ -107,12 +107,11 @@
 			<div class="border border-{data.color}-500 bg-{data.color}-500/10 rounded-lg p-4 text-sm">
 				<p>
 					Harap Simpan Invoice Anda. Pastikan Anda menyimpan ID Invoice <b>{invoice.idInvoice}</b>
-					di atas sebagai bukti pembayaran. Invoice ini juga telah kami kirimkan ke email yang Anda
-					daftarkan. (Jika email tidak ditemukan, harap cek folder <b>Spam</b>).<br /><br />Jika
-					Anda mengalami kendala dalam transaksi, silakan hubungi CS/Admin melalui tombol di bawah
-					ini:<br />
+					di atas sebagai bukti pembayaran. Invoice ini juga telah kami kirimkan ke email yang Anda daftarkan.
+					(Jika email tidak ditemukan, harap cek folder <b>Spam</b>).<br /><br />Jika Anda mengalami
+					kendala dalam transaksi, silakan hubungi CS/Admin melalui tombol di bawah ini:<br />
 					<a
-						href="https://t.me/kingplay.id"
+						href="https://t.me/kingplayid"
 						target="_blank"
 						class="text-{data.color}-500 hover:underline"
 					>
