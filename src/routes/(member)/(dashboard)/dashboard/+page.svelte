@@ -1,13 +1,5 @@
 <script lang="ts">
-	import { tick } from 'svelte';
-	import {
-		ArrowUp,
-		BadgeCheckIcon,
-		ArrowLeftRight,
-		Clock,
-		RefreshCcw,
-		HandCoins
-	} from 'lucide-svelte';
+	import { BadgeCheckIcon, ArrowLeftRight, Clock, RefreshCcw, HandCoins } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
 	import TransactionList from './transaction-list.svelte';

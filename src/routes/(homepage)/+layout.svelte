@@ -207,7 +207,9 @@
 						{#if data.store.info?.fb}
 							<li><a href="https://{data.store.info?.fb}" target="_blank">Facebook</a></li>
 						{/if}
-
+						{#if data.store.info?.telegram}
+							<li><a href="https://{data.store.info?.telegram}" target="_blank">Telegram</a></li>
+						{/if}
 						{#if data.store.info?.tiktok}
 							<li><a href="https://{data.store.info?.tiktok}" target="_blank">Tiktok</a></li>
 						{/if}

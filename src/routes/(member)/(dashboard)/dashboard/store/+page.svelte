@@ -136,6 +136,7 @@
 							{form.domain?.errors.customDomain}
 						</p>
 					{/if}
+					<p class="text-sm">Arahkan A Record domain Anda ke: 103.176.79.214</p>
 				</div>
 			</div>
 			<button type="submit" class="btn btn-primary w-full md:w-auto" disabled={loadingStoreForm}>

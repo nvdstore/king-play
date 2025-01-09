@@ -27,8 +27,8 @@ export const load: PageServerLoad = async ({ parent }) => {
 export const actions: Actions = {
 	default: async ({ locals, request: req, cookies }) => {
 		const session = await locals.auth();
-		console.log(session);
 		const user = session?.user;
+		const userId = cookies.get('uuid') ?? '';
 
 		const frmData = await req.formData();
 
@@ -66,7 +66,7 @@ export const actions: Actions = {
 				mid,
 				data: {
 					id_produk: '',
-					id_user: session?.sessionToken ?? '',
+					id_user: session?.user?.id ?? '',
 					id_pelanggan1: '',
 					id_pelanggan2: '',
 					id_pelanggan3: '',
@@ -80,7 +80,7 @@ export const actions: Actions = {
 					channel_id: channel
 				}
 			},
-			uuid: session?.sessionToken ?? ''
+			uuid: userId ?? ''
 		});
 
 		return { errors: errorBag, values: valueBag, message, code };

@@ -13,7 +13,8 @@
 		<div class="mb-5">
 			{#if data.ok}
 				<h1 class="text-xl font-medium">Verifikasi Email Berhasil</h1>
-				<p>Silahkan lakukan login kembali. Anda bisa menutup tab ini.</p>
+				<p class="mb-4">Silahkan lakukan login kembali. Anda bisa menutup tab ini.</p>
+				<a href="/auth/login" class="underline">Klik untuk Login</a>
 			{:else}
 				<h1 class="text-xl font-medium">Verifikasi Email Tidak Berhasil</h1>
 				<p>Terjadi kesalahan saat melakukan verifikasi.</p>

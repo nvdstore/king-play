@@ -44,7 +44,7 @@
 				<h4 class="text-md font-medium">{store?.name}</h4>
 			</a>
 			<a
-				href="https://{store?.domain}"
+				href="https://{store?.customDomain ?? store?.domain}"
 				target="_blank"
 				class="text-xs inline-flex items-center hover:underline gap-1"
 			>
