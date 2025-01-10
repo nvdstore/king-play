@@ -40,7 +40,7 @@
 <form on:submit|preventDefault={handleLogin} class="space-y-6">
 	<header class="space-y-1.5 text-center md:text-left">
 		<h4 class="text-2xl font-medium">Masuk</h4>
-		<p class="text-sm">Masuk dengan akun yang telah Anda daftarkan.</p>
+		<p class="text-sm">Masuk dengan akun reseller yang telah Anda daftarkan.</p>
 	</header>
 	<section class="space-y-4">
 		<button

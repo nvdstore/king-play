@@ -51,7 +51,7 @@
 >
 	<header class="space-y-1.5 text-center md:text-left">
 		<h4 class="text-2xl font-medium">Daftar</h4>
-		<p class="text-sm">Buat akun King Gaming Anda.</p>
+		<p class="text-sm">Buat akun reseller Anda.</p>
 	</header>
 	{#if form?.errors.message}
 		<div
@@ -151,7 +151,7 @@
 			<label class="text-xs">
 				<input type="checkbox" name="terms" checked={form?.values.terms} class="mr-1.5" />
 				Saya setuju dengan
-				<a href="/terms-condition" target="_blank" class="text-red-500 hover:underline">
+				<a href="/terms" target="_blank" class="text-red-500 hover:underline">
 					Syarat dan Ketentuan
 				</a>
 				dan
