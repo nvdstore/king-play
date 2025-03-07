@@ -24,7 +24,7 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 		}
 
 		if (!user.email_verified) {
-			return redirect(307, '/verify-email');
+			// return redirect(307, '/verify-email');
 		}
 
 		const store = await getStoreByMember(session?.user?.id!);
@@ -41,7 +41,7 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 
 	if (pathname.startsWith('/auth') && user) {
 		if (!user.email_verified) {
-			return redirect(307, '/verify-email');
+			// return redirect(307, '/verify-email');
 		} else {
 			return redirect(307, '/dashboard');
 		}
