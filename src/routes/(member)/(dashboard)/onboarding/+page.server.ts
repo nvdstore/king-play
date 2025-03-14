@@ -30,14 +30,14 @@ export const actions = {
 		if (!name) {
 			errorBag.name = 'Nama harus diisi';
 		}
-		if (!email) {
-			errorBag.email = 'Email harus diisi';
-		} else if (!validateEmail(email.toString())) {
-			errorBag.email = 'Format email salah';
-		}
-		if (!phone) {
-			errorBag.phone = 'Nomor handphone harus diisi';
-		}
+		// if (!email) {
+		// 	errorBag.email = 'Email harus diisi';
+		// } else if (!validateEmail(email.toString())) {
+		// 	errorBag.email = 'Format email salah';
+		// }
+		// if (!phone) {
+		// 	errorBag.phone = 'Nomor handphone harus diisi';
+		// }
 		if (!domain || !domain) {
 			errorBag.domain = 'Domain harus diisi';
 		}
@@ -54,8 +54,8 @@ export const actions = {
 			memberId: session?.user?.id!,
 			name: name!,
 			description: desc ?? '',
-			email: email!,
-			phone: phone!,
+			email: email ?? '',
+			phone: phone! ?? '',
 			domain: subdomain
 		};
 		const { error, data } = await createStore(storeData);

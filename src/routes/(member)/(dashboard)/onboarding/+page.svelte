@@ -111,7 +111,7 @@
 					/>
 				</div>
 				<div class="input-group w-full">
-					<label for="email" class="input-label">Email Toko</label>
+					<label for="email" class="input-label">Email Toko (opsional)</label>
 					<input
 						name="email"
 						value={form?.values.email ?? ''}
@@ -126,7 +126,7 @@
 					{/if}
 				</div>
 				<div class="input-group w-full">
-					<label for="phone" class="input-label">Nomor WhatsApp Toko</label>
+					<label for="phone" class="input-label">Nomor WhatsApp Toko (opsional)</label>
 					<input
 						name="phone"
 						value={form?.values.phone ?? ''}

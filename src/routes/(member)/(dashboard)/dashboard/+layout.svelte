@@ -7,6 +7,7 @@
 	import Sidebar from './sidebar.svelte';
 
 	import type { LayoutData } from './$types';
+	import { currency } from '$lib/utils/formatter';
 
 	onNavigate(() => {
 		$openSidebar = false;
@@ -46,13 +47,19 @@
 				<a href="/dashboard/store" class="hover:underline">
 					<h4 class="text-lg font-medium">{data.store.name}</h4>
 				</a>
-				<a
-					href="https://{data.store.domain}"
-					target="_blank"
-					class="text-xs inline-flex items-center hover:underline gap-1"
-				>
-					<LucideLink2 size={14} /> Kunjungi
-				</a>
+				<div class="flex items-center gap-4">
+					<a
+						href="https://{data.store.domain}"
+						target="_blank"
+						class="text-xs inline-flex items-center hover:underline gap-1"
+					>
+						<LucideLink2 size={14} /> Kunjungi
+					</a>
+					<p class="text-xs">
+						<span class="text-xs">Saldo</span>
+						<span class="font-medium">{currency(data.store?.balance)}</span>
+					</p>
+				</div>
 			</div>
 		</button>
 	</header>
