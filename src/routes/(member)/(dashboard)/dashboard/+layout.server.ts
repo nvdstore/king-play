@@ -4,6 +4,7 @@ import type { Store } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
 import { getBalance } from '$lib/models/user';
+import { request } from '$lib/request';
 
 export const load: LayoutServerLoad = async (events) => {
 	const { user } = await events.parent();
@@ -43,8 +44,22 @@ export const load: LayoutServerLoad = async (events) => {
 
 	showPopup = events.cookies.get('popup') == '1';
 
+	const { additional } = await request({
+		method: 'GET',
+		endpoint: `/api/qr/generate-qrurl/${store.customDomain ?? store.domain}`,
+		payload: {},
+		uuid: user?.idMember!
+	});
+
+	const qrData = await fetch(additional.qr_code_url)
+		.then((response) => response.arrayBuffer())
+		.then((buffer) => Buffer.from(buffer).toString('base64'));
+
+	const qrShare = `data:image/png;base64, ${qrData}`;
+
 	return {
 		store,
-		showPopup
+		showPopup,
+		qrShare
 	};
 };

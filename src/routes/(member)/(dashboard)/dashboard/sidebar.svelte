@@ -11,11 +11,16 @@
 		LucideLink2,
 		Settings,
 		Store,
-		StoreIcon
+		StoreIcon,
+		Eye,
+		ExternalLink
 	} from 'lucide-svelte';
 	import { openSidebar } from '$lib/stores/general';
 	import { signOut } from '@auth/sveltekit/client';
 	import { currency } from '$lib/utils/formatter';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let store;
 
@@ -37,7 +42,7 @@
 	>
 		<a
 			href="/dashboard/store"
-			class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center mt-2"
+			class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center"
 		>
 			<Store />
 		</a>
@@ -45,14 +50,7 @@
 			<a href="/dashboard/store">
 				<h4 class="text-md font-medium">{store?.name}</h4>
 			</a>
-			<a
-				href="https://{store?.customDomain ?? store?.domain}"
-				target="_blank"
-				class="text-xs inline-flex items-center hover:underline gap-1"
-			>
-				<LucideLink2 size={14} /> Kunjungi
-			</a>
-			<p class="text-sm mt-1">
+			<p class="text-xs">
 				<span class="text-xs">Saldo</span>
 				<span class="font-medium">{currency(store?.balance)}</span>
 			</p>
@@ -60,6 +58,17 @@
 		<!-- <a href="/dashboard/notif" class="ml-auto mr-2">
 			<Bell size={18} />
 		</a> -->
+	</div>
+
+	<div class="p-2">
+		<nav class="space-y-2">
+			<button
+				on:click={() => dispatch('share')}
+				class="flex items-center justify-between p-2 hover:bg-blue-800/50 bg-blue-900/50 bg-opacity-50 text-blue-200 backdrop-blur-sm rounded-md cursor-pointer transition-all w-full"
+			>
+				<div class="ml-3 text-sm">Bagikan Toko Saya</div>
+			</button>
+		</nav>
 	</div>
 
 	<nav class="space-y-2 p-2">
