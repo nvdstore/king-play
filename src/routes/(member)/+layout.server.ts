@@ -35,12 +35,12 @@ export const load: LayoutServerLoad = async ({ url, locals, parent }) => {
 		}
 	}
 
-	if (!user) {
-		return redirect(307, '/auth/login');
-	}
-
 	if (pathname.startsWith('/auth') && user) {
 		return redirect(307, '/dashboard');
+	}
+
+	if (!pathname.startsWith('/auth') && !user) {
+		return redirect(307, '/auth/login');
 	}
 
 	if (user) {

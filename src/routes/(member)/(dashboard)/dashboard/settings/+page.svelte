@@ -18,7 +18,7 @@
 </script>
 
 <section class="space-y-6">
-	<header class="space-y-1" id="store">
+	<!-- <header class="space-y-1" id="store">
 		<h2 class="text-xl font-bold">Pengaturan Toko</h2>
 		<p class="text-sm">Kelola toko Anda dengan mudah melalui menu Pengaturan Toko.</p>
 	</header>
@@ -27,7 +27,7 @@
 		<a href="/dashboard/store" class="btn">
 			<Store class="mr-2" size={18} />Manajemen Toko
 		</a>
-	</div>
+	</div> -->
 
 	<header class="space-y-1" id="profile">
 		<h2 class="text-xl font-bold">Ubah Profil</h2>

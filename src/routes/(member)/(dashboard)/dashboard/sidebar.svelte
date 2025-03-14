@@ -10,10 +10,12 @@
 		LogOut,
 		LucideLink2,
 		Settings,
-		Store
+		Store,
+		StoreIcon
 	} from 'lucide-svelte';
 	import { openSidebar } from '$lib/stores/general';
 	import { signOut } from '@auth/sveltekit/client';
+	import { currency } from '$lib/utils/formatter';
 
 	export let store;
 
@@ -31,11 +33,11 @@
 	</a>
 
 	<div
-		class="hidden md:flex items-center p-2 py-4 gap-3 w-full border-b border-neutral-700 hover:bg-neutral-900/50 transition-all"
+		class="hidden md:flex items-start p-2 py-4 gap-3 w-full border-b border-neutral-700 hover:bg-neutral-900/50 transition-all"
 	>
 		<a
 			href="/dashboard/store"
-			class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center"
+			class="bg-red-500 rounded-lg h-10 w-10 flex items-center justify-center mt-2"
 		>
 			<Store />
 		</a>
@@ -50,6 +52,9 @@
 			>
 				<LucideLink2 size={14} /> Kunjungi
 			</a>
+			<p class="text-sm mt-1">
+				<span class="text-xs">Saldo</span> <span class="font-medium">{currency(200)}</span>
+			</p>
 		</div>
 		<!-- <a href="/dashboard/notif" class="ml-auto mr-2">
 			<Bell size={18} />
@@ -96,6 +101,14 @@
 		>
 			<HandCoins size={20} />
 			<span class="ml-3 text-sm">Penarikan Dana</span>
+		</a>
+		<a
+			href="/dashboard/store"
+			class="flex items-center p-2 hover:bg-neutral-700/50 bg-opacity-50 backdrop-blur-sm rounded-md cursor-pointer transition-all"
+			class:active={isActive('/dashboard/store')}
+		>
+			<StoreIcon size={20} />
+			<span class="ml-3 text-sm">Manajemen Toko</span>
 		</a>
 		<a
 			href="/dashboard/settings"
