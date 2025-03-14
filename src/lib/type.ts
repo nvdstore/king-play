@@ -87,6 +87,7 @@ export type Store = {
 	theme?: string;
 	color?: string;
 	promo?: StorePromo[];
+	balance: number;
 	info?: {
 		fb?: string;
 		tiktok?: string;

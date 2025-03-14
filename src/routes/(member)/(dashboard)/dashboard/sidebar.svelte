@@ -53,7 +53,8 @@
 				<LucideLink2 size={14} /> Kunjungi
 			</a>
 			<p class="text-sm mt-1">
-				<span class="text-xs">Saldo</span> <span class="font-medium">{currency(200)}</span>
+				<span class="text-xs">Saldo</span>
+				<span class="font-medium">{currency(store?.balance)}</span>
 			</p>
 		</div>
 		<!-- <a href="/dashboard/notif" class="ml-auto mr-2">

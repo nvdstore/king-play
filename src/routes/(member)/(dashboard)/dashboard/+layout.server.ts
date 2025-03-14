@@ -3,9 +3,12 @@ import { getStoreByMember } from '$lib/models/store';
 import type { Store } from '$lib/type';
 
 import type { LayoutServerLoad } from './$types';
+import { getBalance } from '$lib/models/user';
 
 export const load: LayoutServerLoad = async (events) => {
 	const { user } = await events.parent();
+
+	const balance = await getBalance(user?.idMember!);
 
 	const storeData = await getStoreByMember(user?.idMember!);
 	// this is store for authenticated member for dashboard
@@ -21,6 +24,7 @@ export const load: LayoutServerLoad = async (events) => {
 		promo: [],
 		theme: storeData.theme,
 		color: storeData.color,
+		balance,
 		info: {
 			fb: storeData.fb,
 			tiktok: storeData.tiktok,
