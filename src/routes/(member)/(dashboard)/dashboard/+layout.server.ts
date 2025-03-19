@@ -51,11 +51,14 @@ export const load: LayoutServerLoad = async (events) => {
 		uuid: user?.idMember!
 	});
 
-	const qrData = await fetch(additional.qr_code_url)
-		.then((response) => response.arrayBuffer())
-		.then((buffer) => Buffer.from(buffer).toString('base64'));
+	let qrShare = '';
+	if (additional?.qr_code_url) {
+		const qrData = await fetch(additional?.qr_code_url)
+			.then((response) => response.arrayBuffer())
+			.then((buffer) => Buffer.from(buffer).toString('base64'));
 
-	const qrShare = `data:image/png;base64, ${qrData}`;
+		qrShare = `data:image/png;base64, ${qrData}`;
+	}
 
 	return {
 		store,
