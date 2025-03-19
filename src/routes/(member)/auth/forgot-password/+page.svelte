@@ -32,7 +32,7 @@
 					toast.push(form?.message);
 
 					if (form?.ok) {
-						window.location.href = '/auth/login';
+						goto('/auth/login');
 					}
 				}
 				invalidateAll();
