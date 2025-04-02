@@ -42,14 +42,26 @@ export async function getTransactions(params: GetTransactionMemberType) {
 			" and (coalesce(i.status::int, 0) = 2 and coalesce(i.flag::int, 0) = 1 and t.response_code = '00')";
 	}
 
-	const query = `select count(*) OVER() AS full_count, t.id_transaksi, t.id_member, i.id_invoice, i.fee_member, t.nominal, t.response_code, t.transaction_date, 
-		mgp.nama_group_produk, mp.produk, i.status, i.flag 
-    from transaksi t
-		left join invoice i on i.id_invoice = t.id_invoice 
-    left join mt_produk mp on mp.id_produk = t.id_produk 
-    left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
-    where t.id_member = $1 and transaction_date between $2 and $3 ${where} and jenis_transaksi = 1
-    order by transaction_date desc, transaction_time desc ${limit} ${offset}`;
+	const query = `
+	select count(*) OVER() AS full_count, tt.*
+	from (
+		select t.id_transaksi, t.id_member, i.id_invoice, i.fee_member, t.nominal, t.response_code, t.transaction_date, t.transaction_time,
+			mgp.nama_group_produk, mp.produk, i.status, i.flag 
+			from transaksi t
+			left join invoice i on i.id_invoice = t.id_invoice 
+			left join mt_produk mp on mp.id_produk = t.id_produk 
+			left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
+			where t.id_member = $1 and transaction_date between $2 and $3 ${where} and jenis_transaksi = 1
+		union
+		select t.id_transaksi, t.id_member, i.id_invoice, i.fee_member, t.nominal, t.response_code, t.transaction_date, t.transaction_time,
+			mgp.nama_group_produk, mp.produk, i.status, i.flag 
+			from proses_transaksi t
+			left join invoice i on i.id_invoice = t.id_invoice 
+			left join mt_produk mp on mp.id_produk = t.id_produk 
+			left join mt_group_produk mgp on mgp.id_group_produk = mp.id_group_produk
+			where t.id_member = $1 and transaction_date between $2 and $3 ${where} and jenis_transaksi = 1
+	) as tt
+	order by tt.transaction_date desc, tt.transaction_time desc ${limit} ${offset}`;
 	const result = await db.query(query, values);
 
 	const data = result?.rows && result?.rows.length > 0 ? result?.rows : [];

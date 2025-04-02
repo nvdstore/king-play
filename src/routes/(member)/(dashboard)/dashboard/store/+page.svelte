@@ -399,7 +399,7 @@
 						<select
 							name="fee-product"
 							value={productFee}
-							class="input {form?.fee?.errors.product ? 'input-error' : ''}"
+							class="input w-full {form?.fee?.errors.product ? 'input-error' : ''}"
 						>
 							<option value="">Pilih Produk</option>
 							{#each data.products as product}
