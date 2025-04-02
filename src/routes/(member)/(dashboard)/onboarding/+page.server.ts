@@ -56,7 +56,7 @@ export const actions = {
 			description: desc ?? '',
 			email: email ?? '',
 			phone: phone! ?? '',
-			domain: subdomain
+			domain: subdomain.toLowerCase()
 		};
 		const { error, data } = await createStore(storeData);
 		if (error) {

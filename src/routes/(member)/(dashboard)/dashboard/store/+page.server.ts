@@ -90,8 +90,8 @@ async function domainAction(event: RequestEvent) {
 
 	const { data, error } = await updateStoreDomain({
 		memberId: session?.user?.id!,
-		domain: fullDOmain,
-		customDomain
+		domain: fullDOmain.toLowerCase(),
+		customDomain: customDomain.toLowerCase()
 	});
 
 	if (error) {
